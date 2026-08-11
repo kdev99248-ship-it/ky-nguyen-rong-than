@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <server>
+	<!-- UserCenter đối chiếu IP nguồn của request này với t_s_server_list.address
+	     (getServerInfo.do: address.startsWith(requestIp)). Để 127.0.0.1 mà address
+	     là IP public thì bị từ chối "请求ip有误" và GameServer chết ngay lúc khởi động.
+	     Đừng sửa tay: chạy ./knrt.sh setup-ip <ip-public> để sửa cả hai chỗ. -->
 	<user-center value="http://127.0.0.1:9000" /><!-- 用户中心地址,负责登录,游戏功能开关,服务器列表 -->
 	<server-id value="1011" /> <!-- 服务器的id IDE调试模式下不使用-->
 	<name-max-length value="13" />

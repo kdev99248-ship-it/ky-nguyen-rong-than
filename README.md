@@ -223,5 +223,6 @@ hệt bản sống) — nên xoá để khỏi sửa nhầm:
 - [x] Viết script `.sh` để chạy trên VPS Linux → `knrt.sh`, `src/*/start.sh`,
       `db/sql/install.sh`, `docker/` — xem `docker/README.md`
 - [ ] **Chạy thử bản Docker trên VPS** — mọi thứ đã viết xong nhưng chưa boot lần nào
-- [ ] Sau khi `db-install`: thêm dòng vào `t_s_server_list` với IP public của VPS
-      (bộ `install/` để bảng này rỗng nên client sẽ không thấy server nào)
+- [x] Sau khi `db-install`: thêm dòng vào `t_s_server_list` với IP public của VPS
+      → `./knrt.sh setup-ip <ip-public>`. Không phải chỉ để client thấy server:
+      GameServer lấy chuỗi kết nối của cả 4 DB game từ hàng đó, thiếu là exit 255

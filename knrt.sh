@@ -77,6 +77,9 @@ Cách dùng: ./knrt.sh <lệnh> [tham số]
   db-dump [file.sql]    Dump cả 6 database ra file
   db-import <file.sql>  Nạp một file dump (dùng để chuyển dữ liệu thật từ Windows sang)
 
+  setup-ip [ip-public]  BẮT BUỘC sau db-install: ghi hàng t_s_server_list và trỏ
+                        GameServer về đúng IP. Không có bước này GameServer exit 255.
+
 Dịch vụ: mysql, usercenter, gameserver, napcard, php, nginx
 EOF
 }
@@ -97,7 +100,9 @@ case "$cmd" in
 		  Nạp thẻ  : http://<ip-vps>/
 		  Log      : ./knrt.sh logs gameserver
 
-		  Lần đầu chạy: database còn trống, nạp bằng  ./knrt.sh db-install
+		  Lần đầu chạy: database còn trống ->  ./knrt.sh db-install
+		               rồi BẮT BUỘC     ->  ./knrt.sh setup-ip <ip-public>
+		               (thiếu bước 2, gameserver lặp "exited with code 255")
 		EOF
 		;;
 
@@ -147,6 +152,99 @@ case "$cmd" in
 		confirm "Gõ YES rồi Enter để tiếp tục:"
 		mysql_exec -T mysql -uroot --default-character-set=utf8 < "$1"
 		echo "Xong."
+		;;
+
+	# Bộ install/ không có hàng nào trong t_s_server_list, mà GameServer thì không
+	# chạy được nếu thiếu: lúc khởi động nó POST {"serverId":N} sang
+	# /center/getServerInfo.do và lấy về CHUỖI KẾT NỐI CỦA CẢ 4 DB GAME từ hàng đó
+	# (cột db_game/db_game_data/db_game_log/db_game_global_log). Thiếu hàng ->
+	# ServerConfig chỉ log "远程数据库取服务器配置失败" rồi đi tiếp với 4 config = null
+	# -> DBFactory NPE -> "load GameData fail!" -> exit 255 -> lặp vô hạn.
+	#
+	# Chỗ khó thấy: GetServerConfigInfoHandler còn kiểm tra
+	#     t_s_server_list.address.startsWith(<IP nguồn của request>)
+	# nên cột address (địa chỉ client kết nối tới, phải là IP public) và IP mà
+	# GameServer dùng để gọi UserCenter phải TRÙNG NHAU. Vì vậy lệnh này sửa luôn
+	# <user-center> trong server-config.xml thành IP public thay vì 127.0.0.1.
+	setup-ip)
+		ensure_env
+		cfg="$ROOT/src/gameserver/config/server-config.xml"
+		[ -f "$cfg" ] || die "Không thấy $cfg"
+
+		ip_addr="${1:-}"
+		if [ -z "$ip_addr" ]; then
+			# src của route ra internet = địa chỉ kernel gắn cho gói đi ra.
+			# Trên VPS được cấp IP thẳng thì đó chính là IP public.
+			ip_addr="$(ip route get 1.1.1.1 2>/dev/null | sed -n 's/.* src \([0-9.]*\).*/\1/p' | head -n1)"
+			[ -n "$ip_addr" ] || die "Không tự dò được IP. Chạy: ./knrt.sh setup-ip <ip-public>"
+			echo "Tự dò được IP: $ip_addr"
+		fi
+		printf '%s' "$ip_addr" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$' \
+			|| die "IP không hợp lệ: $ip_addr"
+
+		# Nếu IP không nằm trên interface nào thì máy không tự gọi vào chính nó qua
+		# IP đó được (cloud NAT 1:1 kiểu AWS/GCP/Oracle). Xem docker/README.md.
+		if command -v ip >/dev/null 2>&1 && ! ip -4 -o addr | grep -q " inet $ip_addr/"; then
+			echo
+			echo "  CẢNH BÁO: $ip_addr không có trên interface nào của máy này."
+			echo "  Máy chắc đang sau NAT 1:1 -> GameServer sẽ không gọi được UserCenter"
+			echo "  qua IP này. Xem mục 'VPS sau NAT' trong docker/README.md."
+			echo
+		fi
+
+		server_id="$(sed -n 's/.*<server-id value="\([0-9]*\)".*/\1/p' "$cfg" | head -n1)"
+		[ -n "$server_id" ] || die "Không đọc được <server-id> trong $cfg"
+		pass="$(env_get MYSQL_ROOT_PASSWORD)"
+
+		# game_port phải khớp cổng trong address (client đọc address để kết nối).
+		# http_port 21011 vì GameServer mở thêm http_port+30000 = 51011 cho GM API,
+		# và cdn/www/gm/config.php ghi cứng 51011.
+		# recharge_port 9880 khớp http.server.recharge.host trong
+		# src/gameserver/app/gameserver/config/config.properties.
+		game_port=9001
+		http_port=21011
+		recharge_port=9880
+		# Tham số JDBC lấy nguyên từ db.account.jdbcUrl của config.properties.
+		# Cả chuỗi JSON phải <= 256 ký tự: cột db_game* là varchar(256).
+		jdbc_args='?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useServerPrepStmts=true&rewriteBatchedStatements=true'
+		db_json() {
+			printf '{"url":"jdbc:mysql://127.0.0.1:3306/%s%s","username":"root","password":"%s"}' \
+				"$1" "$jdbc_args" "$pass"
+		}
+
+		echo "server-id=$server_id  address=$ip_addr:$game_port"
+
+		mysql_exec -T mysql -uroot --default-character-set=utf8 user_center <<-SQL
+		INSERT INTO t_s_server_list
+		  (id, name, mark, address, max_login_count, zone_id, open_time,
+		   game_port, http_port, recharge_port, area_id,
+		   db_game, db_game_data, db_game_log, db_game_global_log,
+		   max_connect, server_timezone, is_test)
+		VALUES
+		  ($server_id, 'S1', 6, '$ip_addr:$game_port', 5000, 1, NOW(),
+		   $game_port, $http_port, $recharge_port, 1,
+		   '$(db_json h_game)', '$(db_json h_game_data)',
+		   '$(db_json h_game_log)', '$(db_json h_game_global_log)',
+		   5000, 'GMT+7:00', 0)
+		ON DUPLICATE KEY UPDATE
+		  address=VALUES(address), game_port=VALUES(game_port),
+		  http_port=VALUES(http_port), recharge_port=VALUES(recharge_port),
+		  area_id=VALUES(area_id), db_game=VALUES(db_game),
+		  db_game_data=VALUES(db_game_data), db_game_log=VALUES(db_game_log),
+		  db_game_global_log=VALUES(db_game_global_log),
+		  max_connect=VALUES(max_connect), server_timezone=VALUES(server_timezone);
+		SQL
+
+		sed -i "s|\(<user-center value=\"\)[^\"]*\(\"\)|\1http://$ip_addr:9000\2|" "$cfg"
+		echo "Đã sửa <user-center> -> http://$ip_addr:9000"
+
+		# Phải restart usercenter: ServerInfoManagerImpl giữ danh sách server trong
+		# RAM, chỉ nạp lại lúc khởi động hoặc khi sửa qua API GM. UPDATE tay bằng
+		# SQL thì tiến trình đang chạy không thấy gì cả.
+		echo "Khởi động lại usercenter (nó cache danh sách server trong RAM) rồi gameserver..."
+		dc up -d --force-recreate usercenter gameserver
+		echo
+		echo "Xong. Theo dõi:  ./knrt.sh logs gameserver"
 		;;
 
 	help|-h|--help) usage ;;

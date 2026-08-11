@@ -15,6 +15,7 @@ chmod +x knrt.sh db/sql/install.sh src/gameserver/start.sh src/usercenter/start.
 
 ./knrt.sh up                         # lần đầu sẽ build image php (~1 phút)
 ./knrt.sh db-install                 # nạp DB server sạch, gõ YES
+./knrt.sh setup-ip <ip-public>       # BẮT BUỘC — thiếu là gameserver exit 255
 ./knrt.sh logs gameserver
 ```
 
@@ -94,19 +95,109 @@ db\mysql\bin\mysqldump.exe -uroot -pxpymw.com --default-character-set=utf8 ^
 
 Đừng chép thẳng `db/mysql/data/` sang: đó là datadir của MySQL 5.6 **Win64**.
 
-## Sau khi nạp DB: phải sửa IP
+## Sau khi nạp DB: bắt buộc chạy `setup-ip`
 
-Bộ `install/` **không** có dòng nào trong `t_s_server_list` — client sẽ thấy danh sách
-server rỗng. Thêm server và trỏ về IP public của VPS:
-
-```sql
--- cột address là địa chỉ CLIENT kết nối tới, không phải địa chỉ nội bộ
-INSERT INTO t_s_server_list (id, name, mark, address, max_login_count, zone_id)
-VALUES (1011, 'S1', 6, '<ip-public>:9001', 5000, 1);
+```bash
+./knrt.sh setup-ip <ip-public>     # bỏ trống thì tự dò qua `ip route get 1.1.1.1`
 ```
 
-`cdn/www/serverlist.php` cũng còn ghi cứng `192.168.1.111:11011` từ chủ cũ — sửa nếu
-client của bạn đọc file đó.
+Không có bước này GameServer **không khởi động được** — nó lặp `exited with code 255`.
+
+### Vì sao
+
+Bộ `install/` không có dòng nào trong `t_s_server_list`, mà hàng đó không chỉ để hiện
+danh sách server cho client: nó còn là **nơi GameServer lấy chuỗi kết nối của cả 4 DB
+game**. Lúc khởi động, `ServerConfig.load()` POST `{"serverId":1011}` sang
+`/center/getServerInfo.do`, UserCenter trả về base64 của hàng đó, GameServer đọc 4 cột
+`db_game` / `db_game_data` / `db_game_log` / `db_game_global_log` ra `DataBaseConfig`.
+`config/db-game-config.xml` chỉ có `${url}` `${username}` `${password}` — giá trị thật
+nằm trong DB, không nằm trong file.
+
+Hỏng ở đâu cũng ra cùng một kiểu chết, vì `ServerConfig.load()` **chỉ log rồi đi tiếp**:
+
+```
+远程数据库取服务器配置失败 ！ code: 0      <- log, KHÔNG throw
+  -> 4 DataBaseConfig = null
+  -> DBFactory.getProperties() NPE
+  -> t_loadingDao.select() NPE -> "load GameData fail!"
+  -> RuntimeException: 加载GameData错误 -> "start server failed" -> exit 255
+```
+
+### Cái bẫy: `address` bị dùng cho hai việc
+
+`GetServerConfigInfoHandler` chỉ trả cấu hình khi
+
+```java
+findServer.getAddress().startsWith(getIpAddress(request))
+```
+
+Nên cột `address` vừa là **địa chỉ client kết nối tới** (phải là IP public), vừa là
+**whitelist IP nguồn** của chính GameServer. Để `<user-center value="http://127.0.0.1:9000">`
+trong `src/gameserver/config/server-config.xml` thì IP nguồn là `127.0.0.1`, không khớp
+`address` = IP public, và log ra:
+
+```
+error result : {"errorMsg":"请求ip有误：127.0.0.1"}
+```
+
+`setup-ip` sửa cả hai đầu: ghi `address = <ip-public>:9001` và đổi `<user-center>` thành
+`http://<ip-public>:9000`, để IP nguồn của request đúng bằng IP public.
+
+### Hàng nó ghi
+
+```sql
+INSERT INTO t_s_server_list
+  (id, name, mark, address, max_login_count, zone_id, open_time,
+   game_port, http_port, recharge_port, area_id,
+   db_game, db_game_data, db_game_log, db_game_global_log,
+   max_connect, server_timezone, is_test)
+VALUES
+  (1011, 'S1', 6, '<ip-public>:9001', 5000, 1, NOW(),
+   9001, 21011, 9880, 1,
+   '{"url":"jdbc:mysql://127.0.0.1:3306/h_game?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useServerPrepStmts=true&rewriteBatchedStatements=true","username":"root","password":"<MYSQL_ROOT_PASSWORD>"}',
+   '... h_game_data ...', '... h_game_log ...', '... h_game_global_log ...',
+   5000, 'GMT+7:00', 0);
+```
+
+| Cột | Vì sao giá trị đó |
+|---|---|
+| `game_port` 9001 | cổng socket client, phải khớp cổng ghi trong `address` |
+| `http_port` 21011 | GameServer mở thêm `http_port + 30000` = **51011** cho GM API, mà `cdn/www/gm/config.php` ghi cứng 51011 |
+| `recharge_port` 9880 | khớp `http.server.recharge.host` trong `src/gameserver/app/gameserver/config/config.properties` |
+| `server_timezone` | dạng `GMT+7:00`; để trống thì code mặc định `GMT+8:00` |
+| `db_game*` | JSON `{"url","username","password"}`; `setup-ip` lấy mật khẩu từ `MYSQL_ROOT_PASSWORD` trong `docker/.env`. Cột là `varchar(256)` — chuỗi trên dài 198 ký tự, mật khẩu dài hơn ~47 ký tự sẽ bị cắt cụt và JSON hỏng |
+
+### Phải restart UserCenter sau mỗi lần sửa tay
+
+`ServerInfoManagerImpl` giữ danh sách server trong RAM và chỉ `refresh()` lúc khởi động
+hoặc khi sửa qua API GM. `UPDATE t_s_server_list` bằng `db-shell` thì tiến trình đang
+chạy không thấy gì — `setup-ip` đã tự `up -d --force-recreate usercenter gameserver`.
+
+### VPS sau NAT
+
+`setup-ip` cảnh báo nếu IP public không nằm trên interface nào (`ip -4 addr`). Đó là
+kiểu mạng của AWS/GCP/Oracle: NIC mang IP private, IP public được NAT 1:1 bên ngoài, nên
+máy không tự gọi vào chính nó qua IP public được. Khi đó phải để nginx chèn header —
+`getIpAddress()` đọc `x-forwarded-for` **trước** `getRemoteAddr()`:
+
+```nginx
+# docker/nginx/knrt.conf
+server {
+    listen 127.0.0.1:9002;
+    location / {
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header X-Forwarded-For <ip-public>;
+    }
+}
+```
+
+rồi để `<user-center value="http://127.0.0.1:9002" />`. Nhớ thêm `nginx` vào `depends_on`
+của `gameserver` trong `docker-compose.yml`, không thì GameServer khởi động trước proxy.
+
+### Còn lại
+
+`cdn/www/serverlist.php` ghi cứng `192.168.1.111:11011` từ chủ cũ — sửa nếu client của
+bạn đọc file đó thay vì gọi UserCenter.
 
 ## Khác Windows chỗ nào
 
@@ -177,8 +268,18 @@ Lưu ý `NettyGameServer` **luôn** `System.setProperty("ideDebug","true")`, nê
 — `log4j_server.xml` thực tế không bao giờ được dùng.
 
 **`gameserver` thoát sau khi đã in log bình thường** — xem `./knrt.sh logs gameserver`.
-Thường là chưa nạp DB (`./knrt.sh db-install`), UserCenter chưa lên (GameServer lấy
-chuỗi kết nối DB từ nó, xem mục trên), hoặc dùng nhầm image JRE.
+
+Nếu thấy `NullPointerException` ở `DBFactory.getProperties` rồi `load GameData fail!` và
+`exited with code 255 (restarting)`, cuộn ngược lên tìm dòng này:
+
+```
+error result : {"errorMsg":"请求ip有误：127.0.0.1"}
+远程数据库取服务器配置失败 ！ code: 0
+```
+
+Đó là hàng `t_s_server_list` sai hoặc chưa có — chạy `./knrt.sh setup-ip <ip-public>`,
+xem mục "Sau khi nạp DB". Các nguyên nhân còn lại: chưa nạp DB
+(`./knrt.sh db-install`), UserCenter chưa lên, hoặc dùng nhầm image JRE.
 
 **`dependency failed to start: container knrt-usercenter is unhealthy` nhưng log
 usercenter lại kết thúc bằng `SERVER START COMPLETE.....`**
