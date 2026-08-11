@@ -29,4 +29,6 @@ $serverlist=[
 	]
 ];
 
+$adminname="admin";
+$adminpass="nguyenle1999";
 ?>

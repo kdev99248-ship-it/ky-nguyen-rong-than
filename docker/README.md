@@ -14,13 +14,18 @@ cd /srv/knrt-server                  # thư mục repo, đặt đâu cũng đư�
 chmod +x knrt.sh db/sql/install.sh src/gameserver/start.sh src/usercenter/start.sh
 
 ./knrt.sh up                         # lần đầu sẽ build image php (~1 phút)
-./knrt.sh db-install                 # nạp DB server sạch, gõ YES
-./knrt.sh setup-ip <ip-public>       # BẮT BUỘC — thiếu là gameserver exit 255
+./knrt.sh setup-ip <ip-public>       # nhớ IP vào docker/.env
+./knrt.sh db-install                 # nạp DB server sạch, gõ YES; tự chạy lại setup-ip
 ./knrt.sh logs gameserver
 ```
 
 Lần chạy đầu `knrt.sh` tạo `docker/.env` từ `.env.example` và tự điền `id -u` / `id -g`
 của bạn. Xem lại `MYSQL_ROOT_PASSWORD` trong đó trước khi làm tiếp.
+
+`setup-ip` đứng **trước** `db-install` là cố ý: nó ghi `KNRT_PUBLIC_IP` vào `docker/.env`,
+để `db-install` — vốn ghi đè cả `user_center` và xoá mất hàng `t_s_server_list` — tự dựng
+lại hàng đó ngay sau khi nạp xong. Thứ tự ngược lại cũng chạy, chỉ là phải gọi `setup-ip`
+lần nữa ở cuối.
 
 Đường dẫn gốc **không** còn phải là ASCII như trên Windows — giới hạn đó là của
 MySQL 5.6 Win64 và JDK 8 Windows, không áp dụng ở đây.
@@ -99,10 +104,17 @@ db\mysql\bin\mysqldump.exe -uroot -pxpymw.com --default-character-set=utf8 ^
 ## Sau khi nạp DB: bắt buộc chạy `setup-ip`
 
 ```bash
-./knrt.sh setup-ip <ip-public>     # bỏ trống thì tự dò qua `ip route get 1.1.1.1`
+./knrt.sh setup-ip <ip-public>
 ```
 
 Không có bước này GameServer **không khởi động được** — nó lặp `exited with code 255`.
+
+Bỏ trống tham số thì thứ tự ưu tiên là: `KNRT_PUBLIC_IP` trong `docker/.env` (do lần
+`setup-ip` trước ghi lại) → tự dò bằng `ip route get 1.1.1.1`.
+
+**`db-install` xoá mất thành quả của `setup-ip`** vì nó ghi đè cả `user_center`. Đó là
+lý do `db-install` tự gọi lại `setup-ip` ở cuối. Nếu vì lý do gì mà nạp `user_center`
+bằng đường khác (`db-import`, restore tay), phải tự chạy lại `setup-ip`.
 
 ### Vì sao
 
@@ -281,6 +293,21 @@ error result : {"errorMsg":"请求ip有误：127.0.0.1"}
 Đó là hàng `t_s_server_list` sai hoặc chưa có — chạy `./knrt.sh setup-ip <ip-public>`,
 xem mục "Sau khi nạp DB". Các nguyên nhân còn lại: chưa nạp DB
 (`./knrt.sh db-install`), UserCenter chưa lên, hoặc dùng nhầm image JRE.
+
+**Lỗi trên quay lại sau khi mọi thứ đang chạy tốt** — gần như chắc chắn vừa chạy
+`db-install`. Lệnh đó **ghi đè cả `user_center`**, tức xoá luôn hàng `t_s_server_list`
+mà `setup-ip` ghi trước đó. Nay `db-install` tự chạy lại `setup-ip` ở cuối, dùng
+`KNRT_PUBLIC_IP` đã nhớ trong `docker/.env`. Nếu đang chạy bản cũ thì làm tay:
+
+```bash
+./knrt.sh setup-ip <ip-public>
+```
+
+Kiểm tra hàng còn hay mất:
+
+```bash
+./knrt.sh db-shell -e "select id, address, game_port from user_center.t_s_server_list;"
+```
 
 **`竞技场排行榜载入失败,服务器关闭` → NPE ở `RobotService.generateRobot` → `exit 255`**
 
