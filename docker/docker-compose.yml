@@ -60,8 +60,16 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    # Probe chỉ cần `grep` — có trong mọi image. KHÔNG dùng
+    # `bash -c '</dev/tcp/127.0.0.1/9000'`: nó đòi image phải có bash VÀ bash phải
+    # được biên dịch kèm net-redirections, hai điều eclipse-temurin không hứa.
+    # Probe hỏng thì app chạy ngon vẫn bị đánh dấu unhealthy, và gameserver
+    # (depends_on: service_healthy) không bao giờ được khởi động.
+    #
+    # Đọc thẳng bảng socket của kernel: 2328 = 9000 ở hệ 16, 0A = trạng thái LISTEN.
+    # network_mode: host nên /proc/net/tcp trong container chính là của host.
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c '</dev/tcp/127.0.0.1/9000'"]
+      test: ["CMD-SHELL", "grep -q ':2328 [0-9A-F]*:[0-9A-F]* 0A' /proc/net/tcp /proc/net/tcp6 2>/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 18

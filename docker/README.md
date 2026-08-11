@@ -180,6 +180,36 @@ Lưu ý `NettyGameServer` **luôn** `System.setProperty("ideDebug","true")`, nê
 Thường là chưa nạp DB (`./knrt.sh db-install`), UserCenter chưa lên (GameServer lấy
 chuỗi kết nối DB từ nó, xem mục trên), hoặc dùng nhầm image JRE.
 
+**`dependency failed to start: container knrt-usercenter is unhealthy` nhưng log
+usercenter lại kết thúc bằng `SERVER START COMPLETE.....`**
+
+App không sao — **probe hỏng**. Dấu hiệu nhận biết: `up` thất bại sau ~1 giây, trong khi
+healthcheck phải mất `start_period 30s + 18×10s ≈ 210s` mới dám kết luận unhealthy. Thất
+bại tức thì nghĩa là container đã mang sẵn nhãn unhealthy từ lần chạy trước.
+
+Bản cũ probe bằng `bash -c '</dev/tcp/127.0.0.1/9000'` — đòi image vừa có `bash` vừa có
+`bash` biên dịch kèm net-redirections, `eclipse-temurin` không hứa cả hai. Nay đổi sang
+đọc thẳng bảng socket của kernel, chỉ cần `grep`:
+
+```
+grep -q ':2328 [0-9A-F]*:[0-9A-F]* 0A' /proc/net/tcp /proc/net/tcp6
+```
+
+`2328` = 9000 hệ 16, `0A` = LISTEN. Sau khi sửa phải **tạo lại container** thì healthcheck
+mới có hiệu lực:
+
+```bash
+./knrt.sh down && ./knrt.sh up
+```
+
+Muốn biết chính xác probe hỏng vì gì thì xem log của chính nó:
+
+```bash
+docker inspect --format '{{json .State.Health}}' knrt-usercenter | python3 -m json.tool
+```
+
+Trường `Log[].Output` chứa nguyên văn thông báo lỗi của lệnh probe.
+
 **`Primary script unknown` khi vào GM panel** — nginx và php mount `cdn/www` lệch
 đường dẫn. Cả hai phải là `/opt/knrt/cdn/www`.
 
