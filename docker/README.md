@@ -36,10 +36,11 @@ MySQL 5.6 Win64 và JDK 8 Windows, không áp dụng ở đây.
 | `./knrt.sh ps` | Trạng thái |
 | `./knrt.sh shell gameserver` | Vào trong container |
 | `./knrt.sh build` | Build lại image php sau khi sửa `docker/php/` |
-| `./knrt.sh db-install` | Nạp `db/sql/install/` — **ghi đè cả 6 database** |
+| `./knrt.sh db-install` | Nạp `db/sql/install/` — **ghi đè cả 6 database** (đã bao gồm `db-patch`) |
 | `./knrt.sh db-shell -e "show databases;"` | Client mysql |
 | `./knrt.sh db-dump [file.sql]` | Dump 6 database |
 | `./knrt.sh db-import file.sql` | Nạp một file dump |
+| `./knrt.sh db-patch` | Áp `db/sql/patch/` lên DB đang chạy — cần sau `db-import` hoặc với DB nạp từ trước |
 
 ## Cổng
 
@@ -280,6 +281,30 @@ error result : {"errorMsg":"请求ip有误：127.0.0.1"}
 Đó là hàng `t_s_server_list` sai hoặc chưa có — chạy `./knrt.sh setup-ip <ip-public>`,
 xem mục "Sau khi nạp DB". Các nguyên nhân còn lại: chưa nạp DB
 (`./knrt.sh db-install`), UserCenter chưa lên, hoặc dùng nhầm image JRE.
+
+**`竞技场排行榜载入失败,服务器关闭` → NPE ở `RobotService.generateRobot` → `exit 255`**
+
+Đi được xa hơn lỗi trên: DB đã kết nối (`GameDBOperator starting`, `create 2 GameLine`),
+chết ở bước dựng bảng xếp hạng đấu trường.
+
+```
+ArenaProcessorManager.initializeRanking:150 - 竞技场排行数据为空,开始生成机器人数据
+ArenaProcessorManager.initializeRanking:203 - 竞技场排行榜载入失败,服务器关闭
+java.lang.NullPointerException
+     at game.server.logic.arena.RobotService.generateRobot(RobotService.java:118)
+     at game.server.logic.arena.ArenaProcessorManager.createRobot(...:259)
+```
+
+Server sạch nên `t_arena_ranking` rỗng và chưa có robot nào → `createRobot()` tự sinh,
+mà nó lặp **cứng** `for (i = 1; i <= 32; i++)` đọc `h_game_data.t_arena_airank` theo id.
+Bộ dump gốc chỉ có id 1..28, đến i=29 thì bean là `null` → NPE → `System.exit(-1)`.
+
+Chạy `./knrt.sh db-patch && ./knrt.sh restart gameserver`. Chi tiết ở `db/README.md`,
+mục `sql/patch/`.
+
+Cùng lúc đó thường có một NPE nữa ở `logic.guildwar.NotifyRaceCountdownScript` — cái
+này **vô hại**, `ScriptManager.call` bắt lại và ghi `call script error!`; nó không phải
+lý do container thoát. Đừng đuổi theo nó.
 
 **`dependency failed to start: container knrt-usercenter is unhealthy` nhưng log
 usercenter lại kết thúc bằng `SERVER START COMPLETE.....`**

@@ -76,6 +76,9 @@ Cách dùng: ./knrt.sh <lệnh> [tham số]
   db-shell [-e "SQL"]   Client mysql
   db-dump [file.sql]    Dump cả 6 database ra file
   db-import <file.sql>  Nạp một file dump (dùng để chuyển dữ liệu thật từ Windows sang)
+  db-patch              Áp db/sql/patch/ lên DB đang chạy — vá chỗ bộ dump gốc
+                        thiếu dữ liệu. db-install đã tự chạy; chỉ cần gọi tay sau
+                        db-import hoặc khi DB đã nạp từ trước.
 
   setup-ip [ip-public]  BẮT BUỘC sau db-install: ghi hàng t_s_server_list và trỏ
                         GameServer về đúng IP. Không có bước này GameServer exit 255.
@@ -152,6 +155,22 @@ case "$cmd" in
 		confirm "Gõ YES rồi Enter để tiếp tục:"
 		mysql_exec -T mysql -uroot --default-character-set=utf8 < "$1"
 		echo "Xong."
+		;;
+
+	# db-install đã tự chạy patch/ rồi. Lệnh này dành cho DB nạp từ trước, hoặc
+	# DB khôi phục bằng db-import từ bản dump Windows — những bản đó chưa có vá.
+	db-patch)
+		found=0
+		for f in "$ROOT"/db/sql/patch/*.sql; do
+			[ -e "$f" ] || break
+			found=1
+			echo "  [patch] $(basename "$f")"
+			mysql_exec -T mysql -uroot --default-character-set=utf8 < "$f"
+		done
+		[ "$found" -eq 1 ] || die "Không có file nào trong db/sql/patch/"
+		echo
+		echo "Xong. Các bản vá đều idempotent, chạy lại không sao."
+		echo "Khởi động lại gameserver để nó dựng lại:  ./knrt.sh restart gameserver"
 		;;
 
 	# Bộ install/ không có hàng nào trong t_s_server_list, mà GameServer thì không

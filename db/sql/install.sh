@@ -15,7 +15,9 @@
 # ===========================================================
 set -eu
 
-SQLDIR="$(cd "$(dirname "$0")" && pwd)/install"
+BASEDIR="$(cd "$(dirname "$0")" && pwd)"
+SQLDIR="$BASEDIR/install"
+PATCHDIR="$BASEDIR/patch"
 
 MYSQL_BIN="${MYSQL_BIN:-mysql}"
 DB_HOST="${MYSQL_HOST:-127.0.0.1}"
@@ -73,6 +75,16 @@ imp 3 h_game_data       03-h_game_data.sql
 imp 4 h_game_log        04-h_game_log.sql
 imp 5 h_game_global_log 05-h_game_global_log.sql
 imp 6 nap_card          06-nap_card.sql
+
+# patch/ sửa những chỗ bộ dump gốc thiếu dữ liệu khiến GameServer không khởi động
+# được (xem phần đầu từng file). Mỗi file tự khai USE <db> và đều idempotent.
+if [ -d "$PATCHDIR" ]; then
+	for f in "$PATCHDIR"/*.sql; do
+		[ -e "$f" ] || break
+		echo "[patch] $(basename "$f")"
+		run_sql < "$f"
+	done
+fi
 
 echo
 echo "  HOÀN TẤT."

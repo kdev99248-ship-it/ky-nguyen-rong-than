@@ -13,6 +13,7 @@ db/
 │   └── my.ini      config đang dùng  ← basedir/datadir trỏ E:/knrt/knrt-server/db/mysql/
 ├── sql/
 │   ├── install/    ★ bộ cài server sạch (xem dưới)
+│   ├── patch/      ★ vá chỗ bộ dump gốc thiếu — install.sh tự chạy cuối cùng
 │   ├── install.bat   chạy cả bộ install/ theo đúng thứ tự
 │   ├── backup-2023-06-10/   snapshot dữ liệu thật ngày 10/06/2023
 │   └── optional/   không nạp tự động
@@ -59,6 +60,25 @@ Do người vận hành tạo tay để backup nhanh, không có trong code:
 `h_game.t_mail_copy`, `h_game_data.t_gacha_consume_copy`, `h_game_data.t_global_`,
 `h_game_data.t_shop_table_copy`, `h_game_data.t_shop_table_copy1`.
 Chúng vẫn còn trong DB đang chạy — chỉ không được tái tạo khi cài mới.
+
+## sql/patch/ — vá chỗ bộ dump gốc thiếu dữ liệu
+
+Bộ `install/` khớp 1:1 với DB đang chạy trên Windows, nhưng **DB đó đã chạy nhiều năm**:
+có những bảng mà code chỉ đọc đúng một lần lúc *dựng server lần đầu*, và server Windows
+đã qua bước đó từ lâu nên dữ liệu thiếu không bao giờ lộ ra. Cài mới từ số 0 thì lộ.
+
+`patch/` chứa những chỗ đó. Mỗi file tự khai `USE <db>`, đều **idempotent**.
+`db/sql/install.sh` chạy chúng ngay sau 6 file `install/`, nên `./knrt.sh db-install`
+đã bao gồm sẵn. Nạp DB bằng đường khác (`db-import`, hay DB có từ trước) thì gọi tay:
+
+```
+./knrt.sh db-patch
+./knrt.sh restart gameserver
+```
+
+| File | Vá gì |
+|---|---|
+| `01-arena-airank-32-bands.sql` | `h_game_data.t_arena_airank` chỉ có id 1..28, mà `ArenaProcessorManager.createRobot()` lặp cứng id 1..32 để sinh robot đấu trường. Thiếu id 29 → NPE → `System.exit(-1)`, GameServer lặp `exit 255`. Thêm 4 dải 29..32. |
 
 ## sql/optional/ — phải nạp tay nếu cần
 

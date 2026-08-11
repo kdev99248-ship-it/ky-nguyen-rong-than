@@ -47,6 +47,14 @@ if errorlevel 1 goto :err
 call :imp 6 nap_card          06-nap_card.sql
 if errorlevel 1 goto :err
 
+:: patch\ va nhung cho bo dump goc thieu du lieu khien GameServer khong khoi dong
+:: duoc. Moi file tu khai USE ^<db^> va deu idempotent. Xem db\README.md.
+for %%F in ("%~dp0patch\*.sql") do (
+  echo [patch] %%~nxF
+  "%MYSQL%" -u%USER% -p%PASS% --default-character-set=utf8 < "%%~fF"
+  if errorlevel 1 goto :err
+)
+
 echo.
 echo   HOAN TAT.
 echo   Kiem tra: db\mysql\bin\mysql.exe -uroot -p%PASS% -e "show databases;"
