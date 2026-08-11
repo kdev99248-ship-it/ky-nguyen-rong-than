@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css'
+          integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="./favicon.ico" sizes="32x32">
+    <link rel="icon" href="./favicon.ico" sizes="192x192">
+    <title>Phần dành cho GM - Add point cho user</title>
+</head>
+<body>
+<div class="container">
+
+    <h3>Phần này dành cho admin, hãy cẩn thận trong việc sử dụng nó</h3>
+    <form>
+        <div class="form-group">
+            <label for="serverId">Chọn server:</label>
+            <select class="form-control" id="serverId">
+                <option value="0">--</option>
+                <option th:each="item: ${servers}" th:value="${item.id}" th:utext="|${item.nameServer}|"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="playerId">ID game: </label>
+            <input type="text" class="form-control" id="playerId" aria-describedby="playerName"
+                   placeholder="Nhập ID trong game" required>
+        </div>
+        <div class="form-group">
+            <label for="expression">Nội dung quà: </label>
+            <textarea type="text" class="form-control" id="expression" aria-describedby="giftCode"
+                      placeholder="Nhập nội dung quà" required> </textarea>
+        </div>
+        <button type="button" class="btn btn-primary" id="sendGift">Gửi quà</button>
+    </form>
+</div>
+</body>
+
+<script>
+    $("#sendGift").click(function () {
+        sendGift();
+    });
+
+    function sendGift() {
+        var playerId      = $("#playerId").val();
+        var serverId        = $("#serverId").val();
+        var expression   = $("#expression").val();
+        if(playerId == null || playerId.trim() == "") {
+            alert("Vui lòng nhập id nhân vật!");
+            return;
+        }
+        if(serverId == 0) {
+            alert("Chọn server trước!");
+            return;
+        }
+        if (expression == null || expression.trim() == "") {
+            alert("Nhập quà code!");
+            return;
+        }
+        var dataCharge = {playerId : playerId, expression : expression, serverId : serverId};
+        $.ajax({
+            url: "/api/admin/package",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(dataCharge) ,
+            success: function (response) {
+                alert(response.msg);
+                window.location.href = "/admin/package";
+            },
+            error: function(jqXHR) {
+                alert("Có lỗi xảy ra: "+ jqXHR.responseJSON.msg);
+            }
+        });
+    }
+</script>
+</html>

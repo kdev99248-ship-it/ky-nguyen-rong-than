@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pika Pika - Mua gói nạp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script th:src="@{/js/ctxd.js}"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header menu -->
+    <div class="bs-example" th:fragment="header">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a th:href="@{/home}" class="navbar-brand">Pika</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse"
+                    data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a th:href="@{/index}" class="nav-item nav-link active">Home</a>
+                    <a th:href="@{/charge}" class="nav-item nav-link">Nạp thẻ</a>
+                    <a th:href="@{/buy-package}" class="nav-item nav-link">Mua gói</a>
+                    <a th:href="@{/gift-code}" class="nav-item nav-link">Gift Code</a>
+                    <a th:href="@{/webshop}" class="nav-item nav-link">WebShop</a>
+                    <a th:href="@{/lucky-draw}" class="nav-item nav-link">Vòng quay</a>
+                    <a th:href="@{/event}" class="nav-item nav-link">Sự kiện</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <div class="nav-item nav-link header-name"></div>
+                    <a th:href="@{/log-out}" class="nav-item nav-link">Thoát</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- End Header menu -->
+    <hr/>
+    <h3>Mua gói nạp vào game:</h3>
+
+    <form>
+        <div class="form-group">
+            <label for="playerName">Nhập ID vật (<b>Click vào avatar tìm ID, và ấn "Kiểm tra thông tin" bên dưới trước khi chuyển Xu vào game</b>):</label>
+            <input type="text" class="form-control" id="playerName" aria-describedby="playerName" placeholder="Nhập id ingame để nạp" required>
+        </div>
+        <div class="form-group">
+            <label for="serverId">Chọn server:</label>
+            <select class="form-control" id="serverId">
+                <option value="0">--</option>
+                <option th:each="item: ${servers}" th:value="${item.id}" th:utext="${item.nameServer}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="typePoint">Loại tiền tệ:(Lưu ý: Xu khóa chỉ sài được cho account liên kết với tài khoản hiện tại)</label>
+            <select class="form-control" id="typePoint">
+                <option value="0">Xu không khóa</option>
+                <option value="1">Xu khóa</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary" id="checkAccount">Kiểm tra thông tin</button>
+        <button type="button" class="btn btn-primary" id="getPlayerId">Lấy ID hiện tại</button>
+        <div class="form-group">
+            <label for="packageCharge">Gói nạp:</label>
+            <select class="form-control" id="packageCharge">
+                <option value="0">--</option>
+                <option th:each="item: ${packageCharges}"th:value="${item.id}" th:utext="|${item.title} - Giá tiền: ${item.price} S-Coin|"></option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary" id="buyPackage">Nạp ngay</button>
+    </form>
+
+    <hr/>
+    <h3>Lịch sử mua gói:</h3>
+    <!-- Table list account server -->
+    <table id="history-1" class="table table-striped table-bordered"
+           style="width: 100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên nhân vật</th>
+            <th>Server</th>
+            <th>Gói</th>
+            <th>Giá</th>
+            <th>Thời gian</th>
+        </tr>
+        </thead>
+        <tbody id="list-charge">
+        <tr>
+            <td>1</td>
+            <td>KillVN</td>
+            <td>Server 1</td>
+            <td>Gói 1</td>
+            <td>10000</td>
+            <td>2011/04/25</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+    <meta charset="utf-8">
+    <title>Pika Pika</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Pika Pika - Game Thẻ Bài Pika Pika" />
+	<meta property="og:image" content="hanglong/images/thumb2.jpg"/>
+    <meta name="description" content="Pika Pika là tựa game dựa theo nguyên tác từ bộ truyện Pika Pika nổi tiếng. Lối chơi hấp dẫn và đồ họa chân thực từng chiêu thức - Tham gia minigame nhận hơn 20 Code Vip" />
+    <!-- <link href="hanglong/images/mn-logo.png" rel="shortcut icon" type="image/png"> -->
+	<link rel="icon" href="/hanglong/images/favicon2.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="/hanglong/images/favicon2.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="hanglong/style/style.css">
+    <meta name="author" content="Pika Pika">
+    <meta property="og:url" content="index-2.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Pika Pika - Game Thẻ Bài Pika Pika" />
+    <meta property="og:description" content="Miễn Phí VIP 12 + 5.000.000 Vàng" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+</head>
+<body class="h-100">
+    <div id="sidebar">
+        <ul>
+            <li>
+                <a th:href="@{/home}" target="_self" class="button button-img button-home">Trang chủ</a>
+            </li>
+            <li>
+                <a th:href="@{/login}" target="_blank" class="button button-img button-pay">
+                    Nạp
+                    Thẻ
+                </a>
+            </li>
+			            <li>
+                <a th:href="@{/login}" target="_self"
+                   class="button button-img button-book">Tài khoản</a>
+            </li>
+			            <li>
+                <a href="https://www.facebook.com/nhokkokhoc" target="_blank"
+                   class="button button-img button-facebook">Fanpage</a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/groups/PrivateGameShineIOT" target="_blank"
+                   class="button button-img button-group">Group</a>
+            </li>
+        </ul>
+        <a href="#top" class="totop"><img src="hanglong/images/top-button.png" alt="totop"></a>
+    </div>
+    <div class="buttons">
+        <a href="https://drive.google.com/file/d/1sFgFcuKLd8XtMHGk5aaU8UJEz6Bk6l7h/view?usp=sharing" onclick="showAndroid()" target="_blank" class="btn btn-android"></a>
+        <a href="https://drive.google.com/file/d/1R1625XyIsDQDl-lROEqB6CfnErdjcT4E/view?usp=sharing" target="_blank" class="btn btn-ios"></a>
+    </div>
+    <div class="body"></div>
+    <div class="bottom_nav">
+        <div><a href="#">Trang chủ</a></div>
+		        <div><a th:href="@{/login}">Tài khoản</a></div>
+		        <div><a th:href="@{/login}" rel="nofollow" class="download_xfhx">Nhận Code</a></div>
+    </div>
+	<div id="thongbao-cms">
+		<div class="thongbao-cell">
+			<div class="box">
+			<img src="hanglong/images/popup-defaul.png" class="bg"/>
+			<a href="javascript:;" class="btn-close"><img src="hanglong/images/close.png" /></a>
+				<div class="msg">Chào mừng bạn đến với Pika Pika<br>Tải game lúc 10h 19/01/2022</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="hanglong/js/jquery1.11.1.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#thongbao-cms .thongbao-cell .box a.btn-close").click(function (e) {
+				e.preventDefault();
+				$("#thongbao-cms").removeClass("active");
+			})
+		});
+		function showiOS() {
+			$("#thongbao-cms .thongbao-cell .box .msg").html('Chúc mừng bạn đã Tải Game <br>thành công về máy hãy chờ trong <br>giây lát.');
+			$("#thongbao-cms").addClass("active");
+		}
+		function showAndroid() {
+			$("#thongbao-cms .thongbao-cell .box .msg").html('Chúc mừng bạn đã Tải Game <br>thành công về máy hãy chờ trong <br>giây lát.');
+			$("#thongbao-cms").addClass("active");
+		}
+	</script>
+	
+</body>
+</html>

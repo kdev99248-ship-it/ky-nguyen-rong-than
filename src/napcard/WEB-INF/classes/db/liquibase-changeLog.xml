@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <include file="db/changelog/20190323134000_add_entity_user.xml"/>
+    <include file="db/changelog/20190323135000_add_entity_role.xml"/>
+    <include file="db/changelog/20190323140000_add_entity_token.xml"/>
+    <include file="db/changelog/20190524115500_add_entity_wallet_user.xml"/>
+    <include file="db/changelog/20190525000000_add_entity_point_history.xml"/>
+    <include file="db/changelog/20190526000000_add_entity_app_properties.xml"/>
+    <include file="db/changelog/20190526113000_add_entity_server.xml"/>
+    <include file="db/changelog/20191109112000_add_entity_gift_code.xml"/>
+    <include file="db/changelog/20191109112000_add_entity_gift_code_log.xml"/>
+    <include file="db/changelog/20200806161500_add_entity_package_charge.xml"/>
+    <include file="db/changelog/20200806161500_add_entity_package_charge_history.xml"/>
+    <include file="db/changelog/20201015223500_add_entity_notification.xml"/>
+    <include file="db/changelog/20190526113500_add_entity_transaction_log.xml"/>
+    <include file="db/changelog/20190323134000_add_entity_version.xml"/>
+    <include file="db/changelog/20190323134000_add_ip_locked.xml"/>
+    <include file="db/changelog/20210407224000_add_entity_prize.xml"/>
+    <include file="db/changelog/20210407224000_add_entity_lucky_draw_his.xml"/>
+    <include file="db/changelog/20220306131500_add_entity_webshop.xml"/>
+    <include file="db/changelog/20220306131500_add_entity_webshop_log.xml"/>
+    <include file="db/changelog/20191109112000_add_entity_gift_daily_log.xml"/>
+    <include file="db/changelog/20220322225000_add_entity_activity.xml"/>
+    <include file="db/changelog/20220322225000_add_entity_activity_item.xml"/>
+    <include file="db/changelog/20220322225000_add_entity_activity_progress.xml"/>
+</databaseChangeLog>

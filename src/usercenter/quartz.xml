@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="accountDBTrigger"/>
+				<ref bean="accountReleaseTrigger"/>
+				<ref bean="serverUpdateTrigger"/>
+				<ref bean="serverConfigureUpdateTrigger"/>
+				<ref bean="serverZoneUpdateTrigger"/>
+				<ref bean="serverLoginWhiteUpdateTrigger"/>
+				<ref bean="serverSwitchUpdateTrigger"/>
+				<ref bean="channelSwitchUpdateTrigger"/>
+				<ref bean="serverWhiteIpDBTrigger"/>
+				<ref bean="accessTokenTrigger"/>
+				<ref bean="roleDBTrigger"/>
+				<ref bean="banDBTrigger"/>
+				<ref bean="gagDBTrigger"/>
+			</list>
+		</property>
+		<property name="configLocation" value="classpath:quartz.properties"/>
+	</bean>
+	
+	<!-- 帐号数据存储 -->
+	<bean id="accountDBDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="accountProvider"/>
+		<property name="targetMethod" value="flush"/>
+	</bean>
+	
+	<bean id="accountDBTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="accountDBDetail"/>
+		<property name="startDelay" value="30000"/>
+		<property name="repeatInterval" value="30000"/>
+	</bean>
+	
+	<!-- 服务器白名单 -->
+	<bean id="serverWhiteIpDBDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ServerWhiteIpManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	<bean id="serverWhiteIpDBTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverWhiteIpDBDetail"/>
+		<property name="startDelay" value="30000"/>
+		<property name="repeatInterval" value="30000"/>
+	</bean>
+	
+	<!-- 帐号缓存清理 -->
+	<bean id="accountReleaseDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="accountProvider"/>
+		<property name="targetMethod" value="releaseUnused"/>
+	</bean>
+	
+	<bean id="accountReleaseTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="accountReleaseDetail"/>
+		<property name="startDelay" value="600000"/>
+		<property name="repeatInterval" value="600000"/>
+	</bean>
+	
+	
+	<!-- 服务器列表更新 -->
+	<bean id="serverUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serverInfoManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	<bean id="serverUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<bean id="serverConfigureUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serverConfigureManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	<bean id="serverConfigureUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverConfigureUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<bean id="serverZoneUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serverZoneManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	
+	<bean id="serverZoneUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverZoneUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<bean id="serverLoginWhiteUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serverLoginWhiteManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	
+	<bean id="serverLoginWhiteUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverLoginWhiteUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<bean id="serverSwitchUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serverSwitchManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	
+	<bean id="serverSwitchUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serverSwitchUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<bean id="channelSwitchUpdateDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="channelSwitchManager"/>
+		<property name="targetMethod" value="refresh"/>
+	</bean>
+	
+	<bean id="channelSwitchUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="channelSwitchUpdateDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- 验证超时检测 -->
+	<bean id="accessTokenDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="accessTokenManager"/>
+		<property name="targetMethod" value="releaseTimeout"/>
+	</bean>
+	
+	<bean id="accessTokenTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="accessTokenDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- 角色数据存储 -->
+	<bean id="roleDBDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="roleInfoUpdateQueue"/>
+		<property name="targetMethod" value="flush"/>
+	</bean>
+	
+	<bean id="roleDBTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="roleDBDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- 帐号冻结存储 -->
+	<bean id="banDBDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="banManager"/>
+		<property name="targetMethod" value="flush"/>
+	</bean>
+	
+	<bean id="banDBTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="banDBDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+	<!-- 禁言数据存储 -->
+	<bean id="gagDBDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="gagManager"/>
+		<property name="targetMethod" value="flush"/>
+	</bean>
+	
+	<bean id="gagDBTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="gagDBDetail"/>
+		<property name="startDelay" value="300000"/>
+		<property name="repeatInterval" value="300000"/>
+	</bean>
+	
+</beans>

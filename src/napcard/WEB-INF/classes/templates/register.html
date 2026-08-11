@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pika Pika - Đăng ký</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link th:href="@{/css/style-login.css}" rel="stylesheet"/>
+    <script th:src="@{/js/ctxd.js}"></script>
+</head>
+</body>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <div class="fadeIn first">
+            <img th:src="@{/images/logo.png}" id="icon" alt="User Icon"/>
+        </div>
+        <h3>Đăng ký tài khoản</h3>
+        <hr/>
+        <div th:if="${errorMessage}" class="alert alert-warning" role="alert" th:text="${errorMessage}"></div>
+
+        <!-- Login Form -->
+        <form th:object="${userRequestDto}">
+            <input type="text" class="fadeIn second" name="username" th:field="*{username}" placeholder="Nhập tài khoản"/>
+            <input type="password" class="fadeIn third" name="password" th:field="*{password}" placeholder="Nhập mật khẩu"/>
+            <input type="text" class="fadeIn second" th:field="*{email}" placeholder="Nhập email"/>
+            <input type="button" class="fadeIn fourth" value="Đăng ký" id="register"/>
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" th:href="@{/forgot-password}">Quên mật khẩu?</a> | <a class="underlineHover" th:href="@{/login}">Có tài khoản? Đăng nhập</a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

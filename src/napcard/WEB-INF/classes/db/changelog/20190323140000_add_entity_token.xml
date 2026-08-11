@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190323140000-1" author="dokd">
+        <createTable tableName="token">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="exp_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="int(11)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,27 @@
+# Repo này soạn trên Windows (core.autocrlf=true) nhưng chạy trên Linux/Docker.
+# Hiện các blob .sh đang là LF sạch — file này để GIỮ nguyên như vậy: với
+# autocrlf=true, một lần `git checkout` trên Windows là đủ để biến chúng thành CRLF
+# trong working tree, và chỉ cần một lần commit lỡ tay là clone sang Linux dính
+# `$'\r': command not found` ngay dòng đầu — hoặc tệ hơn, java nhận class name
+# "Main\r" rồi báo ClassNotFoundException.
+#
+# Chỉ ép đúng những đuôi cần thiết. CỐ Ý không dùng `* text=auto`: repo có sẵn hàng
+# nghìn file .xml/.java/.json của game, renormalize hết vừa tạo diff khổng lồ vừa
+# rủi ro với mấy file đang là GBK.
+*.sh    text eol=lf
+*.cnf   text eol=lf
+Dockerfile text eol=lf
+
+# Ngược lại, mấy file này chỉ chạy trên Windows -> giữ CRLF.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Đừng đụng vào nhị phân.
+*.jar   binary
+*.exe   binary
+*.dll   binary
+*.MYD   binary
+*.MYI   binary
+*.frm   binary
+*.apk   binary
+*.ipa   binary

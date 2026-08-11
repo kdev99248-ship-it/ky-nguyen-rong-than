@@ -1,0 +1,1032 @@
+-25;Pha Lê Tử Lan
+-24;Pha Lê Cầu Vồng
+-23;Xu Đạo Quán
+-21;EXP VIP
+-20;KC nạp 
+-19;Điểm k.năng
+-18;Năng lượng vô hạn
+-17;Xu PK
+-16;Danh vọng chính
+-15;Sôi nổi mỗi ngày 
+-13;C.Hiến Quân Đoàn 
+-12;Mảnh Dream 
+-11;Đá Chìa Khóa 
+-10;Ngọc Phóng Thích 
+-9;Điểm Hợp Kích 
+-8;Gen Saiyan
+-7;EXP đội 
+-6;EXP Chiến Binh
+-5;Xu huy hiệu 
+-4;Tinh lực
+-3;Thể Lực 
+-2;KC
+-1;Vàng
+10000;Fan của cậu ấy (Gói khác)
+10001;Khung Halloween
+10002;Avatar 
+10003;Thời trang 
+10004;Fan của cậu ấy (Gói T.bị)
+10005;Fan của cậu ấy (Gói pháp khí)
+10006;Fan của cậu ấy (Gói chiến binh)
+10007;Khung Valentine
+10008;Khung KC 
+10009;Khung Ngọc Rồng
+10010;Khung Đại Gia
+10014;Trái EXP (I) 
+10015;Trái EXP (II)
+10016;Trái EXP (III) 
+10017;Trái EXP (IV)
+10018;Chuỗi Ngọc Trai
+10019;Bình Cổ
+10020;Tượng Đá Cổ
+10021;Ngọc HP Lv1
+10022;Ngọc HP Lv2
+10023;Ngọc HP Lv3
+10024;Ngọc HP Lv4
+10025;Ngọc HP Lv5
+10026;Ngọc HP Lv6
+10027;Ngọc HP Lv7
+10028;Ngọc HP Lv8
+10029;Ngọc HP Lv9
+10030;Ngọc HP Lv10 
+10031;Ngọc Công Lv1
+10032;Ngọc Công Lv2
+10033;Ngọc Công Lv3
+10034;Ngọc Công Lv4
+10035;Ngọc Công Lv5
+10036;Ngọc Công Lv6
+10037;Ngọc Công Lv7
+10038;Ngọc Công Lv8
+10039;Ngọc Công Lv9
+10040;Ngọc Công Lv10 
+10041;Ngọc Thủ V.Lý Lv1
+10042;Ngọc Thủ V.Lý Lv2
+10043;Ngọc Thủ V.Lý Lv3
+10044;Ngọc Thủ V.Lý Lv4
+10045;Ngọc Thủ V.Lý Lv5
+10046;Ngọc Thủ V.Lý Lv6
+10047;Ngọc Thủ V.Lý Lv7
+10048;Ngọc Thủ V.Lý Lv8
+10049;Ngọc Thủ V.Lý Lv9
+10050;Ngọc Thủ V.Lý Lv10 
+10051;Ngọc Tâm Linh Lv1
+10052;Ngọc Tâm Linh Lv2
+10053;Ngọc Tâm Linh Lv3
+10054;Ngọc Tâm Linh Lv4
+10055;Ngọc Tâm Linh Lv5
+10056;Ngọc Tâm Linh Lv6
+10057;Ngọc Tâm Linh Lv7
+10058;Ngọc Tâm Linh Lv8
+10059;Ngọc Tâm Linh Lv9
+10060;Ngọc Tâm Linh Lv10 
+10061;Bánh Thể Lực (IV)
+10062;Thuốc Tinh Lực (IV)
+10063;Mảnh Vạn Năng
+10064;Máy Mở Lỗ
+10066;Lum Berry
+10067;Trái Chesto
+10068;Trái Pecha 
+10069;Trái Rawst 
+10070;Trái Oran
+10071;Trái Cheri 
+10072;Trái Aspear
+10073;Trái Mago
+10074;Trái Leppa 
+10075;Aguav Berry
+10076;Trái Lapapa
+10077;Trái Persim
+10078;Trái Sitrus
+10079;Trái Kelpsy
+10080;Trái Figy
+10081;Trái Wepear
+10082;Trái Pinap 
+10083;Trái Kiwi
+10084;Thẻ Miễn Chiến 
+10085;Kèn Chiến Binh 
+10086;Gói Báu Vật Cam
+10087;Thẻ Khiêu Chiến
+10088;Rương Đá Đột Phá 
+10089;Rương Mảnh Broly 
+10090;Rương Đá Đột Phá Quân Đoàn 
+10091;Rương Mảnh Tư Chất 13(不用） 
+10092;Túi Trái Cây (1) 
+10093;Túi Trái Cây (2) 
+10094;Túi Trái Cây (3) 
+10095;Rương Mảnh Beerus
+10096;Rương Mảnh Black Goku
+10097;Bánh Thể Lực (III) 
+10098;Thẻ Làm Mới
+10099;Túi Ngọc Lv1 
+10100;Túi Ngọc Lv2 
+10101;Túi Ngọc Lv3 
+10102;Gói Ngọc Ngẫu Nhiên
+10103;Vương Miện Cổ
+10104;Nấm Lớn
+10105;Rương Trang Bị III 
+10106;Túi Trái Cây Màu Sắc 
+10107;Rương Trang Bị II
+10108;Năng Lượng Tăng
+10109;Pha Lê Linh Văn
+10110;5 Vạn Vàng 
+10111;Rương Trang Bị I 
+10112;Túi KC VIP (Nhỏ) 
+10113;Vương Miện Vàng
+10114;Đống vàng nhỏ
+10115;Đống vàng lớn
+10116;Siêu Quà VIP0
+10117;Siêu Quà VIP1
+10118;Siêu Quà VIP2
+10119;Siêu Quà VIP3
+10120;Siêu Quà VIP4
+10121;Siêu Quà VIP5
+10122;Siêu Quà VIP6
+10123;Siêu Quà VIP7
+10124;Siêu Quà VIP8
+10125;Siêu Quà VIP9
+10126;Siêu Quà VIP10 
+10127;Siêu Quà VIP11 
+10128;Siêu Quà VIP12 
+10129;Siêu Quà VIP13 
+10130;Siêu Quà VIP14 
+10131;Siêu Quà VIP15 
+10132;Thẻ Săn Vạn Năng 
+10133;Rương Pha Lê Cam II
+10134;Rương Pha Lê Cam I 
+10135;Gói Mảnh Tư Chất 12
+10136;Rương Mảnh Vạn Năng
+10137;Pha Lê Cam 
+10138;Pha Lê Tim 
+10139;Pha Lê Đỏ
+10140;Thuốc Tinh Lực (III) 
+10141;Thuốc Tinh Lực (II)
+10142;Thuốc Tinh Lực (I) 
+10143;Bánh Thể Lực(II) 
+10144;Bánh Thể Lực(I)
+10145;Trái EXP (V) 
+10146;Rương Bộ Tím 
+10147;Túi Ngọc Lv4 
+10148;Rương trang bị (Tím) 
+10149;Quà Nạp Đầu Khủng
+10150;Quà Nạp Đầu Khủng (Đặc biệt) 
+10151;Voucher 98 
+10152;Voucher 288
+10153;Voucher 688
+10154;Mảnh Bùa 
+10155;Tinh Hoa Bùa 
+10156;Rương Bùa (Test dùng)
+10157;Túi Ngọc Lv5 
+10158;Rương Mảnh Tư Chất 20
+10159;Rương Ngọc Lv6 
+10160;Quà Nạp Đầu Khủng (Cao cấp)
+10161;Rương Mảnh Tư Chất 16
+10162;Rương Mảnh Tư Chất 18
+10163;Rương Mảnh Tư Chất 20
+10164;Rương Mảnh Tư Chất 22
+10165;Rương Mảnh Tư Chất 26
+10166;Rương Mảnh Tư Chất 14
+101666;Rương gói quà 100k
+10167;Hộp ngẫu nhiên kho báu dành riêng cho đối tác MMR
+10168;hộp ngẫu nhiên kho báu dành riêng cho đối tác MR【
+10169;Hộp ngẫu nhiên đỏ
+10170;Hộp ngẫu nhiên cam 
+10171;MMR【Thần】Hộp chọn đồng hành ngẫu nhiên 
+10172;MR【Flash】Hộp chọn đồng hành ngẫu nhiên 
+10173;Trở thành Boss 
+10174;Trở thành Boss lớn 
+10175;Hộp ngẫu nhiên dùng thử anh hùng 
+10176;Vòng tay thần
+10177;Thẻ trải nghiệm SVIP (nhỏ) 
+10178;Thẻ trải nghiệm SVIP (trung bình)
+10179;Thẻ trải nghiệm SVIP (lớn) 
+10200;Gói quà tặng tính phí đầu tiên 
+10201;GM1thẻ ủy quyền
+10202;GM2thẻ ủy quyền
+10203;GM3thẻ ủy quyền
+10204;GM4thẻ ủy quyền
+10205;GM5thẻ ủy quyền
+10206;GM6thẻ ủy quyền
+10207;MR Thần Rương Bí ẩn
+10208;MMR Thần Rương Bí ẩn 
+10209;Gói giá trị SVIP1
+10210;Gói giá trị SVIP2
+10211;Gói giá trị SVIP3
+10212;Gói giá trị SVIP4
+10213;Gói giá trị SVIP5
+10214;Gói giá trị SVIP6
+10215;Gói giá trị SVIP7
+10216;Gói giá trị SVIP8
+10217;Gói giá trị SVIP9
+10218;Gói giá trị SVIP10 
+11001;Mảnh Đá Adamant 1
+11002;Mảnh Đá Adamant 2
+11003;Mảnh Đá Adamant 3
+11004;Mảnh Đá Adamant 4
+11005;Mảnh Đá Yêu Tinh 1 
+11006;Mảnh Đá Yêu Tinh 2 
+11007;Mảnh Đá Yêu Tinh 3 
+11008;Mảnh Đá Yêu Tinh 4 
+11009;Mảnh Đá Điện 1 
+11010;Mảnh Đá Điện 2 
+11011;Mảnh Đá Điện 3 
+11012;Mảnh Đá Điện 4 
+11013;Mảnh Đá Lửa 1
+11014;Mảnh Đá Lửa 2
+11015;Mảnh Đá Lửa 3
+11016;Mảnh Đá Lửa 4
+11017;Mảnh Đá Ma 1 
+11018;Mảnh Đá Ma 2 
+11019;Mảnh Đá Ma 3 
+11020;Mảnh Đá Ma 4 
+11021;Mảnh Tấm Giọt Nước 1 
+11022;Mảnh Tấm Giọt Nước 2 
+11023;Mảnh Tấm Giọt Nước 3 
+11024;Mảnh Tấm Giọt Nước 4 
+11025;Mảnh Tấm Yêu Tinh 1
+11026;Mảnh Tấm Yêu Tinh 2
+11027;Mảnh Tấm Yêu Tinh 3
+11028;Mảnh Tấm Yêu Tinh 4
+11029;Mảnh Tấm Lôi Điện 1
+11030;Mảnh Tấm Lôi Điện 2
+11031;Mảnh Tấm Lôi Điện 3
+11032;Mảnh Tấm Lôi Điện 4
+11033;Mảnh Tấm Trụ Băng 1
+11034;Mảnh Tấm Trụ Băng 2
+11035;Mảnh Tấm Trụ Băng 3
+11036;Mảnh Tấm Trụ Băng 4
+11037;Mảnh Tấm U Linh 1
+11038;Mảnh Tấm U Linh 2
+11039;Mảnh Tấm U Linh 3
+11040;Mảnh Tấm U Linh 4
+11041;Mảnh Đá Giao Đấu 1 
+11042;Mảnh Đá Giao Đấu 2 
+11043;Mảnh Đá Giao Đấu 3 
+11044;Mảnh Đá Giao Đấu 4 
+11045;Mảnh Đá Giao Đấu 5 
+11046;Mảnh Đá Kịch Độc 1 
+11047;Mảnh Đá Kịch Độc 2 
+11048;Mảnh Đá Kịch Độc 3 
+11049;Mảnh Đá Kịch Độc 4 
+11050;Mảnh Đá Kịch Độc 5 
+11051;Mảnh Đá Sinh Mệnh 1
+11052;Mảnh Đá Sinh Mệnh 2
+11053;Mảnh Đá Sinh Mệnh 3
+11054;Mảnh Đá Sinh Mệnh 4
+11055;Mảnh Đá Sinh Mệnh 5
+11056;Mảnh Đá Trắng 1
+11057;Mảnh Đá Trắng 2
+11058;Mảnh Đá Trắng 3
+11059;Mảnh Đá Trắng 4
+11060;Mảnh Đá Trắng 5
+11061;Mảnh Đá Trái Đất 1 
+11062;Mảnh Đá Trái Đất 2 
+11063;Mảnh Đá Trái Đất 3 
+11064;Mảnh Đá Trái Đất 4 
+11065;Mảnh Đá Trái Đất 5 
+11066;Mảnh Tấm Fist 1
+11067;Mảnh Tấm Fist 2
+11068;Mảnh Tấm Fist 3
+11069;Mảnh Tấm Fist 4
+11070;Mảnh Tấm Fist 5
+11071;Mảnh Tấm Kịch Độc 1
+11072;Mảnh Tấm Kịch Độc 2
+11073;Mảnh Tấm Kịch Độc 3
+11074;Mảnh Tấm Kịch Độc 4
+11075;Mảnh Tấm Kịch Độc 5
+11076;Mảnh Tấm Bầu Trời 1
+11077;Mảnh Tấm Bầu Trời 2
+11078;Mảnh Tấm Bầu Trời 3
+11079;Mảnh Tấm Bầu Trời 4
+11080;Mảnh Tấm Bầu Trời 5
+11081;Mảnh Tấm Sâu Ngọc 1
+11082;Mảnh Tấm Sâu Ngọc 2
+11083;Mảnh Tấm Sâu Ngọc 3
+11084;Mảnh Tấm Sâu Ngọc 4
+11085;Mảnh Tấm Sâu Ngọc 5
+11086;Mảnh Tấm Trái Đất 1
+11087;Mảnh Tấm Trái Đất 2
+11088;Mảnh Tấm Trái Đất 3
+11089;Mảnh Tấm Trái Đất 4
+11090;Mảnh Tấm Trái Đất 5
+11091;Mảnh Đá Cỏ 1 
+11092;Mảnh Đá Cỏ 2 
+11093;Mảnh Đá Cỏ 3 
+11094;Mảnh Đá Cỏ 4 
+11095;Mảnh Đá Cỏ 5 
+11096;Mảnh Đá Cỏ 6 
+11097;Mảnh Đá Ảo Tưởng 1 
+11098;Mảnh Đá Ảo Tưởng 2 
+11099;Mảnh Đá Ảo Tưởng 3 
+11100;Mảnh Đá Ảo Tưởng 4 
+11101;Mảnh Đá Ảo Tưởng 5 
+11102;Mảnh Đá Ảo Tưởng 6 
+11103;Mảnh Đá Thần Kỳ 1
+11104;Mảnh Đá Thần Kỳ 2
+11105;Mảnh Đá Thần Kỳ 3
+11106;Mảnh Đá Thần Kỳ 4
+11107;Mảnh Đá Thần Kỳ 5
+11108;Mảnh Đá Thần Kỳ 6
+11109;Mảnh Đá Blue 1 
+11110;Mảnh Đá Blue 2 
+11111;Mảnh Đá Blue 3 
+11112;Mảnh Đá Blue 4 
+11113;Mảnh Đá Blue 5 
+11114;Mảnh Đá Blue 6 
+11115;Mảnh Đá Đỏ 1 
+11116;Mảnh Đá Đỏ 2 
+11117;Mảnh Đá Đỏ 3 
+11118;Mảnh Đá Đỏ 4 
+11119;Mảnh Đá Đỏ 5 
+11120;Mảnh Đá Đỏ 6 
+11121;Mảnh Đá Magma 1
+11122;Mảnh Đá Magma 2
+11123;Mảnh Đá Magma 3
+11124;Mảnh Đá Magma 4
+11125;Mảnh Đá Magma 5
+11126;Mảnh Đá Magma 6
+11127;Mảnh Đá Thần 1 
+11128;Mảnh Đá Thần 2 
+11129;Mảnh Đá Thần 3 
+11130;Mảnh Đá Thần 4 
+11131;Mảnh Đá Thần 5 
+11132;Mảnh Đá Thần 6 
+11133;Mảnh Tấm Nham Thạch 1
+11134;Mảnh Tấm Nham Thạch 2
+11135;Mảnh Tấm Nham Thạch 3
+11136;Mảnh Tấm Nham Thạch 4
+11137;Mảnh Tấm Nham Thạch 5
+11138;Mảnh Tấm Nham Thạch 6
+11139;Mảnh Tấm Yêu Quái 1
+11140;Mảnh Tấm Yêu Quái 2
+11141;Mảnh Tấm Yêu Quái 3
+11142;Mảnh Tấm Yêu Quái 4
+11143;Mảnh Tấm Yêu Quái 5
+11144;Mảnh Tấm Yêu Quái 6
+11145;Mảnh Tấm Draco 1 
+11146;Mảnh Tấm Draco 2 
+11147;Mảnh Tấm Draco 3 
+11148;Mảnh Tấm Draco 4 
+11149;Mảnh Tấm Draco 5 
+11150;Mảnh Tấm Draco 6 
+11151;Mảnh Tấm Ác Độc 1
+11152;Mảnh Tấm Ác Độc 2
+11153;Mảnh Tấm Ác Độc 3
+11154;Mảnh Tấm Ác Độc 4
+11155;Mảnh Tấm Ác Độc 5
+11156;Mảnh Tấm Ác Độc 6
+11157;Mảnh Tấm Sắt Đá 1
+11158;Mảnh Tấm Sắt Đá 2
+11159;Mảnh Tấm Sắt Đá 3
+11160;Mảnh Tấm Sắt Đá 4
+11161;Mảnh Tấm Sắt Đá 5
+11162;Mảnh Tấm Sắt Đá 6
+11163;Mảnh Đá Mặt Trời 1 
+11164;Mảnh Đá Mặt Trời 2 
+11165;Mảnh Đá Mặt Trời 3 
+11166;Mảnh Đá Mặt Trời 4 
+11167;Mảnh Đá Mặt Trời 5 
+11168;Mảnh Đá Mặt Trời 6 
+11170;Mảnh Đá Trăng 1
+11171;Mảnh Đá Trăng 2
+11172;Mảnh Đá Trăng 3
+11173;Mảnh Đá Trăng 4
+11174;Mảnh Đá Trăng 5
+11175;Mảnh Đá Trăng 6
+11177;Mảnh Đá Lửa Rực 1
+11178;Mảnh Đá Lửa Rực 2
+11179;Mảnh Đá Lửa Rực 3
+11180;Mảnh Đá Lửa Rực 4
+11181;Mảnh Đá Lửa Rực 5
+11182;Mảnh Đá Lửa Rực 6
+11184;Mảnh Đá Sấm Chớp 1 
+11185;Mảnh Đá Sấm Chớp 2 
+11186;Mảnh Đá Sấm Chớp 3 
+11187;Mảnh Đá Sấm Chớp 4 
+11188;Mảnh Đá Sấm Chớp 5 
+11189;Mảnh Đá Sấm Chớp 6 
+11191;Mảnh Đá Sóng Biển 1
+11192;Mảnh Đá Sóng Biển 2
+11193;Mảnh Đá Sóng Biển 3
+11194;Mảnh Đá Sóng Biển 4
+11195;Mảnh Đá Sóng Biển 5
+11196;Mảnh Đá Sóng Biển 6
+11198;Mảnh Đá Hình Cỏ 1
+11199;Mảnh Đá Hình Cỏ 2
+11200;Mảnh Đá Hình Cỏ 3
+11201;Mảnh Đá Hình Cỏ 4
+11202;Mảnh Đá Hình Cỏ 5
+11203;Mảnh Đá Hình Cỏ 6
+11205;Mảnh Ấn Mặt Trời 1 
+11206;Mảnh Ấn Mặt Trời 2 
+11207;Mảnh Ấn Mặt Trời 3 
+11208;Mảnh Ấn Mặt Trời 4 
+11209;Mảnh Ấn Mặt Trời 5 
+11210;Mảnh Ấn Mặt Trời 6 
+11212;Mảnh Ấn Mặt Trăng 1
+11213;Mảnh Ấn Mặt Trăng 2
+11214;Mảnh Ấn Mặt Trăng 3
+11215;Mảnh Ấn Mặt Trăng 4
+11216;Mảnh Ấn Mặt Trăng 5
+11217;Mảnh Ấn Mặt Trăng 6
+11219;Mảnh Ấn Lửa Rực 1
+11220;Mảnh Ấn Lửa Rực 2
+11221;Mảnh Ấn Lửa Rực 3
+11222;Mảnh Ấn Lửa Rực 4
+11223;Mảnh Ấn Lửa Rực 5
+11224;Mảnh Ấn Lửa Rực 6
+11226;Mảnh Ấn Sấm Chớp 1 
+11227;Mảnh Ấn Sấm Chớp 2 
+11228;Mảnh Ấn Sấm Chớp 3 
+11229;Mảnh Ấn Sấm Chớp 4 
+11230;Mảnh Ấn Sấm Chớp 5 
+11231;Mảnh Ấn Sấm Chớp 6 
+11233;Mảnh Ấn Sóng Biển 1
+11234;Mảnh Ấn Sóng Biển 2
+11235;Mảnh Ấn Sóng Biển 3
+11236;Mảnh Ấn Sóng Biển 4
+11237;Mảnh Ấn Sóng Biển 5
+11238;Mảnh Ấn Sóng Biển 6
+11240;Mảnh Ấn Lá Cỏ 1
+11241;Mảnh Ấn Lá Cỏ 2
+11242;Mảnh Ấn Lá Cỏ 3
+11243;Mảnh Ấn Lá Cỏ 4
+11244;Mảnh Ấn Lá Cỏ 5
+11245;Mảnh Ấn Lá Cỏ 6
+11247;Mảnh Ruby 1
+11248;Mảnh Ruby 2
+11249;Mảnh Ruby 3
+11250;Mảnh Sapphire 1
+11251;Mảnh Sapphire 2
+11252;Mảnh Sapphire 3
+11253;Mảnh Amber 1 
+11254;Mảnh Amber 2 
+11255;Mảnh Amber 3 
+11256;Mảnh Emerald 1 
+11257;Mảnh Emerald 2 
+11258;Mảnh Emerald 3 
+11259;Mảnh Onyx 1
+11260;Mảnh Onyx 2
+11261;Mảnh Onyx 3
+11262;Mảnh Tấm Ruby 1
+11263;Mảnh Tấm Ruby 2
+11264;Mảnh Tấm Ruby 3
+11265;Mảnh Tấm Sapphire 1
+11266;Mảnh Tấm Sapphire 2
+11267;Mảnh Tấm Sapphire 3
+11268;Mảnh Tấm Amber 1 
+11269;Mảnh Tấm Amber 2 
+11270;Mảnh Tấm Amber 3 
+11271;Mảnh Tấm Emerald 1 
+11272;Mảnh Tấm Emerald 2 
+11273;Mảnh Tấm Emerald 3 
+11274;Mảnh Tấm Onyx 1
+11275;Mảnh Tấm Onyx 2
+11276;Mảnh Tấm Onyx 3
+12001;Mảnh vỡ Black Goku 
+12002;Mảnh vỡ Blue Goku
+12003;Mảnh vỡ Broly
+12004;Mảnh Gogeta
+12005;Mảnh vỡ Whis 
+12006;Mảnh Beerus
+12007;Mảnh vỡ Ultra Blue Vegeta
+12008;Mảnh Goku SS4
+12009;Mảnh Super Saiyan Goku 
+12010;Mảnh Super Saiyan Vegeta 
+12011;Mảnh Vegeto
+12012;Mảnh Hit 
+12013;Mảnh Gohan 
+12014;Mảnh Bardock 
+12015;Mảnh Son Gohan 
+12016;Mảnh Quỷ hóa Vegeta
+12017;Mảnh Goku
+12018;Mảnh Gotenks 
+12019;Mảnh Số 18 
+12020;Mảnh Số 17 
+12021;Mảnh Vegeta
+12022;Mảnh Majin Buu 
+12023;Mảnh Zamasu
+12024;Mảnh Cell
+12025;Mảnh Piccolo 
+12026;Mảnh Lão giới vương thần 
+12027;Mảnh Cooler
+12028;Mảnh Janemba 
+12029;Mảnh Số 20 
+12030;Mảnh Son Goten 
+12031;Mảnh Frieza
+12032;Mảnh Số 16 
+12033;Mảnh Pikkon
+12034;Mảnh Dabura
+12035;Mảnh Cabba 
+12036;Mảnh Caulifla
+12037;Mảnh Kale
+12038;Mảnh Quy lão Kamê
+12039;Mảnh Yamcha
+12040;Mảnh Krillin 
+12041;Mảnh Chiaotzu
+12042;Mảnh Tenshinhan
+12043;Mảnh Dende 
+12044;Mảnh Bulma 
+12045;Mảnh Satan 
+12046;Mảnh Radditsu
+12047;Mảnh Nappa 
+12048;Mảnh giới vương thần 
+12049;Mảnh Captain Ginyu 
+12050;Mảnh Trunks
+12051;Mảnh Goku nhỏ
+12100;Thần Mảnh bí ẩn
+12101;Thần·Mảnh Black Goku 
+12102;Thần·Mảnh Blue Goku
+12103;Thần·Mảnh Broly
+12104;Thần·Mảnh Gogeta 
+12105;Thần·Mảnh Whis 
+12106;Thần·Mảnh Beerus 
+12107;Thần·Mảnh Blue Vegeta
+12108;Thần·Mảnh Goku SS4 
+12109;Thần·Mảnh Super Saiyan Goku
+12110;Thần·Mảnh Super Saiyan Vegeta
+12111;Thần·Mảnh Vegetto
+12112;Thần·Mảnh Hit
+12113;Thần·Mảnh Gohan
+12114;Thần·Mảnh Bardock
+12125;Thần·Mảnh Zamasu 
+12115;Flash·Mảnh Son Gohan 
+12116;Flash·Mảnh Quỷ hóa Vegeta
+12117;Flash·Mảnh Son Goku
+12118;Flash·Mảnh Gotenks 
+12119;Flash·Mảnh Số 18 
+12120;Flash·Mảnh Số 17 
+12121;Flash·Mảnh Vegeta
+12122;Flash·Mảnh Majin Buu 
+12124;Flash·Mảnh Cell
+12126;Flash·Mảnh Piccolo 
+12127;Flash·Mảnh lão giới vương thần 
+12128;Flash·Mảnh Cooler
+12129;Flash·Mảnh Janemba 
+12130;Flash·Mảnh Số 20 
+12131;Flash·Mảnh Son Goten 
+12132;Flash·Mảnh Frieza
+12133;Flash·Mảnh Số 16 
+12134;Flash·Mảnh Pikkon
+12135;Flash·Mảnh Dabura
+12136;Flash·Mảnh Cabba 
+12137;Flash·Mảnh Caulifla
+12138;Flash·Mảnh Kale
+13001;Đá Mặt Trăng Vuông I 
+13002;Đá Sấm Sét Vuông I 
+13003;Đá Nước Vuông I
+13004;Đá Nước Vuông II 
+13005;Đá Bóng Tối Vuông I
+13006;Đá Bóng Tối Vuông II 
+13007;Đá Ánh Sáng Vuông I
+13008;Đá Ánh Sáng Vuông II 
+13009;Đá Lửa Vuông I 
+13010;Đá Lửa Vuông II
+13011;Đá Lửa Vuông III 
+13012;Đá Mặt Trăng Quạt I
+13013;Đá Sấm Sét Quạt I
+13014;Đá Nước Quạt I 
+13015;Đá Nước Quạt II
+13016;Đá Bóng Tối Quạt I 
+13017;Đá Bóng Tối Quạt II
+13018;Đá Ánh Sáng Quạt I 
+13019;Đá Ánh Sáng Quạt II
+13020;Đá Lửa Quạt I
+13021;Đá Lửa Quạt II 
+13022;Đá Lửa Quạt III
+13023;Đá Mặt Trăng Tròn I
+13024;Đá Sấm Sét Tròn I
+13025;Đá Nước Tròn I 
+13026;Đá Nước Tròn II
+13027;Đá Bóng Tối Tròn I 
+13028;Đá Bóng Tối Tròn II
+13029;Đá Ánh Sáng Tròn I 
+13030;Đá Ánh Sáng Tròn II
+13031;Đá Lửa Tròn I
+13032;Đá Lửa Tròn II 
+13033;Đá Lửa Tròn III
+13034;Lông Thần Bí 
+13035;Bản vẽ Trang Bị (Gốc)
+13036;Bản vẽ Trang Bị +1 
+13037;Bản vẽ Trang Bị +2 
+13038;Bản vẽ Trang Bị +3 
+13039;Bản vẽ Trang Bị +4 
+13040;Bản vẽ Trang Bị +5 
+13041;Bản vẽ Trang Bị +6 
+13042;Bản vẽ Trang Bị +7 
+13043;Bản vẽ Trang Bị +8 
+13044;Bản vẽ Trang Bị +9 
+13045;Bản vẽ Trang Bị +10
+13046;Bản vẽ Trang Bị +11
+13047;Bản vẽ Trang Bị +12
+13048;Bản vẽ Trang Bị +13
+13049;Bản vẽ Trang Bị +14
+13050;Bản vẽ Trang Bị +15
+13051;Bản vẽ Trang Bị +16
+13052;Bản vẽ Trang Bị +17
+13053;Bản vẽ Trang Bị +18
+13054;Bản vẽ Trang Bị +19
+13055;Kim Loại Vạn Năng
+13056;Thiên Thạch Kỳ Dị
+13057;Chất Dung Hợp
+14001;Mảnh Chiến đấu phục
+14002;Mảnh Tiêu thương
+14003;Mảnh Băng đầu trắng 
+14004;Mảnh Huân hương 
+14005;Mảnh Chiến đấu phục A 
+14006;Mảnh Kiên cố tiêu thương
+14007;Mảnh Bùa hộ mệnh
+14008;Mảnh Mỹ lệ chi vũ 
+14009;Mảnh Cách đấu phục
+14010;Mảnh Trường kiếm
+14011;Mảnh Bùa Gột Rửa 
+14012;Mảnh May mắn trứng
+14013;Mảnh Hạ cấp hộ giáp 
+14014;Mảnh Pháp trượng
+14015;Mảnh Khăn Vàng 
+14016;Mảnh Hải triều huân hương 
+14017;Mảnh Che ngực 
+14018;Mảnh Bảo thạch đại kiếm 
+14019;Mảnh Kính Đo
+14020;Mảnh Đậu tiên hạt giống 
+14021;Mảnh Tu hành phục 
+14022;Mảnh Bảo thạch trường kiếm
+14023;Mảnh Dây chuyền Hồng
+14024;Mảnh Máy đo nhịp 
+14025;Mảnh Cách đấu phục A
+14026;Mảnh Hoàng Kim Kiếm 
+14027;Mảnh Khí thế băng cột đầu 
+14028;Mảnh Tinh thần chi vũ 
+14029;Mảnh Nhẹ nhàng phục 
+14030;Mảnh Tay áo bộ
+14031;Mảnh Băng quấn đầu 
+14032;Mảnh Ngân sắc chi vũ
+14033;Mảnh Phát sinh áo giáp 
+14034;Mảnh Thần bí chủy thủ 
+14035;Mảnh Băng đầu lục sắc 
+14036;Mảnh Lông vũ đỏ 
+14037;Mảnh Võ đạo phục
+14038;Mảnh Búa
+14039;Mảnh Băng tay lửa 
+14040;Mảnh Mùi hương kỳ lạ 
+14041;Mảnh Nhân tạo phục
+14042;Mảnh Phù văn kiếm 
+14043;Mảnh Vòng tay sức mạnh 
+14044;Mảnh Mảnh Hương Gột rửa
+14045;Mảnh Ma Giới phục 
+14046;Mảnh Tà năng pháp trượng
+14047;Mảnh Kiên cố hộ cụ
+14048;Mảnh May mắn huân hương 
+14049;Mảnh Huấn luyện phục
+14050;Mảnh Tà năng loan đao 
+14051;Mảnh dây chuyền lấp lánh
+14052;Mảnh Hương hoa
+14053;Mảnh Kinh điển phục 
+14054;Mảnh Vũ trụ đại kiếm 
+14055;Mảnh Bằng chứng của vua
+14056;Mảnh Hoa đỏ
+14057;Mảnh Trang phục bình thường
+14058;Mảnh Truyền thuyết chi kiếm 
+14059;Mảnh dây chuyền siêu cấp
+14060;Mảnh Hương sóng
+14061;Mảnh Sinh mệnh phục
+14062;Mảnh Vũ lực chi nhận
+14063;Mảnh Mũ Siêu Cấp 
+14064;Mảnh Hương nham thạch
+14065;Mảnh Áo Sức Mạnh 
+14066;Mảnh Lưỡi kiếm 
+14067;Mảnh Vũ lực băng đô 
+14068;Mảnh Vũ lực hộp băng
+14069;Mảnh Áo Sức Mạnh 
+14070;Mảnh Lưỡi kiếm 
+14071;Mảnh Đạt nhân băng cột đầu
+14072;Mảnh Đạt nhân hộp băng
+14073;Mảnh Vinh quang áo choàng 
+14074;Mảnh Vinh quang chi địch
+14075;Mảnh Vinh quang băng cột đầu
+14076;Mảnh Vinh quang hộp băng
+14077;Quà Sau Thi Ⅰ 
+14078;Quà Sau Thi Ⅱ 
+14079;Quà Sau Thi Ⅲ 
+14080;Rương Bản Độc A
+14081;Rương Bản Độc S
+14082;Rương Riêng S
+14083;Rương duyên phận Hit 
+14084;Rương mảnh A 
+14085;Rương mảnh S 
+14086;Lông vũ thần 
+14087;Túi Chiến binh May Mắn 
+14088;Xu Đổi Quân đoàn Chiến 
+14089;Thẻ Chiến Đạo Quán 
+14090;Khí Cầu I
+14091;Khí Cầu II 
+14092;Khí Cầu III
+14093;Khí Cầu IV 
+14094;Khí Cầu V
+14100;Đá Thức Tỉnh 
+14101;Đá Tiến Hóa
+14102;Rương chiến binh tự do 
+14103;Rương chiến binh tự do 
+14104;Rương chiến binh tự do 
+14105;Rương chiến binh tự do 
+14106;Rương chiến binh tự do 
+14107;Rương chiến binh tự do 
+14108;Rương chiến binh tự do 
+14109;Rương chiến binh tự do 
+14110;Rương chiến binh tự do 
+14111;Rương chiến binh tự do 
+14112;Rương chiến binh tự do 
+14113;Pha Lê Thức Tỉnh 
+14114;Rương N.Vụ Thế Giới
+14115;Rương N.Vụ Thế Giới
+14116;Rương N.Vụ Thế Giới
+14117;Rương N.Vụ Thế Giới
+14118;Rương N.Vụ Thế Giới
+14119;Rương N.Vụ Thế Giới
+14120;Rương N.Vụ Thế Giới
+14121;Rương N.Vụ Thế Giới
+14122;Rương N.Vụ Thế Giới
+14123;Rương N.Vụ Thế Giới
+14124;Rương N.Vụ Thế Giới
+14125;Rương N.Vụ Thế Giới
+14126;Rương N.Vụ Thế Giới
+14127;Rương N.Vụ Thế Giới
+14128;Rương N.Vụ Thế Giới
+14129;Rương N.Vụ Thế Giới
+14130;Rương N.Vụ Thế Giới
+14131;Rương N.Vụ Thế Giới
+14132;Rương N.Vụ Thế Giới
+14133;Rương N.Vụ Thế Giới
+14134;Rương N.Vụ Thế Giới
+14135;Rương N.Vụ Thế Giới
+14136;Rương N.Vụ Thế Giới
+14137;Rương N.Vụ Thế Giới
+14138;Rương N.Vụ Thế Giới
+14139;Gói T.Khoản Cao Cấp
+14140;Hộp chọn Mảnh UR Chiến Binh
+14141;Hộp chọn Mảnh SSR Chiến Binh 
+14142;Rương chọn bộ công nghệ
+14143;Rương chọn bộ sức mạnh 
+14144;Rương chọn bộ tài năng 
+14145;Rương chọn bộ vinh quang 
+14146;Hộp chọn trang phục công nghệ
+14147;Hộp chọn trang bị vũ trang 
+14148;Hộp chọn trang bị chính
+14149;Hộp chọn kho báu UR
+14150;Hộp chọn kho báu SSR 
+14151;Hộp chọn kho báu đỏ
+14152;Hộp chọn kho báu cam 
+14153;Phiếu hoạt động
+14154;Hộp chọn mảnh trang bị tím 
+14155;Hộp chọn mảnh trang bị cam 
+14156;Hộp chọn mảnh trang bị đỏ
+14157;Quà tặng A 
+14158;Quà tặng S 
+14159;Hộp đá quý ngẫu nhiên trung cấp
+14160;Hộp đá quý ngẫu nhiên cao cấp
+14161;Hộp chọn bộ lưỡi dao màu cam 
+14162;Hộp chọn trang phục Lực lượng tự nhiên màu cam 
+14163;Hộp chọn bộ gió ngưng tụ màu cam 
+14164;Hộp chọn trang phục Sấm Sét màu cam
+14165;Hộp chọn bộ Lưỡi Dao Đỏ
+14166;Hộp chọn trang phục Lực lượng tự nhiên màu đỏ
+14167;Hộp chọn bộ gió ngưng tụ màu đỏ
+14168;Hộp chọn trang phục Sấm Sét màu đỏ 
+14169;Hộp chọn chiến binh UR 
+14170;Hộp chọn chiến binh SSR
+14171;Hộp chọn Mảnh Chiến Binh MMR【Thần】 
+14172;Hộp chọn Mảnh Chiến Binh MR【Flash】 
+14173;Hộp chọn trang bị MMR【Thần】
+14174;Hộp chọn trang bị MR【Flash】
+14175;Rương Chọn Ngọc Lv6
+14176;Rương Chọn Ngọc Lv7
+14177;Rương Chọn Ngọc Lv8
+14178;Rương Chọn Ngọc Lv9
+14179;Rương Chọn Ngọc Lv10 
+14180;Rương Chọn N.Liệu Báu Vật
+14181;Mảnh vạn năng【Flash】 
+14182;Hộp chọn Mảnh Chiến Binh SR【Flash】 
+14183;Hộp chọn kho báu SR【Flash】 
+14184;Hộp chọn Mảnh SR Chiến Binh
+14185;Hộp chọn vật liệu kho báu nâng cao 
+14186;Hộp chọn nguyên liệu kho báu trung cấp 
+14187;Hộp chọn tài liệu bảo vật cấp thấp 
+14188;Hộp chọn chiến binh S MMR【Thần】
+14189;Hộp chọn chiến binh MR【Flash】
+14190;Hộp kho báu nhân vật chính màu tím 
+14191;Hộp kho báu của nhân vật chính màu cam 
+14192;Hộp chọn chiến binh A MMR【Thần】
+14193;Túi kim cương nhỏ
+14194;Túi kim cương lớn
+13058;Hộp tự chọn trang bị (0-3) 
+13059;Hộp tự chọn trang bị (4-6) 
+13060;Hộp tự chọn trang bị (7-9) 
+13061;Hộp tự chọn trang bị (10-12) 
+13062;Hộp tự chọn trang bị (13-15) 
+13063;Hộp tích hợp bản vẽ thiết bị 
+14195;Hộp chon Mảnh Chiến Binh Cam 
+14196;Hộp chọn Mảnh Flash Chiến Binh kho báu I 
+14197;Hộp chọn Mảnh Flash Chiến Binh kho báu II
+14198;Hộp chọn Mảnh Flash Chiến Binh kho báu III 
+14199;Hộp chọn 20 Chiến Binh 
+14200;Siêu rút thẻ 
+14201;Ngọc May Mắn 
+14202;hộp kho báu may mắn
+14203;Mảnh Flash Chiến Binh Rương Chọn X 
+14204;Mảnh Flash Chiến Binh Rương Chọn Y 
+14205;Mảnh Flash Chiến Binh Rương Chọn Z 
+14206;Mảnh Chiến Binh Hộp chọn may mắn 
+14207;Rương mảnh ngọc tím
+14208;Rương mảnh đá tím
+14209;Rương mảnh ngọc cam
+14210;Rương mảnh đá cam
+14219;Hộp trang bị ngẫu nhiên màu đỏ I 
+14220;Rương trang bị VIP 
+14221;Rương Báu Vật Ngẫu Nhiên 12
+14222;Rương Báu Vật Ngẫu Nhiên 14
+14223;Rương Báu Vật Ngẫu Nhiên 20
+14224;Rương T.Bị Lam Ngẫu Nhiên I
+14225;Rương Bộ HP Tím
+14226;Rương Bộ Công Tím
+14227;Rương Riêng A
+14228;Rương Duyên Son Gohan
+14229;Rương Duyên Goku 
+14230;Rương Duyên Gotenks
+14231;Rương Duyên Blue Goku
+14232;Rương Duyên Whis 
+14233;Rương Duyên Goku SS4 
+14234;Rương Duyên Super Saiyan Goku
+14235;Rương Duyên Super Saiyan Vegeta
+14236;Rương Duyên Son Gohan
+14237;Rương Duyên Bardock
+14238;Quà duyên phận A 
+14239;quà duyên phận S 
+14240;Rương Mảnh Ác Mộng 
+14241;Rương Mảnh SSR 
+14242;Rương Mảnh Đá Đỏ N.Nhiên 
+14243;Rương Mảnh Tấm Đỏ N.Nhiên
+14244;Nước khoáng
+14245;Nước Soda
+14246;Sữa Trái Cây 
+14247;Máy Bán Thể Lực
+15000;Đập trứng
+15001;Đập Cao Cấp
+15002;Black Goku 
+15003;Blue Goku
+15004;Broly
+15005;Gogeta 
+15006;Whis 
+15007;Beerus 
+15008;Blue Vegeta
+15009;Son Goku SS4 
+15010;Super Saiyan Goku
+15011;Super Saiyan Vegeta
+15012;Vegetto
+15013;Hit
+15014;Son Gohan
+15015;Bardock
+15016;Son Gohan
+15017;Quỷ hóa Vegeta 
+15018;Goku 
+15019;Gotenks
+15020;Số 18
+15021;Số 17
+15022;Vegeta 
+15023;Majin Buu
+15024;Zamasu 
+15025;Cell 
+15026;Piccolo
+15027;Lão giới vương thần
+15028;Cooler 
+15029;Janemba
+15030;Số 20
+15031;Son Goten
+15032;Frieza 
+15033;Số 16
+15034;Pikkon 
+15035;Dabura 
+15036;Cabba
+15037;Califla
+15038;Kale 
+15039;Quy lão Kamê 
+15040;Yamcha 
+15041;Krillin
+15042;Chiaotzu 
+15043;Tenshinhan 
+15044;Dende
+15045;Bulma
+15046;Satan
+15047;Radditsu 
+15048;Nappa
+15049;Giới vương thần
+15050;Captain Ginyu
+15051;Trunks 
+15052;Son Goku 
+15053;Thần Bí
+15101;Thần·Black Goku
+15102;Thần·Blue Goku 
+15103;Thần·Broly 
+15104;Thần·Gogeta
+15105;Thần·Whis
+15106;Thần·Beerus
+15107;Thần·Blue Vegeta 
+15108;Thần Goku SS4
+15109;Thần·Super Saiyan Goku 
+15110;Thần·Super Saiyan Vegeta 
+15111;Thần·Vegetto 
+15112;Thần·Hit 
+15113;Thần·Son Gohan 
+15114;Thần·Bardock 
+15125;Thần·Zamasu
+15115;Flash·Son Gohan
+15116;Flash·Quỷ hóa Vegeta 
+15117;Flash·Goku 
+15118;Flash·Gotenks
+15119;Flash·Số 18
+15120;Flash·Số 17
+15121;Flash·Vegeta 
+15122;Flash·Majin Buu
+15124;Flash·Cell 
+15126;Flash·Piccolo
+15127;Flash·Lão giới vương thần
+15128;Flash·Cooler 
+15129;Flash·Janemba
+15130;Flash·Số 20
+15131;Flash·Son Goten
+15132;Flash·Frieza 
+15133;Flash·Số 16
+15134;Flash·Pikkon 
+15135;Flash·Dabura 
+15136;Flash·Cabba
+15137;Flash·Califla
+15138;Flash·Kale 
+16001;Khung cơ bản 
+16005;Bị công phản kích
+16006;S.thương thêm theo nộ
+16007;Tại điểm chỉ định triệu hồi 1 quái ID chỉ định 
+16008;Hồi HP theo HP tối đa
+16009;Kiếm Tâm 
+16010;Cảm Ứng
+16011;Chuyển BUFF
+16012;Bị công phản ST
+16013;Phản công choáng 
+16014;ST lan tỏa 
+16015;Bóng tối 
+16016;Hồi sinh 
+16017;Sửa chọn mục tiêu công 
+16018;Giảm nộ đặc biệt【Giảm nộ mỗi hiệp, nộ về 0 sẽ ch
+16019;Trộm thủ 
+16020;Trộm nộ
+16021;Tịnh tâm đặc sắc【Bị công sẽ giảm nộ】 
+16022;Trộm công
+16023;Lấy trộm HP tối đa 
+16050;Biển xanh sóng vỗ
+16051;Vinh dự
+16052;Hồi ức màu hồng
+16053;Linh vật 
+16054;Bãi biển mùa hè
+16055;Cánh trắng 
+16056;Điện cao áp
+16057;Trung thu trăng sáng 
+16058;Mừng Quốc khánh
+16059;Noel vui vẻ
+16060;Gói test 1 
+16061;Gói test 2 
+16062;Beerus Chúc phúc 
+16063;Hit Chúc phúc
+16064;Zamasu Chúc phúc 
+16065;Son Goku Chúc phúc 
+16066;ChiChi Chúc phúc 
+16067;Hình đại diện độc quyền 1
+16068;Hình đại diện độc quyền 2
+16069;Hình đại diện độc quyền 3
+16070;Hình đại diện độc quyền 4
+16071;Hình đại diện độc quyền 5
+16072;Hình đại diện độc quyền 6
+16073;Hình đại diện độc quyền 7
+16074;Hình đại diện độc quyền 8
+16075;Hình đại diện độc quyền 9
+16076;Hình đại diện độc quyền 10 
+16077;Hình đại diện độc quyền 11 
+16078;Hình đại diện độc quyền 12 
+16079;Hình đại diện độc quyền 13 
+16080;Hình đại diện độc quyền 14 
+16081;Hình đại diện độc quyền 15 
+17001;Thẻ tháng
+17002;Thẻ tháng siêu cấp 
+17003;Kẻ Tiên Phong
+17004;Người Thực Thi I 
+17005;Người Thực Thi II
+17006;Người Thực Thi III 
+17007;Người Sáng Lập-Mặt Đất 
+17008;Người Sáng Lập-chiên binh
+17009;Người Sáng Lập-Thế Giới
+17010;Thẻ nạp 10k
+17011;Thẻ nạp 30k
+17012;Thẻ nạp 100k 
+17013;Thẻ nạp 200k 
+17014;Thẻ nạp 500k 
+17015;Thẻ nạp 1000k
+17016;Thẻ nạp 2000k
+17017;Gói nạp đầu
+17018;Gói nạp đầu trung cấp
+17019;Gói nạp đầu cao cấp
+17020;Thẻ nạp 3000k

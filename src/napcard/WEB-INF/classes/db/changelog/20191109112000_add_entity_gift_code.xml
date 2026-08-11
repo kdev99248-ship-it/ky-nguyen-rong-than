@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20191109112000-1" author="dokd">
+        <createTable tableName="gift_code">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expression" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="begin_time" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="end_time" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="server_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="code_type" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="quantity" type="int" defaultValue="10000"/>
+            <column name="user_ids" type="varchar(1000)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="20220122214000-1" author="DoKD">
+        <addColumn tableName="gift_code">
+            <column name="distributed" type="int(11)" defaultValue="0"></column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

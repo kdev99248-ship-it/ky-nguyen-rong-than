@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190323134000-1" author="dokd">
+        <createTable tableName="users">
+            <column name="user_id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(200)">
+            </column>
+            <column name="role_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="point" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20191114090000-1" author="DoKD">
+        <addColumn tableName="users">
+            <column name="last_transfer" type="datetime">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20200806153000-1" author="DoKD">
+        <addColumn tableName="users">
+            <column name="password_game" type="varchar(1000)"/>
+            <column name="appkey" type="varchar(1000)"/>
+            <column name="token" type="varchar(1000)"/>
+            <column name="qltoken" type="varchar(1000)"/>
+            <column name="imei" type="varchar(1000)"/>
+            <column name="mobile" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20210407223000-1" author="DoKD">
+        <addColumn tableName="users">
+            <column name="point_lock" type="int" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20210407223000-2" author="DoKD">
+        <addColumn tableName="users">
+            <column name="turn_round" type="int" defaultValue="0"/>
+            <column name="last_draw" type="datetime"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20220108225500-1" author="DoKD">
+        <addColumn tableName="users">
+            <column name="token_ios" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20220212131900-1" author="DoKD">
+        <addDefaultValue tableName="users" columnName="last_draw" defaultValueDate="2022-01-01 12:00:00"/>
+    </changeSet>
+    <changeSet id="20220108225500-2" author="DoKD">
+        <addColumn tableName="users">
+            <column name="openlogin" type="int" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

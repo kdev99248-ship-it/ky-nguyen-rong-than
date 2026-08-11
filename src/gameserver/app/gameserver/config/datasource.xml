@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 数据源 -->
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db.driverClass}" />
+		<property name="jdbcUrl" value="${db.account.jdbcUrl}" />
+		<property name="username" value="${db.account.username}" />
+		<property name="password" value="${db.account.password}" />
+		<property name="idleConnectionTestPeriodInMinutes"
+			value="${db.account.idleConnectionTestPeriodInMinutes}" />
+		<property name="idleMaxAgeInSeconds" value="${db.account.idleMaxAgeInSeconds}" />
+		<property name="maxConnectionsPerPartition" value="${db.account.maxConnectionsPerPartition}" />
+		<property name="minConnectionsPerPartition" value="${db.account.minConnectionsPerPartition}" />
+		<property name="partitionCount" value="${db.account.partitionCount}" />
+		<property name="acquireIncrement" value="${db.account.acquireIncrement}" />
+		<property name="statementsCacheSize" value="${db.account.statementsCacheSize}" />
+	</bean>
+
+	<bean id="daoTemplate" abstract="true" factory-method="getDefault">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 服务器 -->
+	<bean id="serverInfoDao" class="com.playmore.server.list.ServerInfoDaoImpl"
+		parent="daoTemplate" />
+	<!-- 服务器 -->
+	<bean id="serverStatusDao" class="com.playmore.server.list.ServerStatusDaoImpl"
+		parent="daoTemplate" />
+
+	<bean id="serverInfoManager" class="com.playmore.server.list.ServerInfoManagerImpl"
+		factory-method="getDefault" depends-on="serverInfoDao,serverStatusDao"
+		init-method="refresh" />
+	<bean id="serverConfigureDao" class="com.playmore.server.list.ServerConfigureDaoImpl"
+		parent="daoTemplate" />
+	<bean id="serverConfigureManager" class="com.playmore.server.list.ServerConfigureManager"
+		factory-method="getDefault" depends-on="serverConfigureDao"
+		init-method="refresh" />
+
+	<bean id="serverZoneDao" class="com.playmore.server.list.ServerZoneDaoImpl"
+		parent="daoTemplate" />
+	<bean id="serverZoneManager" class="com.playmore.server.list.ServerZoneManager"
+		factory-method="getDefault" depends-on="serverZoneDao" init-method="refresh" />
+
+	<bean id="serverLoginWhiteDao" class="com.playmore.server.list.ServerLoginWhiteDaoImpl"
+		parent="daoTemplate" />
+	<bean id="serverLoginWhiteManager" class="com.playmore.server.list.ServerLoginWhiteManager"
+		factory-method="getDefault" depends-on="serverLoginWhiteDao"
+		init-method="refresh" />
+
+	<bean id="serverSwitchDao" class="com.playmore.server.list.ServerSwitchDaoImpl"
+		parent="daoTemplate" />
+	<bean id="serverSwitchManager" class="com.playmore.server.list.ServerSwitchManager"
+		factory-method="getDefault" depends-on="serverSwitchDao" init-method="refresh" />
+
+	<bean id="channelInfoDao" class="com.playmore.server.list.ChannelInfoDaoImpl"
+		parent="daoTemplate" />
+	<bean id="channelInfoManager" class="com.playmore.server.list.ChannelInfoManager"
+		factory-method="getDefault" depends-on="channelInfoDao" init-method="refresh" />
+
+	<bean id="channelSwitchDao" class="com.playmore.server.list.ChannelSwitchDaoImpl"
+		parent="daoTemplate" />
+	<bean id="channelSwitchManager" class="com.playmore.server.list.ChannelSwitchManager"
+		factory-method="getDefault" depends-on="channelSwitchDao" init-method="refresh" />
+
+	<!-- 白名单ip -->
+	<bean id="ServerWhiteIpManager" class="com.playmore.server.list.ServerWhiteIpManager"
+		factory-method="getDefault" depends-on="serverWhiteIpDao" init-method="refresh" />
+	<bean id="serverWhiteIpDao" class="com.playmore.server.list.ServerWhiteIpDaoImpl"
+		parent="daoTemplate" />
+
+	<!-- 帐号 -->
+	<bean id="accountDao" class="com.playmore.auth.AccountDaoImpl"
+		parent="daoTemplate" />
+
+	<bean id="accountProvider" class="com.playmore.auth.AccountProvider"
+		factory-method="getDefault" depends-on="accountDao" />
+
+	<!-- 角色 -->
+	<bean id="roleDao" class="com.playmore.auth.RoleDaoImpl" parent="daoTemplate" />
+
+	<!-- 验证Token管理器 -->
+	<bean id="accessTokenManager" class="com.playmore.auth.AccessTokenManager"
+		factory-method="getDefault">
+		<property name="timeOut" value="${access.token.timeout}" />
+	</bean>
+
+	<bean id="roleInfoUpdateQueue" class="com.playmore.auth.RoleInfoUpdateQueue"
+		factory-method="getDefault" />
+
+	<!-- 封号 -->
+	<bean id="banDao" class="com.playmore.auth.mbean.BanDaoImpl"
+		parent="daoTemplate" />
+	<bean id="banManager" class="com.playmore.auth.mbean.BanManager"
+		factory-method="getDefault" />
+	<!-- 禁言 -->
+	<bean id="gagDao" class="com.playmore.auth.mbean.GagDaoImpl"
+		parent="daoTemplate" />
+	<bean id="gagManager" class="com.playmore.auth.mbean.GagManager"
+		factory-method="getDefault" />
+
+	<!-- 发送邮件 -->
+	<bean id="activityMailDao" class="com.playmore.auth.mail.ActivityMailDaoImpl"
+		factory-method="getDefault" parent="daoTemplate" />
+	<bean id="sendMailRecordDao" class="com.playmore.auth.mail.SendMailDaoImpl"
+		factory-method="getDefault" parent="daoTemplate" />
+	<bean id="activityMailQueue" class="com.playmore.auth.mail.ActivityMailQueue"
+		factory-method="getDefault" />
+	<bean id="sendMailDBQueue" class="com.playmore.auth.mail.SendMailDBQueue"
+		factory-method="getDefault" />
+	<bean id="activityMailLoader" class="com.playmore.auth.mail.ActivityMailLoader"
+		factory-method="getDefault" init-method="load" />
+
+	<!-- 设备号 -->
+	<bean id="equipmentCodeDao" class="com.playmore.auth.home.EquipmentCodeDaoImpl"
+		parent="daoTemplate" />
+
+	<bean id="rechargeDao" class="com.playmore.server.list.RechargeDaoImpl"
+		parent="daoTemplate" />
+	<bean id="roleRegisterDao" class="com.playmore.server.list.RoleRegisterDaoImpl"
+		parent="daoTemplate" />
+
+
+
+</beans>

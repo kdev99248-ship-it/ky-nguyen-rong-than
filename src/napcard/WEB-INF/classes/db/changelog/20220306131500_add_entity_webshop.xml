@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20220306131500-1" author="dokd">
+        <createTable tableName="webshop">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="img_url" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="int(11)" defaultValue="10">
+            </column>
+            <column name="price" type="int(11)" defaultValue="10000">
+            </column>
+            <column name="old_price" type="int(11)" defaultValue="50000">
+            </column>
+            <column name="sold" type="int(11)" defaultValue="0">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20220306131500-2" author="dokd">
+        <addColumn tableName="webshop">
+            <column name="item_id" type="int(11)">
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20220306131500-3" author="dokd">
+        <addColumn tableName="webshop">
+            <column name="expression" type="varchar(256)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20220306131500-4" author="dokd">
+        <dropColumn tableName="webshop" columnName="item_id"/>
+    </changeSet>
+</databaseChangeLog>

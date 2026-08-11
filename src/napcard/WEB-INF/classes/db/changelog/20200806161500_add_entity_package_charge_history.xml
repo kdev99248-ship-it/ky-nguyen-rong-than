@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20191109112000-1" author="dokd">
+        <createTable tableName="package_charge_history">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="package_charge_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="package_charge_name" type="varchar(255)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20201016003000-1" author="DoKD">
+        <addColumn tableName="package_charge_history">
+            <column name="player_id" type="varchar(255)"></column>
+            <column name="player_name" type="varchar(255)"></column>
+            <column name="server_name" type="varchar(255)"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20201016003000-2" author="DoKD">
+        <addColumn tableName="package_charge_history">
+            <column name="server_id" type="int(11)"></column>
+            <column name="first_charge" type="varchar(1000)"></column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

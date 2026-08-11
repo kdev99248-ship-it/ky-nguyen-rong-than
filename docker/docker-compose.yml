@@ -1,0 +1,151 @@
+# Kỷ Nguyên Rồng Thần — 6 container thay cho 5 cửa sổ console trên Windows.
+#
+# TẤT CẢ dùng network_mode: host. Không phải cho tiện — mà bắt buộc:
+# chuỗi kết nối 4 DB game nằm trong DỮ LIỆU bảng user_center.t_s_server_config
+# (cột db_host/data_host, hàng id=1011), toàn bộ ghi cứng 127.0.0.1. Một bản
+# nữa nằm trong lib/ConfigData-0.0.1.jar. Chuyển sang bridge network thì phải
+# UPDATE hàng chục dòng DB và đóng gói lại jar. Host network giữ nguyên topology
+# loopback y hệt Windows, không phải sửa gì.
+#
+# Đổi lại, cổng do chính tiến trình mở chứ không qua "ports:" của Docker:
+#   MySQL   3306   -> bind-address=127.0.0.1 trong mysql/my.cnf, KHÔNG ra ngoài
+#   php-fpm 9100   -> chỉ loopback
+#   Còn lại 80, 81, 88, 9000, 9001, 51011 mở ra ngoài -> phải có firewall, xem README.md
+name: knrt
+
+x-java: &java
+  image: ${JAVA_IMAGE:-eclipse-temurin:8-jdk}
+  network_mode: host
+  restart: unless-stopped
+  environment:
+    TZ: ${TZ:-Asia/Ho_Chi_Minh}
+  # Chạy dưới UID của người dùng để scriptBin/, logs/, server.pid không bị root
+  # chiếm mất — nếu không thì IntelliJ trên máy không sửa được nữa.
+  user: "${KNRT_UID:-1000}:${KNRT_GID:-1000}"
+
+services:
+
+  # --- MySQL 3306 -------------------------------------------------------
+  # 5.6 khớp đúng bản Windows và khớp mysql-connector-java 5.0.7 (2007) mà
+  # GameServer đang dùng. Đừng nhảy lên MySQL 8: connector đời đó không nói
+  # được caching_sha2_password.
+  # Lưu ý: image mysql:5.6 chỉ có linux/amd64.
+  mysql:
+    image: ${MYSQL_IMAGE:-mysql:5.6}
+    container_name: knrt-mysql
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?thiếu MYSQL_ROOT_PASSWORD - copy docker/.env.example thành docker/.env}
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/knrt.cnf:ro
+      - ../db/sql:/sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 30s
+
+  # --- UserCenter 9000 --------------------------------------------------
+  usercenter:
+    <<: *java
+    container_name: knrt-usercenter
+    working_dir: /opt/knrt/src/usercenter
+    command: ["sh", "./start.sh"]
+    volumes:
+      - ../src/usercenter:/opt/knrt/src/usercenter
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c '</dev/tcp/127.0.0.1/9000'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 30s
+
+  # --- GameServer 9001 + GM 51011 ---------------------------------------
+  # BẮT BUỘC chờ usercenter healthy, không phải cho đẹp thứ tự: lúc khởi động
+  # ServerConfig.load() POST {"serverId":1011} sang http://127.0.0.1:9000/center/getServerInfo.do
+  # và lấy về (base64) chuỗi kết nối của CẢ 4 DB game + gamePort/httpPort/rechargePort.
+  # UserCenter chưa lên -> Connection refused -> RuntimeException -> System.exit(-1).
+  gameserver:
+    <<: *java
+    container_name: knrt-gameserver
+    working_dir: /opt/knrt/src/gameserver
+    command: ["sh", "./start.sh"]
+    volumes:
+      - ../src/gameserver:/opt/knrt/src/gameserver
+    depends_on:
+      mysql:
+        condition: service_healthy
+      usercenter:
+        condition: service_healthy
+
+  # --- NapCard / Tomcat 80 ----------------------------------------------
+  # Dùng luôn runtime/tomcat8.5 trong repo (Java thuần, đã có sẵn bin/*.sh)
+  # thay vì image tomcat:8.5 đã ngừng bảo trì — giữ đúng version và conf hiện tại.
+  # Chạy root vì cần bind cổng 80.
+  napcard:
+    image: ${JAVA_IMAGE:-eclipse-temurin:8-jdk}
+    container_name: knrt-napcard
+    network_mode: host
+    restart: unless-stopped
+    working_dir: /opt/knrt/runtime/tomcat8.5
+    command: ["sh", "bin/catalina.sh", "run"]
+    environment:
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+      CATALINA_HOME: /opt/knrt/runtime/tomcat8.5
+      CATALINA_BASE: /opt/knrt/runtime/tomcat8.5
+      CATALINA_OPTS: "-Dfile.encoding=UTF-8 -Duser.timezone=${TZ:-Asia/Ho_Chi_Minh}"
+    volumes:
+      - ../runtime/tomcat8.5:/opt/knrt/runtime/tomcat8.5
+      - ../src/napcard:/opt/knrt/src/napcard
+      # Đè ROOT.xml của Windows (docBase E:/knrt/...) bằng đường dẫn trong container.
+      - ./tomcat/ROOT.xml:/opt/knrt/runtime/tomcat8.5/conf/Catalina/localhost/ROOT.xml:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # --- php-fpm 9100 (loopback) ------------------------------------------
+  # Thay PHP 5.4.45 + mod_php của Windows. gm/*.php đã được chuyển sang mysqli
+  # vì API mysql_* bị xoá từ PHP 7.
+  php:
+    build: ./php
+    image: knrt-php:7.4
+    container_name: knrt-php
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+    volumes:
+      - ../cdn/www:/opt/knrt/cdn/www
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # --- nginx 81 + 88 ----------------------------------------------------
+  # Thay Apache 2.4. Phải mount cdn/www ĐÚNG CÙNG đường dẫn với container php:
+  # nginx tự ghép SCRIPT_FILENAME từ document_root rồi đưa sang php-fpm, hai bên
+  # lệch path là dính "Primary script unknown".
+  nginx:
+    image: ${NGINX_IMAGE:-nginx:1.27-alpine}
+    container_name: knrt-nginx
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+    volumes:
+      - ./nginx/knrt.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../cdn/www:/opt/knrt/cdn/www:ro
+    depends_on:
+      - php
+
+volumes:
+  # Không tái dùng db/mysql/data của Windows: đó là datadir của MySQL 5.6 Win64.
+  # Cách chuyển dữ liệu thật sang là mysqldump -> ./knrt.sh db-import (xem README.md).
+  mysql-data:
+    name: knrt-mysql-data

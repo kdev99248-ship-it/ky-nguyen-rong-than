@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+	<user-center value="http://127.0.0.1:9000" /><!-- 用户中心地址,负责登录,游戏功能开关,服务器列表 -->
+	<server-id value="1011" /> <!-- 服务器的id IDE调试模式下不使用-->
+	<name-max-length value="13" />
+</server>

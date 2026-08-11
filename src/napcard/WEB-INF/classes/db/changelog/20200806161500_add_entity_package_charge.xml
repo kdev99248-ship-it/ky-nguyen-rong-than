@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20191109112000-1" author="dokd">
+        <createTable tableName="package_charge">
+            <column name="id" type="int" autoIncrement="false">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="price" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sycee" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extra_sycee" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="display_id" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="title" type="nvarchar(1000)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_show" type="int(11)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

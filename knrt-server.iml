@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/src/gameserver/scriptBin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/gameserver/scripts/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/db" />
+      <excludeFolder url="file://$MODULE_DIR$/runtime" />
+      <excludeFolder url="file://$MODULE_DIR$/cdn/client" />
+      <excludeFolder url="file://$MODULE_DIR$/cdn/php" />
+      <excludeFolder url="file://$MODULE_DIR$/cdn/apache" />
+      <excludeFolder url="file://$MODULE_DIR$/cdn/nginx" />
+      <excludeFolder url="file://$MODULE_DIR$/.codegraph" />
+      <excludeFolder url="file://$MODULE_DIR$/src/gameserver/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/src/usercenter/logs" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="gameserver-libs" level="project" />
+    <orderEntry type="library" name="gameserver-app" level="project" />
+    <orderEntry type="library" name="usercenter-libs" level="project" />
+    <orderEntry type="library" name="napcard-libs" level="project" />
+  </component>
+</module>

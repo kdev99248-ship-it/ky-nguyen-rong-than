@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="gameserver-app">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/gameserver/app/gameserver" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/src/gameserver/app/gameserver" recursive="false" />
+  </library>
+</component>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190526113500-1" author="dokd">
+        <createTable tableName="transaction_log">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="server_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="total_point" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="total_gold_receive" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="response_message" type="nvarchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

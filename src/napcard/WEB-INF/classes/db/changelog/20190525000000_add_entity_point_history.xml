@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190525000000-1" author="dokd">
+        <createTable tableName="point_history">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_type" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wallet_user_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="old_point" type="int(11)">
+            </column>
+            <column name="new_point" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="point" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="varchar(1000)">
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="rate_charge" type="double" defaultValue="1"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20201018222000-1" author="DoKD">
+        <addColumn tableName="point_history">
+            <column name="package_id" type="int" defaultValue="0"/>
+            <column name="package_name" type="varchar(100)"/>
+            <column name="package_price" type="int(11)" defaultValue="0"/>
+            <column name="package_cost" type="int(11)" defaultValue="0"/>
+            <column name="server_id" type="int" defaultValue="0"/>
+            <column name="account_id" type="int(11)"/>
+            <column name="account_name" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20220302093000-1" author="DoKD">
+        <modifyDataType columnName="account_id" tableName="point_history" newDataType="varchar(50)"/>
+    </changeSet>
+</databaseChangeLog>

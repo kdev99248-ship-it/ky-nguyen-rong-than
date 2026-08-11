@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20191116122000-1" author="dokd">
+        <createTable tableName="gift_code_log">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="gift_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="member_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="server_id" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="code_name" type="varchar(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="20220303205300-1" author="DoKD">
+        <modifyDataType tableName="gift_code_log" columnName="member_id" newDataType="varchar(50)"/>
+    </changeSet>
+</databaseChangeLog>

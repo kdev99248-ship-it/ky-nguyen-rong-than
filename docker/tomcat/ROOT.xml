@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Bản Linux của runtime/tomcat8.5/conf/Catalina/localhost/ROOT.xml.
+  Bản gốc trỏ docBase vào E:/knrt/knrt-server/src/napcard; trong container
+  repo được mount ở /opt/knrt nên phải đè lại. docker-compose.yml mount file
+  này chồng lên bản Windows, bản Windows giữ nguyên không đụng tới.
+-->
+<Context docBase="/opt/knrt/src/napcard" reloadable="false" />

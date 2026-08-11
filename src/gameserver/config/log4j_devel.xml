@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+	<param name="Target" value="System.out" />
+	<param name="Threshold" value="ALL" />
+	<layout class="org.apache.log4j.PatternLayout">
+	    <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS} %p][ %l ] - %m%n" />
+	</layout>
+    </appender>
+	
+	<appender name="FileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/GameServer.log" />
+		<param name="Threshold" value="ALL" />
+		<!-- <param name="MaxFileSize" value="10240KB" /> -->
+		<!--<param name="MaxBackupIndex" value="100" /> -->
+		<param name="DatePattern" value="'.'yyyyMMddHH" />
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS} %p](%F:%L)%m%n" />
+		</layout>
+    </appender>
+	
+	<!-- 文件输出用异步 -->
+    <appender name="AsyncFileAppender" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="2048" />
+		<param name="LocationInfo" value="true" />
+		<appender-ref ref="FileAppender" />
+    </appender>
+	
+	<appender name="RollingFileAppender" class="org.apache.log4j.RollingFileAppender">
+		<appender-ref ref="FileAppender" />
+    </appender>
+		
+	<logger name="org.apache.ibatis" additivity="false">
+        <level value="off" />
+        <appender-ref ref="CONSOLE" /> 
+    </logger>
+		
+    <root>
+		<level value="info" />
+		<appender-ref ref="CONSOLE" /> 
+		<appender-ref ref="AsyncFileAppender" />
+    </root>
+</log4j:configuration>

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Implementation-Title: Pika Pika Mobile
+Implementation-Version: 0.0.1-SNAPSHOT
+Start-Class: com.shineiot.card.Application
+Spring-Boot-Classes: WEB-INF/classes/
+Spring-Boot-Lib: WEB-INF/lib/
+Build-Jdk-Spec: 1.8
+Spring-Boot-Version: 2.3.1.RELEASE
+Created-By: Maven Archiver 3.4.0
+Implementation-Vendor: Pivotal Software, Inc.
+Main-Class: org.springframework.boot.loader.WarLauncher
+

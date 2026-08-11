@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- jetty server start --> 
+	<bean id="jettyRunner" class="com.playmore.http.jetty.JettyServer" init-method="start">
+		<!-- <property name="host" value="${server.host}"/> -->
+		<property name="port" value="${http.server.jetty.port}"/>
+	</bean>
+	
+	<!-- 白名单 -->
+	<bean id="CIDRSetting" class="com.playmore.util.CIDRSetting"
+		factory-method="getDefault" init-method="load">
+		<property name="expression" value="${allow.ips}" />
+		<!-- 充值服务器HTTP地址 -->
+		<property name="http_server_recharge_host" value="${http.server.recharge.host}" />
+	</bean>
+	
+	
+	<import resource="cache_conf.xml"/>
+	<import resource="datasource.xml"/>
+	<import resource="annotation.xml"/>
+	<import resource="quartz.xml"/>
+	<import resource="servlet-context.xml"/>
+</beans>

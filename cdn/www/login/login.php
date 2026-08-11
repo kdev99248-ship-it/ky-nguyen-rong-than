@@ -1,0 +1,128 @@
+<?php
+$cfg = require 'config.php';
+$userName = $_GET['userName'];
+$password = $_GET['password'];
+$action = $_GET['action'];
+
+$db_config = $cfg['db1'];
+$db = new mysqli($db_config['host'], $db_config['username'], $db_config['password'], $db_config['database'], $db_config['port']);
+$msg = "Thành Công";
+$status = -1;
+
+function GetIP() {
+global $ip;
+if (getenv("HTTP_CLIENT_IP"))
+$ip = getenv("HTTP_CLIENT_IP");
+else if(getenv("HTTP_X_FORWARDED_FOR"))
+$ip = getenv("HTTP_X_FORWARDED_FOR");
+else if(getenv("REMOTE_ADDR"))
+$ip = getenv("REMOTE_ADDR");
+else $ip = "Unknow";
+return $ip;
+}
+
+function getcposition(){
+    try {
+        $res1 = file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=".GetIP());
+        $res1 = json_decode($res1,true);
+ 
+        if ($res1[ "code"]==0){
+            return $res1['data'][ "region"];//.$res1['data']["city"]."_".$res1['data'][ "isp"];
+        }else{
+            return "Chưa có thể thu hoạch";
+        } 
+    }catch (Exception $e){
+        return "Chưa có thể thu hoạch";
+    }
+}
+
+if(strlen($userName) < 6 || strlen($password) < 6) {
+	$msg = "Tài khoản hoặc mật khẩu > 6 ký tự!";
+	$status = -1;
+} else {
+	if (mysqli_connect_errno()) {
+	   $msg = "Không có connect!";
+	   $status = -1;
+	}else{
+		if($action == "register") {
+			$ip = GetIP();
+			$db->query('set names utf8');
+			$query_sql = "select user_name,password_game,openlogin from users where user_name = '$userName'";
+			$a = $db->query($query_sql);
+			if ( $a->num_rows > 0 )
+			{	
+				$msg = "Tài khoản đã tồn tại!!!";
+				$status = "-1";
+			} else {
+				$ch = curl_init();
+				$headers  = [
+							'Content-Type: application/json'
+						];
+				$postData = [
+					'email' => $userName.'@email.com',
+					'password' => $password,
+					'username'=>$userName,
+					'ipAddress'=>$ip,
+				];
+				curl_setopt($ch, CURLOPT_URL,"http://127.0.0.1:80/api/user/register");
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));           
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				$result     =json_decode(curl_exec ($ch));
+				
+				//$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($result)
+				{
+					if($result->status==1)
+					{
+						$msg = "Thành Công";//thong bao thanh cong
+						$code = "1";
+					}else{
+						$msg = "Có lỗi xảy ra";//thong bao that bai tu api
+						$code = "-1";
+					}
+				}else{
+					$msg = "Đăng ký thất bại, lỗi kết nối api";
+					$code = "-1";
+				}
+			}
+		} else {
+			$db->query('set names utf8');
+			$query_sql = "select user_name,password_game,openlogin from users where user_name = '$userName'";
+			$a = $db->query($query_sql);
+			if ( $a->num_rows > 0 ){	
+				$account = $a->fetch_array(MYSQLI_ASSOC);
+				if("1" == $account['openlogin']) {
+						$msg = "Đăng nhập thất bại!";
+						$status = "-1";
+				}else{
+					if($password == $account['password_game'])
+					{
+						$data = array(
+							'usr'	=> $account['user_name'],
+							'code'	=> "0"
+						);
+						$b = json_encode($data);
+						echo $b;
+						return;
+					}else{
+						$msg = "Sai mật khẩu!";
+						$status = "-1";
+					}
+				} 
+			} else {
+						$msg = "Tài khoản không tồn tại";
+						$status = "-1";
+			}	
+		}
+	}
+}
+header("Content-type: text/html; charset=utf-8"); 
+//echo $msg;
+$data = array(
+	'msg'	=> $msg,
+	'code'	=> $status
+);
+$b = json_encode($data);
+echo $b;

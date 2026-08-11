@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190526113000-1" author="dokd">
+        <createTable tableName="server">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_server" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="server_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_by" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_on" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="active_charge" type="int" defaultValue="0"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20200806010700-1" author="dokd">
+        <addColumn tableName="server">
+            <column name="db_host" type="varchar(1000)"/>
+            <column name="db_user" type="varchar(1000)"/>
+            <column name="db_password" type="varchar(1000)"/>
+            <column name="url_charge" type="varchar(1000)"/>
+            <column name="merge_server" type="int(11)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Webapp nap the (Spring Boot) da duoc chuyen ra src/napcard.
+  Tomcat khong con giu ban sao trong webapps/ nua - context nay tro thang vao src/
+  de sua config (WEB-INF/classes/application.properties) la co hieu luc ngay.
+-->
+<Context docBase="E:/knrt/knrt-server/src/napcard" reloadable="false" />

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap.min.js"></script>
+
+    <link rel="icon" href="./favicon.ico" sizes="32x32">
+    <link rel="icon" href="./favicon.ico" sizes="192x192">
+    <title>Phần dành cho GM - Tạo code</title>
+</head>
+<body>
+<div class="container">
+
+    <h3>Phần này dành cho admin tạo code, hãy cẩn thận trong việc sử dụng nó</h3>
+    <hr/>
+    <!--Form-->
+    <form>
+        <input type="hidden" id="idCode"/>
+        <div class="form-group">
+            <label for="gm-code">Mã GM:</label>
+            <input type="text" class="form-control" id="gm-code" required/>
+        </div>
+        <div class="form-group">
+            <label for="prefixCode">Nhập prefix code, ví dụ SHINE, nó sẽ thực hiện để nhóm code lại với nhau ở type = 3
+                nhé:</label>
+            <hr/>
+            <input type="text" class="form-control" id="prefixCode" aria-describedby="playerName"
+                   placeholder="Nhập prefix code, ví dụ SHINE" required>
+        </div>
+        <div class="form-group">
+            <label for="idServer">Chọn server:</label>
+            <select class="form-control" id="idServer">
+                <option value="0">--</option>
+                <option th:each="item: ${servers}" th:value="${item.id}" th:utext="${item.nameServer}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả nội dung code, quà tặng:</label>
+            <input type="text" class="form-control" id="description" aria-describedby="description"
+                   placeholder="Mô tả nội dung quà tặng, ví dụ quà hàng ngày XXX" required>
+        </div>
+        <div class="form-group">
+            <label for="expression">Nội dung quà:</label>
+            <input type="text" class="form-control" id="expression" aria-describedby="expression"
+                   placeholder="Ví dụ: 15101_100,12115_10,-25_100,-23_1000,-23_100" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Trạng thái:</label>
+            <select class="form-control" id="status">
+                <option value="1">Mở</option>
+                <option value="0">Đóng</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="startTime">Thời gian bắt đầu:</label>
+            <div class='input-group date' id='startTime'>
+                <input type='text' class="form-control" id="startTimeStr" data-date-format="YYYY-MM-DD HH:mm:ss"/>
+                <span class="input-group-addon">
+               <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="endTime">Thời gian kết thúc:</label>
+            <div class='input-group date' id='endTime'>
+                <input type='text' class="form-control" id="endTimeStr" data-date-format="YYYY-MM-DD HH:mm:ss"/>
+                <span class="input-group-addon">
+               <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="codeType">Loại code:</label>
+            <select class="form-control" id="codeType">
+                <option value="0">Code cho server đang chọn</option>
+                <option value="1">Code all server</option>
+                <option value="2">Code cho từng member, cần input danh sách ID player phía dưới</option>
+                <option value="3">Code dùng 1 lần, sẽ bị xóa sau khi sử dụng, dựa vào prefix để xác định xem user đã
+                    dùng chưa
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="userIds">Danh sách member:</label>
+            <input type="text" class="form-control" id="userIds" aria-describedby="userIds"
+                   placeholder="10001,10002,10003,..." required>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Số lượng code tạo:</label>
+            <input type="text" class="form-control" id="quantity" aria-describedby="quantity" placeholder="100"
+                   value="1"
+                   required>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="saveCode">Tạo code</button>
+        <button type="button" class="btn btn-primary" id="deleteCode">Xóa code(Chưa làm)</button>
+        <p>Chức năng xóa code hãy chọn đúng loại code, và nhập code muốn xóa, nếu xóa code dùng 1 lần, hãy nhập đúng
+            prefix trước dấu _</p>
+
+    </form>
+    <hr/>
+    <h3>Danh sách gift code có sẵn:</h3>
+    <table id="gift-code-tbl" class="table table-striped table-bordered"
+           style="width: 100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Mã code</th>
+            <th>Mô tả</th>
+            <th>Quà</th>
+            <th>Trạng thái</th>
+            <th>Thời gian b.đầu</th>
+            <th>Thời gian k.thúc</th>
+            <th>Server ID</th>
+            <th>Code type</th>
+            <th>Số lượng sử dụng</th>
+            <th>Danh sách member</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="table-code">
+        <tr>
+            <td>1</td>
+            <td>TANTHU3D</td>
+            <td>Code tân thủ</td>
+            <td>4,0,1000|3,0,1000</td>
+            <td>1</td>
+            <td>2021-01-12 00:00:00</td>
+            <td>2021-01-12 23:59:59</td>
+            <td>4001</td>
+            <td>1</td>
+            <td>1000</td>
+            <td>1000,1001,1002</td>
+            <td>
+                <button type="button" class="btn btn-primary" id="clipboard">Chép code</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        let homeUrl = "";
+        // gift code
+        $("#saveCode").click(function () {
+            saveCode();
+        });
+
+        function saveCode() {
+            let prefixCode = $("#prefixCode").val();
+            let idServer = $("#idServer").val();
+            let description = $("#description").val();
+            let expression = $("#expression").val();
+            let status = $("#status").val();
+            let startTime = $("#startTimeStr").val();
+            let endTime = $("#endTimeStr").val();
+            let codeType = $("#codeType").val();
+            let userIds = $("#userIds").val();
+            let quantity = $("#quantity").val();
+            let gmCode = $("#gm-code").val();
+            let idCode = $("#idCode").val();
+
+            if (prefixCode == "") {
+                alert("Nhập mã code hoặc prefix code.");
+                return;
+            }
+            if (idServer == 0) {
+                alert("Chọn server, mặc định là 4001");
+                return;
+            }
+
+            if (expression == null || expression.trim() == "") {
+                alert("Nhập quà, ít nhất 1 món để gửi đi!");
+                return;
+            }
+            if (startTime == null || startTime.trim() == "") {
+                alert("Vui lòng nhập thời gian bắt đầu");
+                return;
+            }
+            if (endTime == null || endTime.trim() == "") {
+                alert("Vui lòng nhập thời gian hết hạn");
+                return;
+            }
+            if (quantity == null || quantity.trim() == "") {
+                alert("Vui lòng nhập số lượng");
+                return;
+            }
+            let dataCreate = {
+                id: idCode,
+                gmCode: gmCode,
+                quantity: quantity,
+                userIds: userIds,
+                codeType: codeType,
+                endTime: endTime,
+                startTime: startTime,
+                status: status,
+                expression: expression,
+                description: description,
+                prefixCode: prefixCode,
+                idServer: idServer
+            };
+
+            if (confirm("Hãy kiểm tra 1 nữa các thông tin tạo code, cẩn trọng với nó")) {
+                $.ajax({
+                    url: homeUrl + "/api/admin/code",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(dataCreate),
+                    success: function (response) {
+                        alert(response.msg);
+                    },
+                    error: function (jqXHR) {
+                        alert("Có lỗi xảy ra: " + jqXHR.responseJSON.msg);
+                    }
+                });
+            }
+        }
+
+        $.ajax({
+            url: homeUrl + "/api/admin/code",
+            type: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (response) {
+                let html = "";
+                $.each(response.data, function (index, value) {
+                    html += "<tr>\n" +
+                        "            <td>" + value.id + "</td>\n" +
+                        "            <td>" + value.prefixCode + "</td>\n" +
+                        "            <td>" + value.description + "</td>\n" +
+                        "            <td>" + value.expression + "</td>\n" +
+                        "            <td>" + value.status + "</td>\n" +
+                        "            <td>" + value.startTime + "</td>\n" +
+                        "            <td>" + value.endTime + "</td>\n" +
+                        "            <td>" + value.idServer + "</td>\n" +
+                        "            <td>" + value.codeType + "</td>\n" +
+                        "            <td>" + value.quantity + "</td>\n" +
+                        "            <td>" + value.userIds + "</td>\n" +
+                        "            <td>\n" +
+                        "                <button type=\"button\" class=\"btn btn-primary\" id=\"clipboard\" onclick='copyClipboard(" + value.id + ")'>Chép code</button>\n" +
+                        "            </td>\n" +
+                        "        </tr>";
+                });
+                $("#table-code").html(html);
+                $('#gift-code-tbl').DataTable();
+
+
+            }
+        });
+
+    });
+
+    function copyClipboard(id) {
+        console.log(id);
+        $.ajax({
+            url: "/api/admin/copyClipboard/" + id,
+            type: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (response) {
+                navigator.clipboard.writeText(response.data);
+                alert(response.msg);
+                window.location.href = "/admin/code";
+            },
+            error: function (jqXHR) {
+                alert("Có lỗi xảy ra: " + jqXHR.responseJSON.msg);
+            }
+        });
+    }
+
+    $(function () {
+        $('#endTime').datetimepicker({
+            format: 'DD-MM-YYYY HH:mm:ss'
+        });
+        $('#startTime').datetimepicker();
+
+    });
+</script>
+</html>

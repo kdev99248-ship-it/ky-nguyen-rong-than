@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="defaultStatementTimeout" value="600" /> <!--决定驱动等待数据库响应的秒数 单位:秒 -->
+		<setting name="logPrefix" value="org.apache.ibatis.logPrefix" /> <!-- 忽略日志 -->
+	</settings>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+				<!-- 发送到数据库的侦测查询，用来检验连接是否处在正常工作秩序中并准备接受请求 -->
+				<property name="poolPingQuery" value="select 1" />
+				<!-- 是否启用侦测查询。若开启，也必须使用一个可执行的 SQL 语句设置 poolPingQuery 属性 -->
+				<property name="poolPingEnabled" value="true" />
+				<!-- 配置 poolPingQuery 的使用频度。这可以被设置成匹配具体的数据库连接超时时间，来避免不必要的侦测 单位:毫秒 -->
+				<property name="poolPingConnectionsNotUsedFor" value="300000" />
+				<property name="poolMaximumActiveConnections" value="40" />
+				<property name="poolMaximumIdleConnections" value="20" />
+				<property name="poolMaximumCheckoutTime" value="60000" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+ 
+		<mapper resource="game/server/db/game/sqlmap/AccountMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/PlayerMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/FightReportMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ArenaRankingMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/GameGlobalMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/FriendMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/MailMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ChampionRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/GuildMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/VsTowerRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/WorldBossRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/WorldBossGuildRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/HuntTeamMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/IndigoDataMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/IndigoPartiMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/IndigoRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/PourInfoMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CrossIndigoDataMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CrossIndigoPartiMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CrossIndigoRankMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CrossPourInfoMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CrossIndigoDayRankMap.xml" />
+	
+		<mapper resource="game/server/db/game/sqlmap/GeneralActivityConfigMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ActivityDataMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/LuckWheelConfigMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/DeadlineHeroConfigMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/MysticHeroConfigMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/WishPollMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/CustomPackageMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ActivityTemplateMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/RechargeMap.xml" />
+
+		<mapper resource="game/server/db/game/sqlmap/GuildwarDataMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/TimeLimitActivity.xml" />
+		<mapper resource="game/server/db/game/sqlmap/TaskBase.xml" />
+		<mapper resource="game/server/db/game/sqlmap/SnatchTerritory.xml" />
+		<mapper resource="game/server/db/game/sqlmap/SnatchTerritoryRank.xml" />
+		<mapper resource="game/server/db/game/sqlmap/GymShops.xml" />	
+		<mapper resource="game/server/db/game/sqlmap/GymLimitShop.xml" />	
+		
+		<mapper resource="game/server/db/game/sqlmap/WorldAnswerConfigMap.xml" />
+		
+		<mapper resource="game/server/db/game/sqlmap/FlashSaleMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/LimittimeExchangeMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ExtraDropMap.xml" />
+		<mapper resource="game/server/db/game/sqlmap/ActivityDataMap2.xml" />
+		
+		<mapper resource="game/server/db/game/sqlmap/SlotMachinesConfigMap.xml" />
+		
+		<mapper resource="game/server/db/game/sqlmap/SuperSupplyConfigMap.xml" />
+		
+	</mappers>
+
+</configuration> 

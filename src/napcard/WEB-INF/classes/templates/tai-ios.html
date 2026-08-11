@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pika Pika - Tải IOS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script th:src="@{/js/ctxd.js}"></script>
+    <style>
+        body {
+            background-image:  url("/images/background.jpg");
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header menu -->
+    <div class="bs-example" th:fragment="header">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a th:href="@{/index}" class="navbar-brand">Pika</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse"
+                    data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a th:href="@{/home}" class="nav-item nav-link">Home</a>
+                    <a th:href="@{/charge}" class="nav-item nav-link">Nạp thẻ</a>
+                    <a th:href="@{/buy-package}" class="nav-item nav-link">Mua gói</a>
+<!--                    <a th:href="@{/gift-code}" class="nav-item nav-link">Gift Code</a>-->
+                    <a th:href="@{/tai-ios}" class="nav-item nav-link active">Tải IOS</a>
+                    <a th:href="@{/lucky-draw}" class="nav-item nav-link">Vòng quay</a>
+                    <a th:href="@{/contact}" class="nav-item nav-link">Liên Hệ</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <div class="nav-item nav-link header-name"></div>
+                    <a th:href="@{/log-out}" class="nav-item nav-link">Thoát</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- End Header menu -->
+    <hr/>
+    <h3>Bạn cần nạp ít nhất 50k 1 lần vào web này để kích hoạt link down load</h3>
+    <h4 style="color: red">Chú ý, mỗi 1 lần ít nhất 50k mới active link download, nên đừng chia sẻ nó cho ai khác, link sẽ hết hạn ngay khi bạn click vào!!!</h4>
+    <hr/>
+    <button type="button" class="btn btn-primary" id="get-link-ios">Download IOS</button>
+</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        // get link ios
+        $("#get-link-ios").click(function () {
+            getLinkIOS();
+        });
+
+        function getLinkIOS() {
+            var homeUrl = "";
+            if (confirm("Hãy nhớ, chỉ mở link này trên thiết bị IOS, nếu không sẽ mất lượt download")) {
+                $.ajax({
+                    url: homeUrl + "/api/user/get-link-ios",
+                    type: "GET",
+                    dataType: 'json', headers: {
+                        'Authorization': sessionStorage.getItem("token"),
+                    },
+                    contentType: "application/json",
+                    success: function (response) {
+                        alert("Lấy link thành công, ấn OK để tiếp tục");
+                        window.location.href = homeUrl + "/get-link-vip?token=" + response.data;
+                    },
+                    error: function (jqXHR) {
+                        alert("Có lỗi xảy ra: " + jqXHR.responseJSON.msg);
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+</html>

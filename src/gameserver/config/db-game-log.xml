@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+	<environment id="development">
+	    <transactionManager type="JDBC"/>
+	    <dataSource type="POOLED">
+			<property name="driver" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="${url}"/>
+			<property name="username" value="${username}"/>
+			<property name="password" value="${password}"/>
+			<!-- sql select -->
+			<property name="poolPingQuery" value="select 1" />
+			<!-- is ping -->
+			<property name="poolPingEnabled" value="true" />
+			<!-- ping time millisecond -->
+			<property name="poolPingConnectionsNotUsedFor" value="300000" />
+			<property name="poolMaximumActiveConnections" value="10" />
+			<property name="poolMaximumIdleConnections" value="5" />
+			<property name="poolMaximumCheckoutTime" value="60000" />
+	    </dataSource> 
+	</environment> 
+    </environments> 
+    <mappers>
+    	<mapper resource="game/server/db/log/sqlmap/BeanMap.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/Account.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerCreateLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/ItemLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerActionLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerLoginLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerLogoutLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerGuideLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerChargeLog.xml"/> 
+		<mapper resource="game/server/db/log/sqlmap/PlayerLvlLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerRankLog.xml"/>
+		<mapper resource="game/server/db/log/sqlmap/PlayerLineNumLog.xml"/>
+    </mappers>
+</configuration>

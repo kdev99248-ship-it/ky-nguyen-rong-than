@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20210407224500-1" author="dokd">
+        <createTable tableName="prize">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="text" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="img" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="int(11)" defaultValue="99999">
+            </column>
+            <column name="percent_page" type="float" defaultValue="0.0">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20210407224500-2" author="DoKD">
+        <addColumn tableName="prize">
+            <column name="point_lock" type="int(11)" defaultValue="0"></column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

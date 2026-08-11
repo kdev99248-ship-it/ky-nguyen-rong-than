@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 每条客户端消息及其对应的服务端处理器配置文件 -->
+	
+<messages>
+	<!-- 跨服 -->
+    <msg message="Message.Inner.InnerServer$ReqAuthentication" handler="game.server.cross.handler.ReqAuthenticationHandler"/>
+    <msg message="Message.Inner.GRUtil$GRFightReportRsp" handler="game.server.cross.handler.GRFightReportRspHandler"/>
+    <msg message="Message.Inner.GRUtil$PublishMarquee" handler="game.server.cross.handler.GRPublishMarqueeHandler"/>
+    <msg message="Message.Inner.GRUtil$SendSysMail2Player" handler="game.server.cross.handler.GRSendSysMail2PlayerHandler"/>
+    <msg message="Message.Inner.GRUtil$SendPrompt2Player" handler="game.server.cross.handler.GRSendPrompt2PlayerHandler"/>
+    <msg message="Message.Inner.GRUtil$SendItem2Player" handler="game.server.cross.handler.GRSendItem2PlayerHandler"/>
+    <!-- 跨服石英大会 -->
+    <msg message="Message.Inner.GRCrossIndigo$GRIndigoPackage" handler="game.server.logic.crossIndigo.handler.InnerCrossIndigoResponseHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$ReqCrossIndigoDayRankReq" handler="game.server.logic.crossIndigo.handler.GetCrossIndigoDayRankHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$SaveReportFormationReq" handler="game.server.logic.crossIndigo.handler.SaveReportFormationHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$GetTop3InfoReq" handler="game.server.logic.crossIndigo.handler.GetTop3PlayerInfoHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$ReqAndGetCrossDataReq" handler="game.server.logic.crossIndigo.handler.RegAndGetCrossDataHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$UnregisterCrossReq" handler="game.server.logic.crossIndigo.handler.UnregisterCrossHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$GetPourIndigoCrossReq" handler="game.server.logic.crossIndigo.handler.GetCrossPourIndigoHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$RewardRaceCrossReq" handler="game.server.logic.crossIndigo.handler.RewardCrossRaceHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$ExchangeCrossAwardReq" handler="game.server.logic.crossIndigo.handler.ExchangeCrossAwardHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$GetCrossIndigoRankReq" handler="game.server.logic.crossIndigo.handler.GetCrossIndigoRankAllHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$GetFightHeroReq" handler="game.server.logic.crossIndigo.handler.GetFightHeroHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$ReqCrossIndigoDayRankReq" handler="game.server.logic.crossIndigo.handler.GetCrossIndigoDayRankHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$ReqCrossIndigoFightResult" handler="game.server.logic.crossIndigo.handler.GetCrossIndigoFightResultDataHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$SaveCrossHeroesReq" handler="game.server.logic.crossIndigo.handler.SaveCrossHeroesHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$SaveCrossFormationReq" handler="game.server.logic.crossIndigo.handler.ReqSaveCrossFormationHandler" />
+    <msg message="Message.C2SCrossIndigoMsg$CrossPourIndigoReq" handler="game.server.logic.crossIndigo.handler.PourCrossIndigoHandler" />
+    <!-- 登录 -->
+    <msg message="Message.C2SLoginMsg$LoginReq" handler="game.server.logic.login.handler.ReqLoginHandler" />
+    <msg message="Message.C2SLoginMsg$HeartbeatReq" handler="game.server.logic.login.handler.HeartbeatHandler" />
+    <msg message="Message.C2SLoginMsg$ReConnectReq" handler="game.server.logic.login.handler.ReqReconnectHandler" />
+	<!-- 玩家 -->
+	<msg message="Message.C2SPlayerMsg$GetPlayerInfoReq" handler="game.server.logic.player.handler.GetPlayerInfoHandler" />
+	<msg message="Message.C2SPlayerMsg$DiamondExchangeReq" handler="game.server.logic.player.handler.ReqDiamondExchangeHandler" />
+	<msg message="Message.C2SPlayerMsg$ModifyPlayerNameReq" handler="game.server.logic.player.handler.ReqModifyPlayerNameHandler" />
+	<msg message="Message.C2SPlayerMsg$ModifyPlayerImageReq" handler="game.server.logic.player.handler.ReqModifyPlayerImageHandler" />
+	<msg message="Message.C2SPlayerMsg$GiftCodeExchangeReq" handler="game.server.logic.giftcode.handler.GiftCodeExchangeHandler" />
+	<msg message="Message.C2SPlayerMsg$MainLayerRewardReq" handler="game.server.logic.player.handler.ReqMainLayerRewardHandler" />
+	<msg message="Message.C2SPlayerMsg$SettingUnicastReq" handler="game.server.logic.player.handler.SettingUnicastHandler" />
+	<msg message="Message.C2SPlayerMsg$BindYMDeviceTokenReq" handler="game.server.logic.player.handler.BindYMDeviceTokenHandler" />	
+	<!-- 英雄  -->
+	<msg message="Message.C2SHeroMsg$HeroLevelUpReq" handler="game.server.logic.hero.handler.HeroLevelUpHandler" />
+	<msg message="Message.C2SHeroMsg$HeroStepUpReq" handler="game.server.logic.hero.handler.HeroStepUpHandler" />
+	<msg message="Message.C2SHeroMsg$HeroStarUpReq" handler="game.server.logic.hero.handler.HeroStarUpHandler" />
+	<msg message="Message.C2SHeroMsg$HeroSkillUpReq" handler="game.server.logic.hero.handler.HeroSkillLvlUpHandler" />
+	<msg message="Message.C2SHeroMsg$BuySkillPointReq" handler="game.server.logic.hero.handler.BuySkillPointHandler" />
+	<msg message="Message.C2SHeroMsg$ExclusiveStarUpReq" handler="game.server.logic.hero.handler.ExclusiveUpHandler" />
+	<msg message="Message.C2SHeroMsg$PutOnWareReq" handler="game.server.logic.hero.handler.PutOnWareHandler" />
+	<msg message="Message.C2SHeroMsg$PutDownWareReq" handler="game.server.logic.hero.handler.PutDownWareHandler" />
+	<msg message="Message.C2SHeroMsg$ChaLvlUpByItemsReq" handler="game.server.logic.hero.handler.ChaLvlUpByItemsHandler" />
+	<msg message="Message.C2SHeroMsg$ChaLvlUpByDiamondReq" handler="game.server.logic.hero.handler.ChaLvlUpByDiamondHandler" />
+	<msg message="Message.C2SHeroMsg$MasterFragmentReq" handler="game.server.logic.hero.handler.MasterFragmentHandler" />
+	<msg message="Message.C2SHeroMsg$SkillResEndTimeReq" handler="game.server.logic.hero.handler.SkillResEndTimeHandler" />
+	<msg message="Message.C2SHeroMsg$HeroEsotericaReq" handler="game.server.logic.hero.handler.ReqHeroEsotericaInfoHandler" />
+	<msg message="Message.C2SHeroMsg$HeroEsotericaLevelUpReq" handler="game.server.logic.hero.handler.ReqHeroEsotericaLevelUpHandler" />
+	<!-- 背包 -->
+	<msg message="Message.C2SBackpackMsg$SellItemReq" handler="game.server.logic.backpack.handler.ReqSellItemHandler" />
+	<msg message="Message.C2SBackpackMsg$UseItemReq" handler="game.server.logic.backpack.handler.ReqUseItemHandler" />
+	<msg message="Message.C2SBackpackMsg$ComposePieceReq" handler="game.server.logic.backpack.handler.ReqComposePieceHandler" />
+	<msg message="Message.C2SBackpackMsg$OpenChooseBoxReq" handler="game.server.logic.backpack.handler.ReqOpenChooseBoxHandler" />
+	<!-- 装备 -->
+	<msg message="Message.C2SBackpackMsg$EquipLevelUpReq" handler="game.server.logic.backpack.handler.ReqEquipLevelUpHandler" />
+	<msg message="Message.C2SBackpackMsg$EquipStarUpReq" handler="game.server.logic.backpack.handler.ReqEquipStarUpHandler" />
+	<msg message="Message.C2SBackpackMsg$EquipOneKeyLevelUpReq" handler="game.server.logic.backpack.handler.ReqEquipOneKeyLevelUpHandler" />
+	<msg message="Message.C2SBackpackMsg$EquipRefineReq" handler="game.server.logic.backpack.handler.ReqEquipRefineHandler" />
+	<msg message="Message.C2SBackpackMsg$MagicWeaponLevelUpReq" handler="game.server.logic.backpack.handler.ReqMagicWeaponLevelUpHandler" />
+	<msg message="Message.C2SBackpackMsg$MagicWeaponRefineReq" handler="game.server.logic.backpack.handler.ReqMagicWeaponRefineHandler" />
+	<msg message="Message.C2SBackpackMsg$GemComposeReq" handler="game.server.logic.backpack.handler.ReqComposeGemHandler" />
+	<msg message="Message.C2SBackpackMsg$GemClothesReq" handler="game.server.logic.backpack.handler.ReqClothesGemHandler" />
+	<msg message="Message.C2SBackpackMsg$GemUnclothesReq" handler="game.server.logic.backpack.handler.ReqUnclothesGemHandler" />
+	<msg message="Message.C2SBackpackMsg$EquipHoleReq" handler="game.server.logic.backpack.handler.ReqEquipHoleHandler" />	
+	<msg message="Message.C2SBackpackMsg$RemoveItemReq" handler="game.server.logic.backpack.handler.RemoveItemHandler" />
+
+ 	<!-- 副本章节关卡 -->
+	<msg message="Message.C2SSectionMsg$PassSectionReq" handler="game.server.logic.section.handler.PassSectionHandler" />
+	<msg message="Message.C2SSectionMsg$SweepSectionReq" handler="game.server.logic.section.handler.SweepSectionHandler" />
+	<msg message="Message.C2SSectionMsg$BuyHSNumReq" handler="game.server.logic.section.handler.BuyHSNumHandler" />
+	<msg message="Message.C2SSectionMsg$RecChapterBoxReq" handler="game.server.logic.section.handler.RecChapterBoxHandler" />
+	<msg message="Message.C2SSectionMsg$RecSectionBoxReq" handler="game.server.logic.section.handler.RecSectionBoxHandler" />
+	<msg message="Message.C2SSectionMsg$RecNewSectionBoxReq" handler="game.server.logic.section.handler.RecNewSectionBoxHandler" />
+	<msg message="Message.C2SSectionMsg$OneKeyRewardReq" handler="game.server.logic.section.handler.OneKeyRewardHandler" />
+ 	<!-- 阵容 -->
+	<msg message="Message.C2SFormationMsg$SetLineUpReq" handler="game.server.logic.formation.handler.SetLineUpHandler" />
+	<msg message="Message.C2SFormationMsg$ChangeFormationReq" handler="game.server.logic.formation.handler.ChangeFormationHandler" />
+	<msg message="Message.C2SFormationMsg$SetPartnerReq" handler="game.server.logic.formation.handler.SetPartnerHandler" />
+	<msg message="Message.C2SFormationMsg$ReFormationAwardReq" handler="game.server.logic.formation.handler.RecommendFormationAwardHandler" />
+	<msg message="Message.C2SFormationMsg$CalRecommendPowerReq" handler="game.server.logic.formation.handler.LineupHeroesRecommendPowerHandler" />
+ 	<!-- 抽卡 -->
+	<msg message="Message.C2SDrawCardMsg$NormalDrawCardReq" handler="game.server.logic.drawcard.handler.NormalDrawCardHandler" />
+	<msg message="Message.C2SDrawCardMsg$DiamondDrawCardReq" handler="game.server.logic.drawcard.handler.DiamondDrawCardHandler" />
+	<msg message="Message.C2SDrawCardMsg$TenDiamondDrawCardReq" handler="game.server.logic.drawcard.handler.TenDiamondDrawCardHandler" />
+	<msg message="Message.C2SDrawCardMsg$ReceiveScoreRewardReq" handler="game.server.logic.drawcard.handler.ReceiveScoreRewardHandler" />
+	<msg message="Message.C2SDrawCardMsg$BuyDrawItemReq" handler="game.server.logic.drawcard.handler.BuyDrawItemHandler" />
+	<!-- 请求关卡战斗 -->
+	<msg message="Message.C2SFightMsg$SectionFightReq" handler="game.server.logic.fight.handler.ReqSectionFightHandler" />
+	<msg message="Message.C2SFightMsg$SectionFightCheckReq" handler="game.server.logic.fight.handler.ReqSectionFightCheckHandler" />
+	<msg message="Message.C2SFightMsg$FightReportReq" handler="game.server.logic.fight.handler.ReqFightReportHandler" />
+	
+	<!-- 竞技场 -->
+	<msg message="Message.C2SArenaMsg$BuyDayChallengeReq" handler="game.server.logic.arena.handler.ReqBuyDayChallengeNumHandler" />
+	<msg message="Message.C2SArenaMsg$ChallengeReq" handler="game.server.logic.arena.handler.ChallengeHandler" />
+	<msg message="Message.C2SArenaMsg$ConChallengeReq" handler="game.server.logic.arena.handler.ConChallengeHandler" />
+	<msg message="Message.C2SArenaMsg$GetArenaReq" handler="game.server.logic.arena.handler.GetArenaHandler" />
+	<msg message="Message.C2SArenaMsg$ModifyManifestoReq" handler="game.server.logic.arena.handler.ModifyManifestoHandler" />
+	<msg message="Message.C2SArenaMsg$OpenArenaReportsReq" handler="game.server.logic.arena.handler.OpenArenaReportsHandler" />
+	<msg message="Message.C2SArenaMsg$ArenaHighRewardReq" handler="game.server.logic.arena.handler.ReceiveHighRewardHandler" />
+	<msg message="Message.C2SArenaMsg$ArenaScoreRewardReq" handler="game.server.logic.arena.handler.ReceiveScoreRewardHandler" />
+	<msg message="Message.C2SArenaMsg$RefreshEnemyReq" handler="game.server.logic.arena.handler.RefreshEnemyHandler" />
+	<msg message="Message.C2SArenaMsg$GetArenaRankReq" handler="game.server.logic.arena.handler.TopRankingHandler" />
+	<msg message="Message.C2SArenaMsg$ResetChallengeCDReq" handler="game.server.logic.arena.handler.ResetChallengeCDHandler" />
+	<!-- 聊天 -->
+	<msg message="Message.C2SChatMsg$SendChatMsgReq" handler="game.server.logic.chat.handler.SendChatMsgHandler" />
+	<msg message="Message.C2SChatMsg$MsgFunctionReq" handler="game.server.logic.chat.handler.MsgFunctionHandler" />
+	<msg message="Message.C2SChatMsg$RemovePrivateListReq" handler="game.server.logic.chat.handler.ReqRemovePrivateListHandler" />
+	<msg message="Message.C2SChatMsg$ReadPrivateChatReq" handler="game.server.logic.chat.handler.ReqReadPrivateChatHandler" />
+	<!-- 邮件 -->
+	<msg message="Message.C2SMailMsg$GetMailAdjunctReq" handler="game.server.logic.mail.handler.ReqGetMailAdjunctHandler" />
+	<msg message="Message.C2SMailMsg$DeleteMailReq" handler="game.server.logic.mail.handler.ReqDelMailHandler" />
+	<msg message="Message.C2SMailMsg$ReadMailReq" handler="game.server.logic.mail.handler.ReqReadMailHandler" />
+	<msg message="Message.C2SMailMsg$MailFunctionReq" handler="game.server.logic.mail.handler.ReqMailFuntionHandler" />
+	<!-- 基因 -->
+	<msg message="Message.C2SGeneMsg$GetGeneReq" handler="game.server.logic.gene.handler.GetGeneHandler" />
+	<msg message="Message.C2SGeneMsg$GeneUpReq" handler="game.server.logic.gene.handler.GeneUpHandler" />
+	<!-- 夺宝 -->
+	<msg message="Message.C2SSnatchMsg$GetSnatchReq" handler="game.server.logic.snatch.handler.GetSnatchHandler" />
+	<msg message="Message.C2SSnatchMsg$OpenProtectedReq" handler="game.server.logic.snatch.handler.OpenProtectHandler" />
+	<msg message="Message.C2SSnatchMsg$RefreshSnatchReq" handler="game.server.logic.snatch.handler.RefreshSnatchHandler" />
+	<msg message="Message.C2SSnatchMsg$SnatchReq" handler="game.server.logic.snatch.handler.SnatchHandler" />
+	<msg message="Message.C2SSnatchMsg$ConSnatchReq" handler="game.server.logic.snatch.handler.ConSnatchHandler" />
+	<msg message="Message.C2SSnatchMsg$CompoundReq" handler="game.server.logic.snatch.handler.CompoundHandler" />
+	<msg message="Message.C2SSnatchMsg$OpenSnatchReportsReq" handler="game.server.logic.snatch.handler.OpenSnatchReportsHandler" />
+	<msg message="Message.C2SSnatchMsg$OneKeySnatchReq" handler="game.server.logic.snatch.handler.OneKeySnatchHandler" />
+	<!-- 冠军之路 -->
+	<msg message="Message.C2SChampionMsg$GetChampionRanksReq" handler="game.server.logic.champion.handler.ReqChampionRanksHandler" />
+	<msg message="Message.C2SChampionMsg$ChampionFightReq" handler="game.server.logic.champion.handler.ReqChampionFightHandler" />
+	<msg message="Message.C2SChampionMsg$ChampionFightCheckReq" handler="game.server.logic.champion.handler.ReqChampionFightCheckHandler" />
+	<msg message="Message.C2SChampionMsg$BuyChampionFightCountReq" handler="game.server.logic.champion.handler.ReqBuyFightCountHandler" />
+	<msg message="Message.C2SChampionMsg$GetPassRewardReq" handler="game.server.logic.champion.handler.ReqGetPassRewardHandler" />
+	<msg message="Message.C2SChampionMsg$OneKeyFightReq" handler="game.server.logic.champion.handler.ReqOneKeyFightHandler" />
+	<msg message="Message.C2SChampionMsg$GetHighestRewardReq" handler="game.server.logic.champion.handler.ReqGetHighestRewardHandler" />
+	
+	<!-- 合体技 -->
+	<msg message="Message.C2SComboSkillMsg$ComboSkillLevelUpReq" handler="game.server.logic.comboSkill.handler.ReqComboSkillLevelUpHandler" />
+	<msg message="Message.C2SComboSkillMsg$ComboSkillLineUpReq" handler="game.server.logic.comboSkill.handler.ReqComboSkillLineUpHandler" />
+	<msg message="Message.C2SComboSkillMsg$ComboSkillResetReq" handler="game.server.logic.comboSkill.handler.ReqComboSkillResetHandler" />
+	<!-- 梦之遗迹 -->
+	<msg message="Message.C2SRelicMsg$GetRelicReq" handler="game.server.logic.relic.handler.GetRelicHandler" />
+	<msg message="Message.C2SRelicMsg$SingleDrawReq" handler="game.server.logic.relic.handler.SingleDrawHandler" />
+	<msg message="Message.C2SRelicMsg$TenDrawReq" handler="game.server.logic.relic.handler.TenDrawHandler" />
+	<!-- 好友 -->
+	<msg message="Message.C2SFriendMsg$InviteFriendReq" handler="game.server.logic.friend.handler.InviteFriendHandler" />
+	<msg message="Message.C2SFriendMsg$HandleApplyReq" handler="game.server.logic.friend.handler.HandleApplyFriendHandler" />
+	<msg message="Message.C2SFriendMsg$DeleteFriendReq" handler="game.server.logic.friend.handler.DeleteFriendHandler" />
+	<msg message="Message.C2SFriendMsg$SendEnergyReq" handler="game.server.logic.friend.handler.SendEnergyHandler" />
+	<msg message="Message.C2SFriendMsg$ReceiveEnergyReq" handler="game.server.logic.friend.handler.ReceiveEnergyHandler" />
+	<msg message="Message.C2SFriendMsg$SearchPlayerReq" handler="game.server.logic.friend.handler.SearchPlayerHandler" />
+	<msg message="Message.C2SFriendMsg$RefreshPlayerReq" handler="game.server.logic.friend.handler.RefreshPlayerHandler" />
+	<msg message="Message.C2SFriendMsg$FriendFightReq" handler="game.server.logic.friend.handler.FriendFightHandler" />
+	<msg message="Message.C2SFriendMsg$HandleBlackListReq" handler="game.server.logic.friend.handler.HandleBlackListHandler" />
+
+	<!-- 公会 -->
+	<msg message="Message.C2SGuildMsg$GetGuildListReq" handler="game.server.logic.guild.handler.ReqGuildListHandler" />
+    <msg message="Message.C2SGuildMsg$GetGuildRankReq" handler="game.server.logic.guild.handler.ReqGuildRankHandler" />
+    <msg message="Message.C2SGuildMsg$SearchGuildReq" handler="game.server.logic.guild.handler.ReqSearchGuildHandler" />
+    <msg message="Message.C2SGuildMsg$CreateGuildReq" handler="game.server.logic.guild.handler.ReqCreateGuildHandler" />
+    <msg message="Message.C2SGuildMsg$QuitGuildReq" handler="game.server.logic.guild.handler.ReqQuitGuildHandler" />
+    <msg message="Message.C2SGuildMsg$ApplyGuildReq" handler="game.server.logic.guild.handler.ReqApplyGuildHandler" />
+	<msg message="Message.C2SGuildMsg$ModifyApplyConditionReq" handler="game.server.logic.guild.handler.ReqModifyApplyConditionHandler" />
+	<msg message="Message.C2SGuildMsg$AgreeApplyGuildReq" handler="game.server.logic.guild.handler.ReqAgreeApplyGuildHandler" />
+	<msg message="Message.C2SGuildMsg$RefuseApplyGuildReq" handler="game.server.logic.guild.handler.ReqRefuseApplyGuildHandler" />
+	<msg message="Message.C2SGuildMsg$RefuseAllApplyGuildReq" handler="game.server.logic.guild.handler.ReqRefuseAllApplyGuildHandler" />
+	<msg message="Message.C2SGuildMsg$GuildHallInfoReq" handler="game.server.logic.guild.handler.ReqGuildHallInfoHandler" />
+	<msg message="Message.C2SGuildMsg$ModifyGuildNameReq" handler="game.server.logic.guild.handler.ReqModifyGuildNameHandler" />
+	<msg message="Message.C2SGuildMsg$GetGuildFlagListReq" handler="game.server.logic.guild.handler.ReqGuildFlagListHandler" />
+	<msg message="Message.C2SGuildMsg$BuyGuildFlagReq" handler="game.server.logic.guild.handler.ReqBuyGuildFlagHandler" />
+	<msg message="Message.C2SGuildMsg$ModifyGuildFlagReq" handler="game.server.logic.guild.handler.ReqModifyGuildFlagHandler" />
+	<msg message="Message.C2SGuildMsg$ModifyMemberPositionReq" handler="game.server.logic.guild.handler.ReqModifyMemberPositionHandler" />
+	<msg message="Message.C2SGuildMsg$ModifyGuildNoticeReq" handler="game.server.logic.guild.handler.ReqModifyGuildNoticeHandler" />
+	<msg message="Message.C2SGuildMsg$KickMemberReq" handler="game.server.logic.guild.handler.ReqKickMemberHandler" />
+	<msg message="Message.C2SGuildMsg$BindQQReq" handler="game.server.logic.guild.handler.ReqBindQQHandler" />
+	<msg message="Message.C2SGuildMsg$BuildingInfoReq" handler="game.server.logic.guild.handler.ReqBuildingInfoHandler" />
+	<msg message="Message.C2SGuildMsg$BuildingBuildReq" handler="game.server.logic.guild.handler.ReqBuildingBuildHandler" />
+	<msg message="Message.C2SGuildMsg$GetWageReq" handler="game.server.logic.guild.handler.ReqGetWageHandler" />
+	<msg message="Message.C2SGuildMsg$GetReaserchInfoReq" handler="game.server.logic.guild.handler.ReqGetReaserchInfoHandler" />
+	<msg message="Message.C2SGuildMsg$GuildReaserchReq" handler="game.server.logic.guild.handler.ReqGuildReaserchHandler" />
+	<msg message="Message.C2SGuildMsg$ReaserchResetReq" handler="game.server.logic.guild.handler.ReqReaserchResetHandler" />
+	<msg message="Message.C2SGuildMsg$ReaserchRewardReq" handler="game.server.logic.guild.handler.ReqReaserchRewardHandler" />
+	<msg message="Message.C2SGuildMsg$BuyReaserchResetCountReq" handler="game.server.logic.guild.handler.ReqBuyRscResetCountHandler" />
+	<msg message="Message.C2SGuildMsg$GetTrainingInfoReq" handler="game.server.logic.guild.handler.ReqGetTrainingInfoHandler" />
+	<msg message="Message.C2SGuildMsg$TrainingStartReq" handler="game.server.logic.guild.handler.ReqTrainingStartHandler" />
+	<msg message="Message.C2SGuildMsg$TrainingRewardReq" handler="game.server.logic.guild.handler.ReqTrainingRewardHandler" />
+	<msg message="Message.C2SGuildMsg$TrainingHelpReq" handler="game.server.logic.guild.handler.ReqTrainingHelpHandler" />
+	<msg message="Message.C2SGuildMsg$AddTrainingSeatReq" handler="game.server.logic.guild.handler.ReqAddTrainingSeatHandler" />
+	<msg message="Message.C2SGuildMsg$GetRedEnvelopeReq" handler="game.server.logic.guild.handler.ReqGetRedEnvelopeInfoHandler" />
+	<msg message="Message.C2SGuildMsg$GrabRedEnvelopeReq" handler="game.server.logic.guild.handler.ReqGrabRedEnvelopeHandler" />
+	<msg message="Message.C2SGuildMsg$SendRedEnvelopeReq" handler="game.server.logic.guild.handler.ReqSendRedEnvelopeHandler" />
+	<msg message="Message.C2SGuildMsg$GrabPlayerRedEnvelopeReq" handler="game.server.logic.guild.handler.ReqGrabPlayerRedEnvelopeHandler" />
+	<msg message="Message.C2SGuildMsg$GetRedEnvelopeRanksReq" handler="game.server.logic.guild.handler.ReqGetRedEnvelopeRanksHandler" />
+	<msg message="Message.C2SGuildMsg$GetRedEnvelopeDetailReq" handler="game.server.logic.guild.handler.ReqGetRedEnvelopeDetailHandler" />
+	<msg message="Message.C2SGuildMsg$SendGuildApplyReq" handler="game.server.logic.guild.handler.ReqSendGuildApplyHandler" />
+	<msg message="Message.C2SGuildMsg$GetGuildLogReq" handler="game.server.logic.guild.handler.ReqGetGuildLogHandler" />
+	<msg message="Message.C2SGuildMsg$GetDungeonInfoReq" handler="game.server.logic.guild.handler.ReqGetDungeonInfoHandler" />
+	<msg message="Message.C2SGuildMsg$DungeonFightReq" handler="game.server.logic.guild.handler.ReqDungeonFightHandler" />
+	<msg message="Message.C2SGuildMsg$DungeonFightCheckReq" handler="game.server.logic.guild.handler.ReqDungeonFightCheckHandler" />
+	<msg message="Message.C2SGuildMsg$DungeonRewardReq" handler="game.server.logic.guild.handler.ReqDungeonRewardHandler" />
+	<msg message="Message.C2SGuildMsg$GetDungeonRanksReq" handler="game.server.logic.guild.handler.ReqGetDungeonRanksHandler" />
+	<msg message="Message.C2SGuildMsg$GetDungeonActiveReq" handler="game.server.logic.guild.handler.ReqGetDungeonActiveHandler" />
+	<msg message="Message.C2SGuildMsg$GetDungeonMemberRanksReq" handler="game.server.logic.guild.handler.ReqGetDungeonMemberRanksHandler" />
+	
+	<!-- 排行榜 -->
+	<msg message="Message.C2SRankMsg$GetRankMsgReq" handler="game.server.logic.rank.handker.GetRankHandler" />
+	<msg message="Message.C2SRankMsg$PraiseReq" handler="game.server.logic.rank.handker.PraiseHandler" />
+	<msg message="Message.C2SRankMsg$GetPraiseReq" handler="game.server.logic.rank.handker.GetPraiseHandler" />
+	<!-- 任务 -->
+	<msg message="Message.C2STaskMsg$RewardTaskReq" handler="game.server.logic.task.handler.RewardTaskHandler" />
+	<msg message="Message.C2STaskMsg$RewardMainBoxReq" handler="game.server.logic.task.handler.RewardMainBoxHandler" />
+	<msg message="Message.C2STaskMsg$RewardDailyBoxReq" handler="game.server.logic.task.handler.RewardDailyBoxHandler" />
+	<msg message="Message.C2STaskMsg$RepurchaseReq" handler="game.server.logic.task.handler.RepurchaseHandler" />
+	<!-- 图鉴 -->
+	<msg message="Message.C2SHerodexMsg$HerodexTrainingReq" handler="game.server.logic.herodex.handler.HerodexTrainingHandler" />
+	<msg message="Message.C2SHerodexMsg$HerodexCollectReq" handler="game.server.logic.herodex.handler.HerodexCollectHandler" />
+	<!-- 商店 -->
+	<msg message="Message.C2SShopMsg$BuyProductReq" handler="game.server.logic.shop.handler.BuyProductHandler" />
+	<msg message="Message.C2SShopMsg$RefreshTableReq" handler="game.server.logic.shop.handler.RefreshShopHandler" />
+	<msg message="Message.C2SShopMsg$GetShopTableReq" handler="game.server.logic.shop.handler.GetShopTableHandler" />
+	<msg message="Message.C2SShopMsg$GetProductReq" handler="game.server.logic.shop.handler.GetProductHandler" />
+	<!-- 每日试炼 -->
+	<msg message="Message.C2SDailyTrialMsg$DailyTrialFightCheckReq" handler="game.server.logic.dailyTrial.handler.DailyTrialFightCheckHandler" />
+	<msg message="Message.C2SDailyTrialMsg$DailyTrialFightReq" handler="game.server.logic.dailyTrial.handler.DailyTrialFightHandler" />
+	<msg message="Message.C2SDailyTrialMsg$SweepTrialReq" handler="game.server.logic.dailyTrial.handler.DailyTrialSweepHandler" />
+	<!-- 研究所 -->
+	<msg message="Message.C2SResearchMsg$DecomHeroReq" handler="game.server.logic.research.handler.ReqDecomHeroHandler" />
+	<msg message="Message.C2SResearchMsg$DecomEquipReq" handler="game.server.logic.research.handler.ReqDecomEquipHandler" />
+	<msg message="Message.C2SResearchMsg$DecomExclusiveReq" handler="game.server.logic.research.handler.ReqDecomExclusiveHandler" />
+	<msg message="Message.C2SResearchMsg$DecomHeroFragReq" handler="game.server.logic.research.handler.ReqDecomHeroFragHandler" />
+	<msg message="Message.C2SResearchMsg$DecomEqFragReq" handler="game.server.logic.research.handler.ReqDecomEqFragHandler" />
+	<msg message="Message.C2SResearchMsg$RebirthHeroReq" handler="game.server.logic.research.handler.ReqRebirthHeroHandler" />
+	<msg message="Message.C2SResearchMsg$RebirthMWReq" handler="game.server.logic.research.handler.ReqRebirthMWHandler" />
+	<msg message="Message.C2SResearchMsg$RebirthEquipReq" handler="game.server.logic.research.handler.ReqRebirthEquipHandler" />
+	<msg message="Message.C2SResearchMsg$MergeMagicWeaponReq" handler="game.server.logic.research.handler.ReqMergeMagicWeaponHandler" />	
+	<msg message="Message.C2SResearchMsg$DecomRuneReq" handler="game.server.logic.research.handler.DecomHeroRuneHandler" />
+	<msg message="Message.C2SResearchMsg$RebirthRuneReq" handler="game.server.logic.research.handler.RebirthRuneHandler" />		
+	<!-- 对战塔 -->
+	<msg message="Message.C2SVsTowerMsg$GetVsTowerDataReq" handler="game.server.logic.vsTower.handler.ReqGetVsTowerDataHandler" />
+	<msg message="Message.C2SVsTowerMsg$GetVsTowerRanksReq" handler="game.server.logic.vsTower.handler.ReqGetVsTowerRanksHandler" />
+	<msg message="Message.C2SVsTowerMsg$VsTowerFightReq" handler="game.server.logic.vsTower.handler.ReqVsTowerFightHandler" />
+	<msg message="Message.C2SVsTowerMsg$VsTowerFightCheckReq" handler="game.server.logic.vsTower.handler.ReqVsTowerFightCheckHandler" />
+	<msg message="Message.C2SVsTowerMsg$RefreshFightTargetReq" handler="game.server.logic.vsTower.handler.ReqRefreshFightTargetHandler" />
+	<msg message="Message.C2SVsTowerMsg$GetVsTowerPassRewardReq" handler="game.server.logic.vsTower.handler.ReqGetVsTowerPassRewardHandler" />
+	<msg message="Message.C2SVsTowerMsg$RefreshVsTowerBoxReq" handler="game.server.logic.vsTower.handler.ReqRefreshVsTowerBoxHandler" />
+	<msg message="Message.C2SVsTowerMsg$OneKeyVsTowerFightReq" handler="game.server.logic.vsTower.handler.ReqOneKeyVsTowerFightHandler" />
+	<msg message="Message.C2SVsTowerMsg$OneKeyBuyVsTowerBoxReq" handler="game.server.logic.vsTower.handler.ReqOneKeyBuyVsTowerBoxHandler" />
+	<!-- 徽章 -->
+	<msg message="Message.C2SBadgeMsg$UnlockBadgeReq" handler="game.server.logic.badge.handler.ReqUnlockBadgeHandler" />	
+	<msg message="Message.C2SBadgeMsg$ReceiveBadgeRewardReq" handler="game.server.logic.badge.handler.ReqReceiveBadgeRewardHandler" />	
+	<!-- 神兽入侵（世界boss） -->
+	<msg message="Message.C2SWorldBossMsg$GetWorldBossDataReq" handler="game.server.logic.worldBoss.handler.ReqGetWorldBossDataHandler" />
+	<msg message="Message.C2SWorldBossMsg$GetWorldBossRanksDetailReq" handler="game.server.logic.worldBoss.handler.ReqGetWorldBossRanksDetailHandler" />
+	<msg message="Message.C2SWorldBossMsg$WorldBossFightReq" handler="game.server.logic.worldBoss.handler.ReqWorldBossFightHandler" />
+	<msg message="Message.C2SWorldBossMsg$WorldBossInspireReq" handler="game.server.logic.worldBoss.handler.ReqWorldBossInspireHandler" />
+	<msg message="Message.C2SWorldBossMsg$WorldBossReliveReq" handler="game.server.logic.worldBoss.handler.ReqWorldBossReliveHandler" />
+	<msg message="Message.C2SWorldBossMsg$WorldBossQuitReq" handler="game.server.logic.worldBoss.handler.ReqWorldBossQuitHandler" />
+	<!-- 充值 -->
+	<msg message="Message.C2SRechargeMsg$RechargeForTestReq" handler="game.server.logic.recharge.handler.ReqRechargeForTestHandler" />
+	<msg message="Message.C2SRechargeMsg$BuyVipGiftReq" handler="game.server.logic.recharge.handler.ReqBuyVipGiftHandler" />
+	<msg message="Message.C2SRechargeMsg$RechargeOrderReq" handler="game.server.logic.recharge.handler.ReqRechargeOrderHandler" />	
+	<msg message="Message.C2SRechargeMsg$CancelRechargeOrderReq" handler="game.server.logic.recharge.handler.ReqCancelRechargeOrderHandler" />
+	<msg message="Message.C2SRechargeMsg$RechargeSuccessReq" handler="game.server.logic.recharge.handler.RechargeSuccessHandler" />
+	
+	<!-- 新手引导 -->
+	<msg message="Message.C2SGuideMsg$FinishGuideReq" handler="game.server.logic.guide.handler.ReqFinishGuideHandler" />
+	<msg message="Message.C2SGuideMsg$UpdateProgressReq" handler="game.server.logic.guide.handler.ReqUpdateProgressHandler" />
+	<!-- 振幅器 -->
+	<msg message="Message.C2SAmplifierMsg$UnlockArtifactReq" handler="game.server.logic.amplifier.handler.ReqUnlockArtifactHandler" />
+	<msg message="Message.C2SAmplifierMsg$ArtifactTrainningReq" handler="game.server.logic.amplifier.handler.ReqArtifactTrainningHandler" />
+	<msg message="Message.C2SAmplifierMsg$SaveLastTrainningReq" handler="game.server.logic.amplifier.handler.ReqSaveLastTrainningHandler" />
+	<!-- 组队狩猎 -->
+	<msg message="Message.C2STeamHuntMsg$CreateHuntTeamReq" handler="game.server.logic.teamHunt.handler.CreateHuntTeamHandler" />
+	<msg message="Message.C2STeamHuntMsg$JoinHuntTeamReq" handler="game.server.logic.teamHunt.handler.JoinHuntTeamHandler" />	
+	<msg message="Message.C2STeamHuntMsg$QuitHuntTeamReq" handler="game.server.logic.teamHunt.handler.QuitHuntTeamHandler" />
+	<msg message="Message.C2STeamHuntMsg$SetQuickJoinReq" handler="game.server.logic.teamHunt.handler.SetQuickJoinHandler" />
+	<msg message="Message.C2STeamHuntMsg$InviteHuntFriendReq" handler="game.server.logic.teamHunt.handler.InviteHuntFriendHandler" />	
+	<msg message="Message.C2STeamHuntMsg$ChangeHuntHeroReq" handler="game.server.logic.teamHunt.handler.ChangeHuntHeroHandler" />
+	<msg message="Message.C2STeamHuntMsg$InviteHuntTeamReq" handler="game.server.logic.teamHunt.handler.InviteHuntTeamHandler" />	
+	<msg message="Message.C2STeamHuntMsg$NoticeTeamMemberReq" handler="game.server.logic.teamHunt.handler.NoticeTeamMemberHandler" />
+	<msg message="Message.C2STeamHuntMsg$AcceptInviteJoinReq" handler="game.server.logic.teamHunt.handler.AcceptInviteJoinHandler" />
+	<msg message="Message.C2STeamHuntMsg$HuntTeamFightReq" handler="game.server.logic.teamHunt.handler.ReqHuntTeamFightHandler" />
+	<msg message="Message.C2STeamHuntMsg$HuntTeamFightCheckReq" handler="game.server.logic.teamHunt.handler.HuntTeamFightCheckHandler" />
+	<msg message="Message.C2STeamHuntMsg$DrawRewardReq" handler="game.server.logic.teamHunt.handler.DrawRewardHandler" />
+	<msg message="Message.C2STeamHuntMsg$GetInviteFriendReq" handler="game.server.logic.teamHunt.handler.GetInviteFriendListHandler" />
+	<!-- 基础活动 -->
+	<msg message="Message.C2SBasicActivityMsg$DaySignReq" handler="game.server.logic.basicActivity.handler.DaySignHandler" />
+	<msg message="Message.C2SBasicActivityMsg$RepairSignReq" handler="game.server.logic.basicActivity.handler.RepairDaySignHandler" />
+	<msg message="Message.C2SBasicActivityMsg$SignTotalRewardReq" handler="game.server.logic.basicActivity.handler.SignTotalRewardHandler" />
+	<msg message="Message.C2SBasicActivityMsg$Login7daysRewardReq" handler="game.server.logic.basicActivity.handler.Login7daysRewardHandler" />
+	<msg message="Message.C2SBasicActivityMsg$CarnivalRewardReq" handler="game.server.logic.basicActivity.handler.CarnivalRewardHandler" />
+	<msg message="Message.C2SBasicActivityMsg$CarnivalFinalRewardReq" handler="game.server.logic.basicActivity.handler.CarnivalFinalRewardHandler" />
+	<msg message="Message.C2SBasicActivityMsg$GetNotifyPowerRankActivityInfoReq" handler="game.server.logic.basicActivity.handler.reqPowerRankActivityInfoHandler" />
+	<msg message="Message.C2SBasicActivityMsg$CarnivalExtRewardReq" handler="game.server.logic.basicActivity.handler.CarnivalExtRewardHandler" />2
+	<!-- 石英大会 -->
+	<msg message="Message.C2SIndigoMsg$RegAndGetDataReq" handler="game.server.logic.indigo.handler.RegAndGetDataHandler" />
+	<msg message="Message.C2SIndigoMsg$UnregisterReq" handler="game.server.logic.indigo.handler.UnregisterHandler" />
+	<msg message="Message.C2SIndigoMsg$ApplyIndigoReq" handler="game.server.logic.indigo.handler.ApplyIndigoHandler" />
+	<msg message="Message.C2SIndigoMsg$SaveHeroesReq" handler="game.server.logic.indigo.handler.SaveHeroesHandler" />
+	<msg message="Message.C2SIndigoMsg$GetPourIndigoReq" handler="game.server.logic.indigo.handler.GetPourIndigoHandler" />
+	<msg message="Message.C2SIndigoMsg$PourIndigoReq" handler="game.server.logic.indigo.handler.PourIndigoHandler" />
+	<msg message="Message.C2SIndigoMsg$RewardRaceReq" handler="game.server.logic.indigo.handler.RewardRaceHandler" />
+	<msg message="Message.C2SIndigoMsg$GetIndigoRankReq" handler="game.server.logic.indigo.handler.GetIndigoRankHandler" />
+	<msg message="Message.C2SIndigoMsg$SaveFormationReq" handler="game.server.logic.indigo.handler.SaveFormationHandler" />
+	<msg message="Message.C2SIndigoMsg$GetRaceInfosReq" handler="game.server.logic.indigo.handler.GetRaceInfosHandler" />
+	<msg message="Message.C2SIndigoMsg$ExchangeAwardReq" handler="game.server.logic.indigo.handler.ExchangeAwardHandler" />
+	<!-- 运营活动 -->
+	<msg message="Message.C2SOperateActivityMsg$ReceiveOperateActivityReq" handler="game.server.logic.operateActivity.handler.ReqReceiveOperateActivityHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$LuckWheelRollReq" handler="game.server.logic.operateActivity.handler.ReqLuckWheelRollHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$LuckWheelWinningRecordReq" handler="game.server.logic.operateActivity.handler.ReqLuckWheelWinningRecordHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$MysticHeroRollReq" handler="game.server.logic.operateActivity.handler.ReqMysticHeroRoll" />		
+	<msg message="Message.C2SOperateActivityMsg$DeadlineHeroRankingReq" handler="game.server.logic.operateActivity.handler.ReqDeadlineHeroRankingHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$DeadlineHeroBoxReq" handler="game.server.logic.operateActivity.handler.ReqDeadlineHeroBoxHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$DeadlineHeroRollReq" handler="game.server.logic.operateActivity.handler.ReqDeadlineHeroRollHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$MakePromiseReq" handler="game.server.logic.operateActivity.handler.ReqMakePromiseHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$WishPoolOpenReq" handler="game.server.logic.operateActivity.handler.ReqWishPoolOpenHandler" />		
+	<msg message="Message.C2SOperateActivityMsg$BuyActivityReq" handler="game.server.logic.operateActivity.handler.ReqBuyActivityHandler" />		
+	<!-- 小玩法 -->
+	<msg message="Message.C2SMiniGameMsg$MiniGameListReq" handler="game.server.logic.minigame.handler.MiniGameListHandler" />
+	<msg message="Message.C2SMiniGameMsg$StartMiniGameReq" handler="game.server.logic.minigame.handler.StartMiniGameHandler" />
+	<msg message="Message.C2SMiniGameMsg$EndMiniGameReq" handler="game.server.logic.minigame.handler.EndMiniGameHandler" />
+	<msg message="Message.C2SMiniGameMsg$DoAnswerGameReq" handler="game.server.logic.minigame.handler.DoAnswerGameHandler" />		
+	<msg message="Message.C2SMiniGameMsg$RollGuessCupReq" handler="game.server.logic.minigame.handler.RollGuessCupHandler" />		
+	<msg message="Message.C2SMiniGameMsg$DoubleUpGuessCupReq" handler="game.server.logic.minigame.handler.DoubleUpGuessCupHandler" />		
+	<msg message="Message.C2SMiniGameMsg$LuckDrawGuessCupReq" handler="game.server.logic.minigame.handler.LuckDrawGuessCupHandler" />		
+	<msg message="Message.C2SMiniGameMsg$PicAnswerChooseReq" handler="game.server.logic.minigame.handler.ChoosePicAnswerHandler" />	
+	<msg message="Message.C2SMiniGameMsg$GetWorldAnswerReq" handler="game.server.logic.worldAnswer.handler.GetWorldAnswerHandler" />	
+	<!-- 30,98元礼包-->
+	<msg message="Message.C2SOperateActivityMsg$GetGiftBagReq" handler="game.server.logic.operateActivity.handler.ReqGetGiftBagHandler" />	
+	<!-- 联盟战-->
+	<msg message="Message.C2SGuildwarMsg$BetGuildwarReq" handler="game.server.logic.guildwar.handler.BetGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$EffedGuildwarReq" handler="game.server.logic.guildwar.handler.EffedGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GetGuildInfoReq" handler="game.server.logic.guildwar.handler.GetGuildInfoHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GetGuildwarApplyListReq" handler="game.server.logic.guildwar.handler.GetGuildwarApplyListHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GetGuildwarFormationReq" handler="game.server.logic.guildwar.handler.GetGuildwarFormationHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GetGuildwarKnockoutReq" handler="game.server.logic.guildwar.handler.GetGuildwarKnockoutHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GuildwarHistoryRankReq" handler="game.server.logic.guildwar.handler.GuildwarHistoryRankHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GuildwarRaceReq" handler="game.server.logic.guildwar.handler.GuildwarRaceHandler" />	
+	<msg message="Message.C2SGuildwarMsg$GuildwarScoreRankReq" handler="game.server.logic.guildwar.handler.GuildwarScoreRankHandler" />	
+	<msg message="Message.C2SGuildwarMsg$OpenGuildwarBetReq" handler="game.server.logic.guildwar.handler.OpenGuildwarBetHandler" />	
+	<msg message="Message.C2SGuildwarMsg$OpenGuildwarReq" handler="game.server.logic.guildwar.handler.OpenGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$UnregisterGuildwarReq" handler="game.server.logic.guildwar.handler.UnregisterGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$RegisterGuildwarReq" handler="game.server.logic.guildwar.handler.RegisterGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$ApplyGuildwarReq" handler="game.server.logic.guildwar.handler.ApplyGuildwarHandler" />	
+	<msg message="Message.C2SGuildwarMsg$SaveGuildwarFormationReq" handler="game.server.logic.guildwar.handler.SaveGuildwarFormationHandler" />	
+	<msg message="Message.C2SGuildwarMsg$ExchangeGuildwarAwardReq" handler="game.server.logic.guildwar.handler.ExchangeGuildwarAwardHandler" />	
+	<!-- 道馆争夺战 -->
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymInfo" handler="game.server.logic.snatchTerritory.handler.ReqSnatchTerritoryInfoHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqAttendGym" handler="game.server.logic.snatchTerritory.handler.ReqAttendGymHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqAttackOrDefend" handler="game.server.logic.snatchTerritory.handler.ReqAttactGymHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqDefaultFormationUp" handler="game.server.logic.snatchTerritory.handler.ReqSetGymFormationHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqBuyItemFromGymShop" handler="game.server.logic.snatchTerritory.handler.ReqBuyItemFromGymShopHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymShopInfo" handler="game.server.logic.snatchTerritory.handler.ReqGymShopInfoHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymReport" handler="game.server.logic.snatchTerritory.handler.ReqGymReportHanlder" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymRanks" handler="game.server.logic.snatchTerritory.handler.ReqGymRanksHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymFightReport" handler="game.server.logic.snatchTerritory.handler.ReqGymFightReportHanlder" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqAuctionGymLeader" handler="game.server.logic.snatchTerritory.handler.ReqAuctionGymleaderHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqAddAuctionCost" handler="game.server.logic.snatchTerritory.handler.ReqAddAuctionCostHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqAutoArrive" handler="game.server.logic.snatchTerritory.handler.ReqBuyArriveTimeHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqCancelAttack" handler="game.server.logic.snatchTerritory.handler.ReqCancelAttackHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymPublicTask" handler="game.server.logic.snatchTerritory.handler.ReqPublicGymTaskHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymMineTask" handler="game.server.logic.snatchTerritory.handler.ReqMineGymTaskHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGymTaskAward" handler="game.server.logic.snatchTerritory.handler.ReqGymTaskAwardHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGetPublicProgressAward" handler="game.server.logic.snatchTerritory.handler.ReqGetPublicProgressAwardHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqGetGymAward" handler="game.server.logic.snatchTerritory.handler.ReqGetGymAwardHandler" />
+	<msg message="Message.C2SSnatchTerritoryMsg$ReqUseAirship" handler="game.server.logic.snatchTerritory.handler.ReqUseAirshipHandler" />
+	<!-- 符文系统 -->
+	<msg message="Message.C2SRuneMsg$GetRuneShopReq" handler="game.server.logic.rune.handler.GetRuneShopHandler" />
+	<msg message="Message.C2SRuneMsg$RuneSingleDrawReq" handler="game.server.logic.rune.handler.RuneSingleDrawHandler" />
+	<msg message="Message.C2SRuneMsg$RuneTenDrawReq" handler="game.server.logic.rune.handler.RuneTenDrawHandler" />
+	<msg message="Message.C2SRuneMsg$HeroPutOnRuneReq" handler="game.server.logic.rune.handler.HeroPutOnRuneHandler" />
+	<msg message="Message.C2SRuneMsg$HeroPutDownRuneReq" handler="game.server.logic.rune.handler.HeroPutDownRuneHandler" />
+	<msg message="Message.C2SRuneMsg$RuneLevelUpReq" handler="game.server.logic.rune.handler.RuneLevelUpHandler" />
+	<msg message="Message.C2SRuneMsg$RuneOneKeyLevelUpReq" handler="game.server.logic.rune.handler.RuneOneKeyLevelUpHandler" />
+	<msg message="Message.C2SRuneMsg$RuneBreakReq" handler="game.server.logic.rune.handler.RuneBreakHandler" />
+	<!-- 活动 -->
+	<msg message="Message.C2SActivityMsg$DoLimittimeExchange" handler="game.server.logic.activity.handler.ReqExchangeLimittimeExchangeHandler" />
+	<msg message="Message.C2SActivityMsg$DoFlashSale" handler="game.server.logic.activity.handler.ReqBuyFlashSaleHandler" />
+	<msg message="Message.C2SActivityMsg$TickLimittimeGift" handler="game.server.logic.activity.handler.ReqTickLimittimeGiftHandler" />
+	<msg message="Message.C2SActivityMsg$ActiveLimittimeGift" handler="game.server.logic.activity.handler.ReqActiveLimittimeGiftHandler" />
+	<!-- 限时惊喜 -->
+	<msg message="Message.C2SLimiteSurpriseMsg$ActiveSurpriseReq" handler="game.server.logic.limiteSurprise.handler.ActiveSupriseHandler" />
+	<msg message="Message.C2SLimiteSurpriseMsg$ReceiveAwardReq" handler="game.server.logic.limiteSurprise.handler.GetAwardHandler" />
+	<!-- 训练家评级 -->
+	<msg message="Message.C2SHeroTrainMsg$TrainUpgradeReq" handler="game.server.logic.hero.handler.TrainUpgradeHandler" />
+	<!-- 探险训练家(老虎机) -->
+	<msg message="Message.C2SOperateActivityMsg$SlotMachinesBoxReq" handler="game.server.logic.activity.handler.ReqSlotMachinesBox" />
+	<msg message="Message.C2SOperateActivityMsg$SlotMachinesHistoryReq" handler="game.server.logic.activity.handler.ReqSlotMachinesHistory" />
+	<msg message="Message.C2SOperateActivityMsg$SlotMachinesRankReq" handler="game.server.logic.activity.handler.ReqSlotMachinesRank" />
+	<msg message="Message.C2SOperateActivityMsg$SlotMachinesRollReq" handler="game.server.logic.activity.handler.ReqSlotMachinesRoll" />
+	<msg message="Message.C2SOperateActivityMsg$SlotMachinesReq" handler="game.server.logic.activity.handler.ReqSlotMachines" />
+	<!-- 精灵派遣 -->
+	<msg message="Message.C2SHerodispatchMsg$HerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqHerodispatchHandler" />
+	<msg message="Message.C2SHerodispatchMsg$StartHerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqStartHerodispatchHandler" />
+	<msg message="Message.C2SHerodispatchMsg$CancelHerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqCancelHerodispatchHandler" />
+	<msg message="Message.C2SHerodispatchMsg$CompleteHerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqCompleteHerodispatchHandler" />
+	<msg message="Message.C2SHerodispatchMsg$OpenHerodispatchBoxReq" handler="game.server.logic.herodispatch.handler.ReqOpenHerodispatchBoxHandler" />
+	<msg message="Message.C2SHerodispatchMsg$ReadHerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqReadHerodispatchHandler" />
+	<msg message="Message.C2SHerodispatchMsg$QuickHerodispatchReq" handler="game.server.logic.herodispatch.handler.ReqQuickHerodispatchHandler" />
+	<!-- 旅程 -->
+	<msg message="Message.C2SJourneyMsg$ReqJourneyReward" handler="game.server.logic.journey.handler.ReqJourneyRewardHandler" />
+	<msg message="Message.C2SJourneyMsg$ReqJourneyDiamonds" handler="game.server.logic.journey.handler.ReqJourneyDiamondsHandler" />
+	<msg message="Message.C2SJourneyMsg$ReqJourneyDayInfoList" handler="game.server.logic.journey.handler.ReqJourneyDayInfoListHandler" />
+</messages>

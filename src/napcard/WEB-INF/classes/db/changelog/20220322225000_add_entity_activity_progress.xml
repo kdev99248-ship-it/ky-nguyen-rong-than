@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20190323134002-1" author="dokd">
+        <createTable tableName="activity_progress">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int(11)">
+            </column>
+            <column name="activity_id" type="int(11)">
+            </column>
+            <column name="item_id" type="int(11)">
+            </column>
+            <column name="player_id" type="int(11)">
+            </column>
+            <column name="target" type="int(11)">
+            </column>
+            <column name="reward" type="varchar(1000)">
+            </column>
+            <column name="status" type="int(11)">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20190323134002-2" author="dokd">
+        <modifyDataType tableName="activity_progress" columnName="player_id" newDataType="varchar(50)"/>
+    </changeSet>
+    <changeSet id="20190323134002-3" author="dokd">
+        <addColumn tableName="activity_progress">
+            <column name="is_deleted" type="int(11)" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

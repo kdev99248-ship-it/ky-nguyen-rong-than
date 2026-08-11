@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20210407224500-2" author="dokd">
+        <createTable tableName="lucky_draw_his">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(50)"/>
+            <column name="turn_round" type="int(11)" defaultValue="0"/>
+            <column name="prize_id" type="int(11)" defaultValue="99999"/>
+            <column name="prize_content" type="varchar(200)"/>
+            <column name="create_time" type="datetime">
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
