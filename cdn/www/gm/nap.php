@@ -6,14 +6,26 @@
  *      point       Xu không khoá - mua được mọi gói nạp
  *      point_lock  Xu khoá       - chỉ mua được khi chọn "Xu khoá"
  *
- *  Người chơi tiêu Xu ở webapp nap_card, luồng:
+ *  Xu KHÔNG phải tiền trong game - không có gì trong GameServer đọc hai cột
+ *  trên. Cộng Xu xong vào game sẽ chưa thấy gì. Xu chỉ thành kim cương khi bị
+ *  TIÊU đi, luồng:
  *      trừ Xu -> POST {"action":"recharge","playerid":..,"productid":..}
  *      sang server.url_charge -> GameServer innerRecharge
- *  nên mọi hoạt động nạp trong game đều cộng tiến độ như nạp tiền thật.
+ *  Vì đó là đường nạp nội bộ thật nên mọi hoạt động nạp trong game đều cộng
+ *  tiến độ như nạp tiền thật.
  *  Danh sách gói và server đích nạp bằng db/sql/patch/03-nap-wallet.sql.
  *
- *  Trang này CHỈ cộng/trừ Xu, không gọi API game. Muốn nạp thẳng kim cương
- *  cho nhân vật (bỏ qua ví) thì dùng nút 充值 ở index.php.
+ *  Trang này làm cả hai vế:
+ *      "Cộng Xu"  - ghi thẳng nap_card.users (mint tiền)
+ *      "Mua gói"  - gọi lại REST của webapp nap_card để tiêu Xu
+ *
+ *  Vế "Mua gói" cố ý KHÔNG tự trừ Xu rồi tự gọi 51011: làm vậy là chép lại
+ *  TransferMoneyServiceImpl.transfer() và sẽ lệch khi bản gốc đổi. Gọi lại
+ *  endpoint thật thì point_history / package_charge_history / transaction_log
+ *  vẫn do một nguồn duy nhất ghi.
+ *
+ *  Muốn nạp thẳng kim cương cho nhân vật (bỏ qua ví, không tốn Xu) thì dùng
+ *  nút 充值 ở index.php.
  *
  *  $conn của config.php nối vào user_center; ở đây dùng tên bảng đầy đủ
  *  nap_card.* để khỏi mở thêm kết nối và khỏi lặp lại mật khẩu DB - giống
@@ -56,9 +68,15 @@ if (empty($_SESSION['user'])) {
 	exit;
 }
 
+/* Webapp nap_card chạy dạng WAR trong Tomcat, nên server.port=8888 ở
+ * application.properties bị bỏ qua - cổng thật là Connector của
+ * runtime/tomcat8.5/conf/server.xml, tức 80. Gọi qua loopback. */
+$napcardBuyUrl = 'http://127.0.0.1/api/package-charge/buy';
+
 $msg     = '';
 $msgType = '';   // ok | err
 $info    = null; // số dư hiện tại của tài khoản vừa thao tác
+$chars   = [];   // nhân vật của tài khoản đó, để lấy playerId
 
 /* Đọc 1 tài khoản theo tên. Trả null nếu không có. */
 function timTaiKhoan($conn, $userName) {
@@ -71,11 +89,45 @@ function timTaiKhoan($conn, $userName) {
 	return mysqli_fetch_assoc($res);
 }
 
+/* Nhân vật của một tài khoản. Cùng phép JOIN mà Utils.getByAccount dùng
+ * (t_player.accountUid = t_account.uid), chỉ khác là lấy hết chứ không LIMIT 1,
+ * vì một tài khoản có thể có nhiều nhân vật và GM phải chọn đúng con.
+ * Mới nhất lên đầu để mặc định chọn con vừa chơi. */
+function timNhanVat($conn, $account) {
+	$esc = mysqli_real_escape_string($conn, $account);
+	$res = mysqli_query($conn, "SELECT p.playerId, p.name, p.level, p.lastLoginTime
+	                            FROM h_game.t_player p
+	                            JOIN h_game.t_account a ON p.accountUid = a.uid
+	                            WHERE a.accountId = '$esc'
+	                            ORDER BY p.lastLoginTime DESC");
+	$out = [];
+	if ($res) {
+		while ($r = mysqli_fetch_assoc($res)) {
+			$out[] = $r;
+		}
+	}
+	return $out;
+}
+
+/* config.php chỉ có post_curl. Endpoint mua gói là GET. */
+function get_curl($url) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	$result = curl_exec($ch);
+	if (curl_errno($ch)) {
+		$result = 'Lỗi gọi API: ' . curl_error($ch);
+	}
+	curl_close($ch);
+	return $result;
+}
+
 /* Giá trị nút để ASCII ('add' / 'query') thay vì nhãn tiếng Việt: nhãn có dấu
  * phải khớp từng byte sau khi đi qua trình duyệt, dễ hỏng nếu charset lệch. */
 $submit = isset($_POST['act']) ? $_POST['act'] : '';
 
-if ($submit === 'query' || $submit === 'add') {
+if ($submit === 'query' || $submit === 'add' || $submit === 'buy') {
 	$account = isset($_POST['account']) ? trim($_POST['account']) : '';
 	if ($account === '') {
 		$msg = 'Chưa nhập tên tài khoản.';
@@ -83,60 +135,148 @@ if ($submit === 'query' || $submit === 'add') {
 	} else {
 		$row = timTaiKhoan($conn, $account);
 		if (!$row) {
-			$msg = 'Không tìm thấy tài khoản "' . htmlspecialchars($account) . '" trong nap_card.users.';
+			$msg = 'Không tìm thấy tài khoản "' . htmlspecialchars($account) . '" trong nap_card.users. '
+			     . 'Tài khoản chỉ được tạo khi người chơi đăng ký trong game (/user/reg).';
 			$msgType = 'err';
-		} elseif ($submit === 'query') {
-			$info = $row;
 		} else {
-			/* --- Cộng / trừ Xu --- */
-			$amount = isset($_POST['amount']) ? intval($_POST['amount']) : 0;
-			$isLock = (isset($_POST['ptype']) && $_POST['ptype'] === 'lock');
-			$col    = $isLock ? 'point_lock' : 'point';
-			$tenVi  = $isLock ? 'Xu khoá' : 'Xu không khoá';
+			$chars = timNhanVat($conn, $row['user_name']);
+			if ($submit === 'query') {
+				$info = $row;
+			} elseif ($submit === 'buy') {
+				/* --- Tiêu Xu mua gói: gọi lại REST của webapp nap_card ---
+				 * GET /api/package-charge/buy ép cứng typePoint = 0 nên luôn tiêu Xu
+				 * KHÔNG khoá. Xu khoá chỉ tiêu được qua POST /buy kèm JWT của chính
+				 * người chơi, GM không có token đó. */
+				$productId = isset($_POST['productId']) ? intval($_POST['productId']) : 0;
+				$srvId     = isset($_POST['srvId']) ? intval($_POST['srvId']) : 0;
+				$playerId  = isset($_POST['playerId']) ? trim($_POST['playerId']) : '';
 
-			if ($amount === 0) {
-				$msg = 'Số Xu phải khác 0 (số âm để trừ bớt).';
-				$msgType = 'err';
+				if ($playerId === '') {
+					/* Bỏ trống thì lấy nhân vật đăng nhập gần nhất. */
+					if (empty($chars)) {
+						$msg = 'Tài khoản "' . htmlspecialchars($account) . '" chưa có nhân vật nào trong h_game.t_player. '
+						     . 'Phải vào game tạo nhân vật trước rồi mới mua gói được.';
+						$msgType = 'err';
+					} else {
+						$playerId = $chars[0]['playerId'];
+					}
+				}
+
+				if ($msgType !== 'err' && $productId <= 0) {
+					$msg = 'Chưa chọn gói nạp.';
+					$msgType = 'err';
+				}
+				if ($msgType !== 'err' && $srvId <= 0) {
+					$msg = 'Chưa chọn máy chủ. Bảng nap_card.server rỗng thì chạy db/sql/patch/03-nap-wallet.sql.';
+					$msgType = 'err';
+				}
+
+				if ($msgType !== 'err') {
+					$url = $napcardBuyUrl
+					     . '?srv_id='    . $srvId
+					     . '&role_id='   . urlencode($playerId)
+					     . '&money=0'
+					     . '&usr='       . urlencode($row['user_name'])
+					     . '&productId=' . $productId;
+					$resp = trim(get_curl($url));
+
+					/* transfer() trả về chuỗi thuần, không phải JSON. StringHttpMessageConverter
+					 * của Spring Boot đời cũ mặc định ISO-8859-1, mà "Thành Công" lại nằm gọn
+					 * trong Latin-1 nên không hỏng ở phía Java - chỉ về đây sai bảng mã. Nắn lại
+					 * trước khi so chuỗi. preg_match('//u') = phép thử UTF-8 hợp lệ, không cần
+					 * mbstring (container chỉ cài mysqli + pdo_mysql). */
+					if ($resp !== '' && preg_match('//u', $resp) !== 1) {
+						$resp = utf8_encode($resp);
+					}
+
+					/* Chỉ câu thành công mới có dấu '|' ("Thành Công| Xu còn: ..."), mọi câu lỗi
+					 * đều không có. Dùng ký tự ASCII này để khỏi phụ thuộc dấu tiếng Việt. */
+					if (strpos($resp, '|') !== false) {
+						$msgType = 'ok';
+						$msg = 'Đã nạp vào game cho playerId ' . htmlspecialchars($playerId)
+						     . '. ' . htmlspecialchars($resp);
+					} else {
+						$msgType = 'err';
+						$msg = 'API trả về: ' . htmlspecialchars($resp !== '' ? $resp : '(rỗng - Tomcat chưa chạy?)');
+						/* Lỗi hay gặp nhất: server.db_password còn nguyên placeholder nên
+						 * Utils.getByPlayerId không mở được kết nối vào h_game. */
+						if (strpos($resp, 'Không tìm thấy thông tin tài khoản') !== false) {
+							$msg .= ' — kiểm tra nap_card.server.db_password đã thay __MYSQL_PASSWORD__ chưa,'
+							      . ' và playerId có đúng trong h_game.t_player không.';
+						}
+					}
+					$info  = timTaiKhoan($conn, $row['user_name']);
+					$chars = timNhanVat($conn, $row['user_name']);
+				}
 			} else {
-				$userId = intval($row['user_id']);
-				$old    = intval($row[$col]);
-				$new    = $old + $amount;
-				if ($new < 0) {
-					$new = 0;   // không để ví âm
-				}
-				$delta = $new - $old;
+				/* --- Cộng / trừ Xu --- */
+				$amount = isset($_POST['amount']) ? intval($_POST['amount']) : 0;
+				$isLock = (isset($_POST['ptype']) && $_POST['ptype'] === 'lock');
+				$col    = $isLock ? 'point_lock' : 'point';
+				$tenVi  = $isLock ? 'Xu khoá' : 'Xu không khoá';
 
-				$ghiChu = isset($_POST['notes']) ? trim($_POST['notes']) : '';
-				if ($ghiChu === '') {
-					$ghiChu = 'GM ' . ($delta >= 0 ? 'cộng' : 'trừ') . ' ' . $tenVi;
-				}
-				$ghiChuEsc = mysqli_real_escape_string($conn, $ghiChu);
-				$byEsc     = mysqli_real_escape_string($conn, $_SESSION['user']);
-				$nameEsc   = mysqli_real_escape_string($conn, $row['user_name']);
-				$loai      = $isLock ? 'GM_ADD_LOCK' : 'GM_ADD';
-
-				$ok = mysqli_query($conn, "UPDATE nap_card.users SET `$col` = $new WHERE user_id = $userId");
-				if (!$ok) {
-					$msg = 'Cập nhật ví thất bại: ' . htmlspecialchars(mysqli_error($conn));
+				if ($amount === 0) {
+					$msg = 'Số Xu phải khác 0 (số âm để trừ bớt).';
 					$msgType = 'err';
 				} else {
-					/* point_history: user_id, transaction_type, wallet_user_id, new_point
-					 * đều NOT NULL và không có giá trị mặc định. Bảng wallet_user không
-					 * dùng tới nên wallet_user_id ghi bằng user_id cho hợp lệ. */
-					mysqli_query($conn, "INSERT INTO nap_card.point_history
-						(user_id, transaction_type, wallet_user_id, old_point, new_point, point,
-						 notes, created_by, created_on, account_name)
-						VALUES ($userId, '$loai', $userId, $old, $new, $delta,
-						        '$ghiChuEsc', '$byEsc', NOW(), '$nameEsc')");
+					$userId = intval($row['user_id']);
+					$old    = intval($row[$col]);
+					$new    = $old + $amount;
+					if ($new < 0) {
+						$new = 0;   // không để ví âm
+					}
+					$delta = $new - $old;
 
-					$msg = 'Xong. ' . htmlspecialchars($row['user_name']) . ': ' . $tenVi .
-					       ' ' . number_format($old) . ' -> ' . number_format($new) .
-					       ' (' . ($delta >= 0 ? '+' : '') . number_format($delta) . ')';
-					$msgType = 'ok';
-					$info = timTaiKhoan($conn, $row['user_name']);
+					$ghiChu = isset($_POST['notes']) ? trim($_POST['notes']) : '';
+					if ($ghiChu === '') {
+						$ghiChu = 'GM ' . ($delta >= 0 ? 'cộng' : 'trừ') . ' ' . $tenVi;
+					}
+					$ghiChuEsc = mysqli_real_escape_string($conn, $ghiChu);
+					$byEsc     = mysqli_real_escape_string($conn, $_SESSION['user']);
+					$nameEsc   = mysqli_real_escape_string($conn, $row['user_name']);
+					$loai      = $isLock ? 'GM_ADD_LOCK' : 'GM_ADD';
+
+					$ok = mysqli_query($conn, "UPDATE nap_card.users SET `$col` = $new WHERE user_id = $userId");
+					if (!$ok) {
+						$msg = 'Cập nhật ví thất bại: ' . htmlspecialchars(mysqli_error($conn));
+						$msgType = 'err';
+					} else {
+						/* point_history: user_id, transaction_type, wallet_user_id, new_point
+						 * đều NOT NULL và không có giá trị mặc định. Bảng wallet_user không
+						 * dùng tới nên wallet_user_id ghi bằng user_id cho hợp lệ. */
+						mysqli_query($conn, "INSERT INTO nap_card.point_history
+							(user_id, transaction_type, wallet_user_id, old_point, new_point, point,
+							 notes, created_by, created_on, account_name)
+							VALUES ($userId, '$loai', $userId, $old, $new, $delta,
+							        '$ghiChuEsc', '$byEsc', NOW(), '$nameEsc')");
+
+						$msg = 'Xong. ' . htmlspecialchars($row['user_name']) . ': ' . $tenVi .
+						       ' ' . number_format($old) . ' -> ' . number_format($new) .
+						       ' (' . ($delta >= 0 ? '+' : '') . number_format($delta) . ')';
+						$msgType = 'ok';
+						$info = timTaiKhoan($conn, $row['user_name']);
+					}
 				}
 			}
 		}
+	}
+}
+
+/* Nạp trước để dùng cho cả dropdown lẫn bảng tham chiếu ở cuối trang. */
+$packages = [];
+$res = mysqli_query($conn, "SELECT id, price, sycee, title, is_show
+                            FROM nap_card.package_charge ORDER BY display_id");
+if ($res) {
+	while ($r = mysqli_fetch_assoc($res)) {
+		$packages[] = $r;
+	}
+}
+
+$servers = [];
+$res = mysqli_query($conn, "SELECT id, name_server FROM nap_card.server ORDER BY id");
+if ($res) {
+	while ($r = mysqli_fetch_assoc($res)) {
+		$servers[] = $r;
 	}
 }
 ?>
@@ -144,7 +284,7 @@ if ($submit === 'query' || $submit === 'add') {
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>GM - Cộng Xu</title>
+	<title>GM - Xu &amp; gói nạp</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" href="layui/css/layui.css" media="all">
 	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
@@ -172,6 +312,27 @@ if ($submit === 'query' || $submit === 'add') {
 			<td><?php echo number_format(intval($info['point_lock'])); ?></td>
 		</tr></tbody>
 	</table>
+<?php } ?>
+
+<?php if ($info && !empty($chars)) { ?>
+	<table class="layui-table" style="width: 620px; margin-left: 20px;">
+		<thead><tr><th>Nhân vật</th><th>playerId</th><th>Cấp</th><th>Đăng nhập gần nhất</th></tr></thead>
+		<tbody>
+		<?php foreach ($chars as $i => $c) { ?>
+			<tr>
+				<td><?php echo htmlspecialchars($c['name']); ?><?php echo $i === 0 ? ' <span class="layui-badge layui-bg-green">mặc định</span>' : ''; ?></td>
+				<td><?php echo htmlspecialchars($c['playerId']); ?></td>
+				<td><?php echo intval($c['level']); ?></td>
+				<td><?php
+					$t = intval($c['lastLoginTime']);
+					echo $t > 0 ? date('d/m/Y H:i', (int)($t / 1000)) : '-';
+				?></td>
+			</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+<?php } elseif ($info) { ?>
+	<div style="margin-left:20px;color:#c62828;">Tài khoản này chưa có nhân vật nào trong game — chưa mua gói được.</div>
 <?php } ?>
 
 <form class="layui-form" method="post" action="">
@@ -226,24 +387,86 @@ if ($submit === 'query' || $submit === 'add') {
 			<button type="submit" class="layui-btn layui-btn-primary" name="act" value="query">Tra cứu</button>
 		</div>
 	</div>
+
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 25px;">
+		<legend>Tiêu Xu — nạp thẳng vào game</legend>
+	</fieldset>
+
+	<div style="margin: 0 0 15px 20px; color: #666;">
+		Cộng Xu ở trên chỉ nạp vào <b>ví web</b>, trong game không thấy gì. Phải mua gói ở đây
+		thì Xu mới bị trừ và GameServer mới cộng kim cương + tiến độ các hoạt động nạp.
+		Luôn tiêu <b>Xu không khoá</b>. Giữa hai lần mua có khoá 10 giây.
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">Máy chủ</label>
+			<div class="layui-input-inline">
+				<select name="srvId">
+					<?php if (empty($servers)) { ?>
+						<option value="0">-- nap_card.server rỗng --</option>
+					<?php } foreach ($servers as $s) {
+						$sel = (isset($_POST['srvId']) && intval($_POST['srvId']) === intval($s['id'])) ? ' selected' : '';
+					?>
+						<option value="<?php echo intval($s['id']); ?>"<?php echo $sel; ?>>
+							<?php echo intval($s['id']) . ' - ' . htmlspecialchars($s['name_server']); ?>
+						</option>
+					<?php } ?>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">Gói nạp</label>
+			<div class="layui-input-inline">
+				<select name="productId">
+					<?php if (empty($packages)) { ?>
+						<option value="0">-- nap_card.package_charge rỗng --</option>
+					<?php } foreach ($packages as $p) {
+						$sel = (isset($_POST['productId']) && intval($_POST['productId']) === intval($p['id'])) ? ' selected' : '';
+					?>
+						<option value="<?php echo intval($p['id']); ?>"<?php echo $sel; ?>>
+							<?php echo htmlspecialchars($p['title']) . ' (' . number_format(intval($p['price'])) . ' Xu)'; ?>
+						</option>
+					<?php } ?>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">playerId</label>
+			<div class="layui-input-inline">
+				<input type="text" name="playerId" autocomplete="off" class="layui-input"
+				       placeholder="để trống = nhân vật mới chơi nhất"
+				       value="<?php echo isset($_POST['playerId']) ? htmlspecialchars($_POST['playerId']) : ''; ?>">
+			</div>
+			<div class="layui-form-mid layui-word-aux">bấm "Tra cứu" để xem danh sách nhân vật</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button type="submit" class="layui-btn layui-btn-danger" name="act" value="buy">Mua gói ngay</button>
+		</div>
+	</div>
 </form>
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
 	<legend>Gói nạp mua bằng Xu</legend>
 </fieldset>
 
-<?php
-$res = mysqli_query($conn, "SELECT id, price, sycee, title, is_show
-                            FROM nap_card.package_charge ORDER BY display_id");
-if (!$res || mysqli_num_rows($res) === 0) {
-	echo '<div style="margin-left:20px;color:#c62828;">nap_card.package_charge đang rỗng - '
-	   . 'chạy db/sql/patch/03-nap-wallet.sql thì người chơi mới tiêu Xu được.</div>';
-} else {
-?>
+<?php if (empty($packages)) { ?>
+	<div style="margin-left:20px;color:#c62828;">nap_card.package_charge đang rỗng -
+	chạy db/sql/patch/03-nap-wallet.sql thì người chơi mới tiêu Xu được.</div>
+<?php } else { ?>
 	<table class="layui-table" style="width: 620px; margin-left: 20px;">
 		<thead><tr><th>id gói</th><th>Giá (Xu)</th><th>Kim cương</th><th>Tên gói</th><th>Hiện</th></tr></thead>
 		<tbody>
-		<?php while ($r = mysqli_fetch_assoc($res)) { ?>
+		<?php foreach ($packages as $r) { ?>
 			<tr>
 				<td><?php echo intval($r['id']); ?></td>
 				<td><?php echo number_format(intval($r['price'])); ?></td>

@@ -212,6 +212,55 @@ của `gameserver` trong `docker-compose.yml`, không thì GameServer khởi đ�
 `cdn/www/serverlist.php` ghi cứng `192.168.1.111:11011` từ chủ cũ — sửa nếu client của
 bạn đọc file đó thay vì gọi UserCenter.
 
+## Nạp tiền: Xu ở ví web, không phải tiền trong game
+
+Chỗ này rất dễ hiểu nhầm nên ghi rõ. **Xu không phải tiền trong game.** Nó nằm ở
+`nap_card.users.point` (và `point_lock`), và không có dòng code nào trong GameServer
+đọc hai cột đó. Cộng Xu xong vào game sẽ **không thấy gì** — đúng như thiết kế.
+
+Xu chỉ biến thành kim cương khi bị **tiêu** đi:
+
+```
+GM cộng Xu (gm/nap.php)      → nap_card.users.point           game chưa thấy gì
+        ↓ tiêu
+/api/package-charge/buy      → trừ point, ghi point_history
+        ↓
+POST 127.0.0.1:51011 {"action":"recharge","playerid":..,"productid":..}
+        ↓
+GameServer innerRecharge     → kim cương + tiến độ hoạt động nạp   ← game thấy
+```
+
+Bước cuối là đường nạp **nội bộ thật** của server chứ không phải phát quà tay, nên mọi
+hoạt động nạp (Quà Nạp Tích Luỹ, Nạp Đơn Siêu Giá Trị, Thẻ Tháng…) đều cộng tiến độ
+y như người chơi nạp tiền thật.
+
+`cdn/www/gm/nap.php` làm cả hai vế: nút **Cộng Xu** mint tiền vào ví, nút **Mua gói ngay**
+gọi lại REST của webapp nap_card để tiêu. Vế mua cố ý không tự trừ Xu rồi tự gọi 51011 —
+làm vậy là chép lại `TransferMoneyServiceImpl.transfer()` và sẽ lệch khi bản gốc đổi.
+
+Gọi tay không qua trang GM:
+
+```
+http://<ip>/api/package-charge/buy?srv_id=1011&role_id=<playerId>&money=0&usr=<tài khoản>&productId=13
+```
+
+Vài điểm dễ vấp:
+
+- **Tomcat nghe cổng 80**, không phải 8888. `server.port=8888` trong
+  `src/napcard/WEB-INF/classes/application.properties` bị bỏ qua vì napcard chạy dạng
+  WAR — cổng thật là `<Connector>` của `runtime/tomcat8.5/conf/server.xml`.
+- `role_id` là `h_game.t_player.playerId`, **không phải** tên nhân vật.
+- Đường GET ép cứng `typePoint = 0` nên luôn tiêu **Xu không khoá**. Xu khoá chỉ tiêu
+  được qua `POST /buy` kèm JWT của chính người chơi.
+- Có khoá **10 giây** giữa hai lần mua, và lần mua hỏng cũng tính.
+- `nap_card.users` là bảng tài khoản của **chính game** — client đăng ký qua
+  `LoginAppController` `/user/reg`. Tài khoản chưa từng đăng nhập game thì chưa có hàng
+  ở đây, `nap.php` sẽ báo không tìm thấy.
+- Cả hai bảng `nap_card.server` và `nap_card.package_charge` phải có dữ liệu
+  (`db/sql/patch/03-nap-wallet.sql`), nếu không đứt ngay từ bước đầu.
+- Nút nạp **trong game** vẫn trỏ tới `id.knrongthan.net` đã chết — URL nằm trong
+  `PayMgr.lua` đã mã hoá của APK. Hiện chỉ tiêu Xu được qua trang GM hoặc gọi URL trên.
+
 ## Khác Windows chỗ nào
 
 | Windows | Linux/Docker | Vì sao |
