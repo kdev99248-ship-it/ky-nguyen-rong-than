@@ -262,11 +262,19 @@ if ($submit === 'query' || $submit === 'add' || $submit === 'buy') {
 	}
 }
 
-/* Nạp trước để dùng cho cả dropdown lẫn bảng tham chiếu ở cuối trang. */
+/* Nạp trước để dùng cho cả dropdown lẫn bảng tham chiếu ở cuối trang.
+ *
+ * config.php đặt error_reporting(0), nên truy vấn hỏng sẽ lặng lẽ trả về mảng
+ * rỗng và dropdown trông y hệt lúc bảng rỗng thật. Giữ lại mysqli_error để phân
+ * biệt được hai trường hợp đó - không có nó thì chỉ biết đoán. */
+$dbError = '';
+
 $packages = [];
 $res = mysqli_query($conn, "SELECT id, price, sycee, title, is_show
                             FROM nap_card.package_charge ORDER BY display_id");
-if ($res) {
+if (!$res) {
+	$dbError = 'nap_card.package_charge: ' . mysqli_error($conn);
+} else {
 	while ($r = mysqli_fetch_assoc($res)) {
 		$packages[] = $r;
 	}
@@ -274,10 +282,24 @@ if ($res) {
 
 $servers = [];
 $res = mysqli_query($conn, "SELECT id, name_server FROM nap_card.server ORDER BY id");
-if ($res) {
+if (!$res) {
+	$dbError .= ($dbError !== '' ? ' | ' : '') . 'nap_card.server: ' . mysqli_error($conn);
+} else {
 	while ($r = mysqli_fetch_assoc($res)) {
 		$servers[] = $r;
 	}
+}
+
+/* Thiếu dữ liệu thì nói thẳng phải chạy lệnh gì, thay vì để dropdown trống. */
+$thieuDuLieu = '';
+if ($dbError !== '') {
+	$thieuDuLieu = 'Lỗi truy vấn DB — ' . $dbError;
+} elseif (empty($packages) && empty($servers)) {
+	$thieuDuLieu = 'Cả nap_card.package_charge lẫn nap_card.server đều rỗng — chưa nạp bản vá.';
+} elseif (empty($packages)) {
+	$thieuDuLieu = 'nap_card.package_charge rỗng — không có gói nạp nào để chọn.';
+} elseif (empty($servers)) {
+	$thieuDuLieu = 'nap_card.server rỗng — không biết nạp vào máy chủ nào.';
 }
 ?>
 <!DOCTYPE html>
@@ -398,21 +420,39 @@ if ($res) {
 		Luôn tiêu <b>Xu không khoá</b>. Giữa hai lần mua có khoá 10 giây.
 	</div>
 
+	<?php if ($thieuDuLieu !== '') { ?>
+		<div style="margin: 0 0 15px 20px; padding: 10px 15px; border-radius: 3px;
+		            background:#fff8e1; color:#8d6e00; border-left: 4px solid #f0ad4e; max-width: 700px;">
+			<b>Chưa mua gói được.</b> <?php echo htmlspecialchars($thieuDuLieu); ?><br>
+			Chạy trong thư mục repo trên VPS rồi tải lại trang:
+			<code style="display:block; margin-top:6px;">./knrt.sh db-patch</code>
+		</div>
+	<?php } ?>
+
 	<div class="layui-form-item">
 		<div class="layui-inline">
 			<label class="layui-form-label">Máy chủ</label>
 			<div class="layui-input-inline">
-				<select name="srvId">
-					<?php if (empty($servers)) { ?>
-						<option value="0">-- nap_card.server rỗng --</option>
-					<?php } foreach ($servers as $s) {
-						$sel = (isset($_POST['srvId']) && intval($_POST['srvId']) === intval($s['id'])) ? ' selected' : '';
-					?>
-						<option value="<?php echo intval($s['id']); ?>"<?php echo $sel; ?>>
-							<?php echo intval($s['id']) . ' - ' . htmlspecialchars($s['name_server']); ?>
-						</option>
-					<?php } ?>
-				</select>
+				<?php
+				/* Sinh <option> bằng echo, KHÔNG xuống dòng giữa hai thẻ.
+				 * layui.form dựng select thành <input> rồi đổ nguyên innerHTML của
+				 * option đang chọn vào thuộc tính value:
+				 *     'value="' + (d ? f.html() : "") + '"'
+				 * Viết option xuống dòng là value dính cả \n và tab đứng đầu, chữ bị
+				 * đẩy khỏi khung và ô trông như trống. Select "ptype" ở trên viết
+				 * liền một dòng nên không dính - giữ nguyên kiểu đó ở đây. */
+				echo '<select name="srvId">';
+				if (empty($servers)) {
+					echo '<option value="0">-- chưa có máy chủ --</option>';
+				}
+				foreach ($servers as $s) {
+					$sel = (isset($_POST['srvId']) && intval($_POST['srvId']) === intval($s['id'])) ? ' selected' : '';
+					echo '<option value="' . intval($s['id']) . '"' . $sel . '>'
+					   . htmlspecialchars(intval($s['id']) . ' - ' . $s['name_server'])
+					   . '</option>';
+				}
+				echo '</select>';
+				?>
 			</div>
 		</div>
 	</div>
@@ -421,17 +461,22 @@ if ($res) {
 		<div class="layui-inline">
 			<label class="layui-form-label">Gói nạp</label>
 			<div class="layui-input-inline">
-				<select name="productId">
-					<?php if (empty($packages)) { ?>
-						<option value="0">-- nap_card.package_charge rỗng --</option>
-					<?php } foreach ($packages as $p) {
-						$sel = (isset($_POST['productId']) && intval($_POST['productId']) === intval($p['id'])) ? ' selected' : '';
-					?>
-						<option value="<?php echo intval($p['id']); ?>"<?php echo $sel; ?>>
-							<?php echo htmlspecialchars($p['title']) . ' (' . number_format(intval($p['price'])) . ' Xu)'; ?>
-						</option>
-					<?php } ?>
-				</select>
+				<?php
+				/* Không xuống dòng giữa các <option> - xem giải thích ở select "srvId". */
+				echo '<select name="productId">';
+				if (empty($packages)) {
+					echo '<option value="0">-- chưa có gói nạp --</option>';
+				}
+				foreach ($packages as $p) {
+					$sel = (isset($_POST['productId']) && intval($_POST['productId']) === intval($p['id'])) ? ' selected' : '';
+					/* Chỉ in title: 9 gói của 03-nap-wallet.sql đã ghi sẵn giá Xu trong
+					 * tên ("10.000 Xu - 1.000 Kim Cương"). Bảng cuối trang có giá đầy đủ. */
+					echo '<option value="' . intval($p['id']) . '"' . $sel . '>'
+					   . htmlspecialchars($p['title'])
+					   . '</option>';
+				}
+				echo '</select>';
+				?>
 			</div>
 		</div>
 	</div>
