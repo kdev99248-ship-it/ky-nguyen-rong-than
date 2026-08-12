@@ -298,11 +298,16 @@ case "$cmd" in
 	# DB khôi phục bằng db-import từ bản dump Windows — những bản đó chưa có vá.
 	db-patch)
 		found=0
+		# __MYSQL_PASSWORD__ được thay bằng mật khẩu thật lúc nạp để repo không
+		# chứa mật khẩu (03-nap-wallet.sql cần cho nap_card.server). Giữ giống hệt
+		# db/sql/install.sh. Mật khẩu không được có '|' hay '&' — ký tự của sed.
+		patch_pass="$(env_get MYSQL_ROOT_PASSWORD)"
 		for f in "$ROOT"/db/sql/patch/*.sql; do
 			[ -e "$f" ] || break
 			found=1
 			echo "  [patch] $(basename "$f")"
-			mysql_exec -T mysql -uroot --default-character-set=utf8 < "$f"
+			sed "s|__MYSQL_PASSWORD__|${patch_pass}|g" "$f" \
+				| mysql_exec -T mysql -uroot --default-character-set=utf8
 		done
 		[ "$found" -eq 1 ] || die "Không có file nào trong db/sql/patch/"
 		echo

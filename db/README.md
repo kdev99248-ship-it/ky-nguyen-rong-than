@@ -79,6 +79,11 @@ có những bảng mà code chỉ đọc đúng một lần lúc *dựng server 
 | File | Vá gì |
 |---|---|
 | `01-arena-airank-32-bands.sql` | `h_game_data.t_arena_airank` chỉ có id 1..28, mà `ArenaProcessorManager.createRobot()` lặp cứng id 1..32 để sinh robot đấu trường. Thiếu id 29 → NPE → `System.exit(-1)`, GameServer lặp `exit 255`. Thêm 4 dải 29..32. |
+| `02-activity-open.sql` | Mở vĩnh viễn các hoạt động nạp. 102/108 dòng của seed `optional/` là sự kiện hết hạn từ 2020 (`timeType=1` = mốc tuyệt đối), thực chất chỉ là 3 sự kiện lặp qua 26 đợt. Tắt hết, bật lại 1 dòng đại diện mỗi loại ở `timeType=2` + `openingTime='-1'` (luôn mở), đặt tên tiếng Việt. **Chỉ có tác dụng sau khi đã nạp `optional/h_game-activity-seed.sql`** — bảng rỗng thì khớp 0 dòng, vô hại. |
+| `03-nap-wallet.sql` | Bật đơn vị tiền nạp "Xu". `nap_card.server` và `nap_card.package_charge` đều rỗng làm chết cả luồng tiêu Xu của webapp nap_card. Nạp 1 dòng server (trỏ `url_charge` sang API `51011`) và 9 gói nạp có `id` trùng `h_game_data.t_recharge`. Chuỗi `__MYSQL_PASSWORD__` trong file được `install.sh` thay bằng mật khẩu thật lúc nạp. |
+
+`02` và `03` không phải vá lỗi khởi động như `01` — chúng bật thêm tính năng. Bỏ file đi
+thì server vẫn chạy bình thường, chỉ là không có hoạt động nạp và không tiêu được Xu.
 
 ## sql/optional/ — phải nạp tay nếu cần
 

@@ -78,11 +78,15 @@ imp 6 nap_card          06-nap_card.sql
 
 # patch/ sửa những chỗ bộ dump gốc thiếu dữ liệu khiến GameServer không khởi động
 # được (xem phần đầu từng file). Mỗi file tự khai USE <db> và đều idempotent.
+#
+# Chuỗi __MYSQL_PASSWORD__ trong file vá được thay bằng mật khẩu thật lúc nạp, để
+# repo không phải chứa mật khẩu (03-nap-wallet.sql cần nó cho nap_card.server).
+# Mật khẩu vì thế không được chứa '|' hay '&' - hai ký tự đặc biệt của sed.
 if [ -d "$PATCHDIR" ]; then
 	for f in "$PATCHDIR"/*.sql; do
 		[ -e "$f" ] || break
 		echo "[patch] $(basename "$f")"
-		run_sql < "$f"
+		sed "s|__MYSQL_PASSWORD__|${DB_PASS}|g" "$f" | run_sql
 	done
 fi
 
