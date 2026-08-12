@@ -447,8 +447,16 @@ if ($dbError !== '') {
 				}
 				foreach ($servers as $s) {
 					$sel = (isset($_POST['srvId']) && intval($_POST['srvId']) === intval($s['id'])) ? ' selected' : '';
+					/* Escape name_server riêng rồi mới ghép id: nếu để chung, name_server
+					 * lệch bảng mã sẽ làm htmlspecialchars trả '' cho CẢ chuỗi -> option
+					 * rỗng -> ô trống (xem giải thích ở select "productId"). Ghép rời thì
+					 * id (ASCII) luôn hiện, chỉ phần tên hỏng mới thay bằng chú thích. */
+					$ten = htmlspecialchars((string)$s['name_server']);
+					if (trim($ten) === '') {
+						$ten = '(tên máy chủ trống/lỗi mã hoá)';
+					}
 					echo '<option value="' . intval($s['id']) . '"' . $sel . '>'
-					   . htmlspecialchars(intval($s['id']) . ' - ' . $s['name_server'])
+					   . intval($s['id']) . ' - ' . $ten
 					   . '</option>';
 				}
 				echo '</select>';
@@ -470,10 +478,27 @@ if ($dbError !== '') {
 				foreach ($packages as $p) {
 					$sel = (isset($_POST['productId']) && intval($_POST['productId']) === intval($p['id'])) ? ' selected' : '';
 					/* Chỉ in title: 9 gói của 03-nap-wallet.sql đã ghi sẵn giá Xu trong
-					 * tên ("10.000 Xu - 1.000 Kim Cương"). Bảng cuối trang có giá đầy đủ. */
-					echo '<option value="' . intval($p['id']) . '"' . $sel . '>'
-					   . htmlspecialchars($p['title'])
-					   . '</option>';
+					 * tên ("10.000 Xu - 1.000 Kim Cương"). Bảng cuối trang có giá đầy đủ.
+					 *
+					 * layui đổ innerHTML của <option> đang chọn thẳng vào value của ô
+					 * hiển thị, nên option rỗng = ô trông như TRỐNG dù gói có thật (đúng
+					 * lỗi "DB có data mà select không hiện, cũng không báo lỗi"). Có hai
+					 * đường ra option rỗng, khác với lỗi xuống-dòng đã sửa:
+					 *   1) package_charge.title là NULL/'' trong DB.
+					 *   2) title về sai bảng mã (không phải UTF-8 hợp lệ) -> htmlspecialchars
+					 *      mặc định ENT_HTML401+UTF-8 NUỐT cả chuỗi, trả '' và không cảnh báo
+					 *      (error_reporting(0)).
+					 * Nhãn dự phòng dựng từ số (id/price/sycee - luôn ASCII hợp lệ) để ô
+					 * không bao giờ rỗng; title tốt thì vẫn in nguyên như cũ. */
+					$label = htmlspecialchars((string)$p['title']);
+					if (trim($label) === '') {
+						$label = 'Gói ' . intval($p['id']) . ' - ' . number_format(intval($p['price'])) . ' Xu';
+						if (intval($p['sycee']) > 0) {
+							$label .= ' / ' . number_format(intval($p['sycee'])) . ' KC';
+						}
+						$label = htmlspecialchars($label);
+					}
+					echo '<option value="' . intval($p['id']) . '"' . $sel . '>' . $label . '</option>';
 				}
 				echo '</select>';
 				?>
